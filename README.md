@@ -31,13 +31,13 @@ Context is critical, and when using AI coding assistants, the more **high qualit
 
 ### Lab 4: Agent Ops (2 hours):
 
-⚠️  Coming Soon ⚠️ 
+Evaluate, analyze, and security-test watsonx Orchestrate agents using the WXO ADK's build-time evaluation capabilities.
 
 🤖 [Get started with Lab 4](lab-4/README.md)
 
 ### Lab 5: Data for AI Labs
 
-⚠️  Coming Soon ⚠️ 
+Use Data for AI to enrich unstructured product content, store into a vector database then use to generate useful insights.
 
 🤖 [Get started with Lab 5](lab-5/README.md)
 
