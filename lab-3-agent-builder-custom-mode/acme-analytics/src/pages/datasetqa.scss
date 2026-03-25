@@ -1,0 +1,39 @@
+@use '@carbon/react/scss/spacing' as *;
+@use '@carbon/react/scss/theme' as *;
+@use '@carbon/react/scss/type' as *;
+
+.datasetqa-page {
+  padding: $spacing-07 0;
+  min-height: calc(100vh - 3rem);
+}
+
+.datasetqa-header {
+  margin-bottom: $spacing-07;
+}
+
+.datasetqa-heading {
+  @include type-style('heading-05');
+  margin-bottom: $spacing-03;
+  color: $text-primary;
+}
+
+.datasetqa-content {
+  margin-top: $spacing-05;
+}
+
+.datasetqa-form {
+  display: flex;
+  gap: $spacing-05;
+  align-items: flex-end;
+  
+  .cds--select {
+    flex: 1;
+  }
+  
+  .datasetqa-submit {
+    flex-shrink: 0;
+    min-width: 120px;
+  }
+}
+
+// Made with Bob

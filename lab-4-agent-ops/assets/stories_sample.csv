@@ -1,0 +1,3 @@
+story,agent
+"The user wants to look up their tax document status using their client ID CLI001 and get a detailed status update communication.",tax_document_assistant
+"The user wants to check all Corporate clients and calculate document completeness metrics for one of them.",tax_document_assistant

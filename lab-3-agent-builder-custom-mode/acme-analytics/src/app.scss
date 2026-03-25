@@ -1,0 +1,12 @@
+@use '@carbon/react/scss/theme';
+
+.app {
+  min-height: 100vh;
+  background-color: theme.$background;
+}
+
+.app-main {
+  width: 100%;
+}
+
+// Made with Bob

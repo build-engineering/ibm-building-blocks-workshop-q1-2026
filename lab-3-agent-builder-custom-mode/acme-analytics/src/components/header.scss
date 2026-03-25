@@ -1,0 +1,65 @@
+@use '@carbon/react/scss/spacing';
+@use '@carbon/react/scss/theme';
+@use '@carbon/react/scss/type';
+
+.app-header {
+  background-color: theme.$background;
+  border-bottom: 1px solid theme.$border-subtle;
+  padding: spacing.$spacing-05;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1584px;
+  margin: 0 auto;
+  gap: spacing.$spacing-05;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-03;
+}
+
+.logo-icon {
+  color: theme.$text-primary;
+}
+
+.logo-text {
+  @include type.type-style('heading-04');
+  color: theme.$text-primary;
+}
+
+.header-nav {
+  display: flex;
+  gap: spacing.$spacing-05;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-link {
+  @include type.type-style('body-short-02');
+  color: theme.$text-secondary;
+  text-decoration: none;
+  padding: spacing.$spacing-03 spacing.$spacing-05;
+  border-radius: 4px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    color: theme.$text-primary;
+    background-color: theme.$layer-hover;
+  }
+
+  &.active {
+    color: theme.$link-primary;
+    font-weight: 600;
+  }
+}
+
+.header-dataset-selector {
+  min-width: 280px;
+}
+
+// Made with Bob

@@ -1,0 +1,33 @@
+{
+  "agent": "tax_document_assistant",
+  "story": "You are a client with client ID CLI001. You want to check your tax document submission status and get a status update communication. Provide your client ID CLI001 upfront. Do NOT end the conversation until you receive the generated status update.",
+  "starting_sentence": "Hi, my client ID is CLI001. Can you show me my document status and generate a status update for me?",
+  "goals": {
+    "get_client_by_id-1": ["generate_communication-1"],
+    "generate_communication-1": []
+  },
+  "goal_details": [
+    {
+      "type": "tool_call",
+      "name": "get_client_by_id-1",
+      "tool_name": "get_client_by_id",
+      "args": { "client_id": "CLI001" },
+      "arg_matching": { "client_id": "strict" }
+    },
+    {
+      "type": "tool_call",
+      "name": "generate_communication-1",
+      "tool_name": "generate_communication",
+      "args": {
+        "client_id": "CLI001",
+        "message_type": "status_update",
+        "custom_content": "<IGNORE>"
+      },
+      "arg_matching": {
+        "client_id": "strict",
+        "message_type": "strict",
+        "custom_content": "optional"
+      }
+    }
+  ]
+}

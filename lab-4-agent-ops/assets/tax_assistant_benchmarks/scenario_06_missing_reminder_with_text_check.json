@@ -1,0 +1,40 @@
+{
+  "agent": "tax_document_assistant",
+  "story": "You are Jennifer Lee with client ID CLI006. You are an Individual client concerned about your low document completion rate. You want the agent to look up your account, then generate a missing document reminder for you. After receiving the reminder, ask the agent to summarize what documents you still need to submit. Do NOT end the conversation until the agent provides a clear summary of your missing documents.",
+  "starting_sentence": "Hi, I'm Jennifer Lee, client CLI006. I know I'm behind on my tax documents. Can you check my account and send me a reminder about what I'm missing?",
+  "goals": {
+    "get_client_by_id-1": ["generate_communication-1"],
+    "generate_communication-1": ["missing_docs_summary-1"],
+    "missing_docs_summary-1": []
+  },
+  "goal_details": [
+    {
+      "type": "tool_call",
+      "name": "get_client_by_id-1",
+      "tool_name": "get_client_by_id",
+      "args": { "client_id": "CLI006" },
+      "arg_matching": { "client_id": "strict" }
+    },
+    {
+      "type": "tool_call",
+      "name": "generate_communication-1",
+      "tool_name": "generate_communication",
+      "args": {
+        "client_id": "CLI006",
+        "message_type": "missing_reminder",
+        "custom_content": "<IGNORE>"
+      },
+      "arg_matching": {
+        "client_id": "strict",
+        "message_type": "strict",
+        "custom_content": "optional"
+      }
+    },
+    {
+      "type": "text",
+      "name": "missing_docs_summary-1",
+      "response": "The agent should summarize that Jennifer Lee has submitted 3 of 7 required documents (43% complete) and needs to submit 4 more documents before her April 15 deadline.",
+      "keywords": ["documents", "missing", "submit", "deadline"]
+    }
+  ]
+}

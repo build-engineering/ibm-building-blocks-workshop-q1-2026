@@ -1,0 +1,25 @@
+{
+  "agent": "tax_document_assistant",
+  "story": "You are concerned about filing deadlines. Ask the agent: What are the filing deadlines for Corporate clients? What is the extended deadline for S-Corporations and Partnerships? After getting deadline answers, ask the agent to show you all Corporate clients so you can check which ones are approaching their deadline. Do NOT end the conversation until you receive the deadline information and the list of Corporate clients.",
+  "starting_sentence": "I need to understand our filing deadlines. What are the deadlines for Corporate clients, and what extended deadlines are available for S-Corps?",
+  "goals": {
+    "tax_document_kb-1": ["get_clients_by_type-1"],
+    "get_clients_by_type-1": []
+  },
+  "goal_details": [
+    {
+      "type": "tool_call",
+      "name": "tax_document_kb-1",
+      "tool_name": "tax_document_kb",
+      "args": {},
+      "arg_matching": {}
+    },
+    {
+      "type": "tool_call",
+      "name": "get_clients_by_type-1",
+      "tool_name": "get_clients_by_type",
+      "args": { "client_type": "Corporate" },
+      "arg_matching": { "client_type": "strict" }
+    }
+  ]
+}

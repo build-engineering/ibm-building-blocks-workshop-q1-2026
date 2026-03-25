@@ -1,0 +1,25 @@
+{
+  "agent": "tax_document_assistant",
+  "story": "You are a Small Business client (CLI005, David Martinez). You want to understand what tax documents are required for Small Business filers. Ask: What documents are required for Small Business clients? What is the quarterly estimated tax payment schedule? Also ask about mileage log requirements. After getting those answers, ask the agent to look up your account details. Do NOT end the conversation until you have received answers about document requirements and your account details.",
+  "starting_sentence": "I'm a Small Business client. What tax documents do I need to submit, and what's the schedule for quarterly estimated tax payments?",
+  "goals": {
+    "tax_document_kb-1": ["get_client_by_id-1"],
+    "get_client_by_id-1": []
+  },
+  "goal_details": [
+    {
+      "type": "tool_call",
+      "name": "tax_document_kb-1",
+      "tool_name": "tax_document_kb",
+      "args": {},
+      "arg_matching": {}
+    },
+    {
+      "type": "tool_call",
+      "name": "get_client_by_id-1",
+      "tool_name": "get_client_by_id",
+      "args": { "client_id": "CLI005" },
+      "arg_matching": { "client_id": "strict" }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+client_id,name,email,phone,client_type,filing_status,tax_year,documents_required,documents_submitted,completion_percentage,last_update_date,submission_deadline,status
+CLI001,Sarah Johnson,sarah.johnson@email.com,555-0101,Individual,In Progress,2025,8,6,75,2026-03-05,2026-04-15,active
+CLI002,Michael Chen,michael.chen@email.com,555-0102,Small Business,Not Started,2025,15,0,0,2026-02-20,2026-04-15,active
+CLI003,Emily Rodriguez,emily.rodriguez@email.com,555-0103,Individual,Complete,2025,6,6,100,2026-03-10,2026-04-15,active
+CLI004,TechStart Inc,accounting@techstart.com,555-0104,Corporate,In Progress,2025,25,18,72,2026-03-08,2026-06-15,active
+CLI005,David Martinez,david.martinez@email.com,555-0105,Small Business,In Progress,2025,12,10,83,2026-03-09,2026-04-15,active
+CLI006,Jennifer Lee,jennifer.lee@email.com,555-0106,Individual,In Progress,2025,7,3,43,2026-03-01,2026-04-15,active
+CLI007,Global Solutions LLC,finance@globalsolutions.com,555-0107,Corporate,Not Started,2025,30,0,0,2026-02-15,2026-06-15,active
+CLI008,Robert Thompson,robert.thompson@email.com,555-0108,Individual,Complete,2025,5,5,100,2026-03-11,2026-04-15,active

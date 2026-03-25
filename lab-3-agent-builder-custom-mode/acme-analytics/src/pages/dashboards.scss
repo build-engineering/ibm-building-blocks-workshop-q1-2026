@@ -1,0 +1,33 @@
+@use '@carbon/react/scss/spacing';
+@use '@carbon/react/scss/theme';
+@use '@carbon/react/scss/type';
+
+.dashboards-page {
+  padding: spacing.$spacing-07 0;
+}
+
+.dashboards-header {
+  padding: spacing.$spacing-05 0 spacing.$spacing-06 0;
+}
+
+.dashboards-heading {
+  @include type.type-style('heading-05');
+  color: theme.$text-primary;
+  margin-bottom: spacing.$spacing-04;
+}
+
+.dashboards-description {
+  @include type.type-style('body-long-02');
+  color: theme.$text-secondary;
+  line-height: 1.6;
+}
+
+.dashboards-grid {
+  margin-top: spacing.$spacing-06;
+}
+
+.dashboard-column {
+  margin-bottom: spacing.$spacing-06;
+}
+
+// Made with Bob

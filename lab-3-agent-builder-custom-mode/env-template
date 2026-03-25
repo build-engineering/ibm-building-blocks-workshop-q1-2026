@@ -1,0 +1,8 @@
+# Use this template to generate your .env file
+# Copy this file to .env and provide missing values
+# Remove these comments after duplicating
+WO_DEVELOPER_EDITION_SOURCE=orchestrate
+WO_ADK_ENVIRONMENT_NAME=india-workshop
+PATH_TO_PYTHON_VENV_WITH_ORCHESTRATE_ADK=<FULL PATH HERE>
+WO_INSTANCE=<URL HERE>
+WO_API_KEY=<API KEY HERE>

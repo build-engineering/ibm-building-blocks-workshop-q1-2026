@@ -1,0 +1,25 @@
+spec_version: v1
+name: tax_document_kb
+description: |
+  Comprehensive knowledge base for Tax Document Assistant.
+  Contains:
+  - Client profiles and tax document submission status
+  - Tax document requirements by client type (Individual, Small Business, Corporate)
+  - Common tax filing questions and answers
+  - Document organization best practices
+  - Filing deadlines and extension information
+
+documents:
+  - ../data/clients.csv
+  - ../data/tax_document_requirements.txt
+
+vector_index:
+  embeddings_model_name: ibm/slate-125m-english-rtrvr-v2
+
+metadata:
+  domain: "tax_services"
+  entity_type: "clients"
+  version: "1.0"
+  last_updated: "2026-03-11"
+
+# Made with Bob

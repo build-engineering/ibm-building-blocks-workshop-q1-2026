@@ -1,0 +1,25 @@
+{
+  "agent": "tax_document_assistant",
+  "story": "You want to see all Corporate clients and calculate their document completion metrics. Do NOT end the conversation until you receive the calculated metrics.",
+  "starting_sentence": "Show me all Corporate clients and calculate their document completion metrics.",
+  "goals": {
+    "get_clients_by_type-1": ["calculate_client_metrics-1"],
+    "calculate_client_metrics-1": []
+  },
+  "goal_details": [
+    {
+      "type": "tool_call",
+      "name": "get_clients_by_type-1",
+      "tool_name": "get_clients_by_type",
+      "args": { "client_type": "Corporate" },
+      "arg_matching": { "client_type": "strict" }
+    },
+    {
+      "type": "tool_call",
+      "name": "calculate_client_metrics-1",
+      "tool_name": "calculate_client_metrics",
+      "args": { "client_type": "Corporate" },
+      "arg_matching": { "client_type": "strict" }
+    }
+  ]
+}

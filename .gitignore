@@ -1,0 +1,23 @@
+# Base files to exclude
+/_site
+Gemfile.lock
+.DS_Store
+.env
+*/__pycache__
+*.pyc
+~$*
+
+# Workshop
+/.bob
+
+# Lab 2 exclusions
+/lab-2-dataset-powered-website/acme-analytics
+/lab-2-dataset-powered-website/pandas-mcp-server/venv
+
+# Lab 3 exclusions
+/lab-3-agent-builder-custom-mode/acme-analytics/node_modules
+/.bob/rules-agent-builder
+/lab-3-agent-builder-custom-mode/pandas-mcp-server/toolkit.yaml
+/lab-3-agent-builder-custom-mode/scripts
+lab-3-agent-builder-custom-mode/agents/dataset_qa_agent.yaml
+/lab-3-agent-builder-custom-mode/agents

@@ -1,0 +1,41 @@
+{
+  "agent": "tax_document_assistant",
+  "story": "You want help with your tax documents but you do NOT provide your client ID upfront. When the agent asks for your client ID, provide CLI005. Then ask the agent to calculate your document completion metrics. After seeing the metrics, ask the agent to generate a missing document reminder for your account. Do NOT end the conversation until you receive the missing document reminder.",
+  "starting_sentence": "Hi, I need help checking on my tax document submission status.",
+  "goals": {
+    "get_client_by_id-1": ["calculate_client_metrics-1"],
+    "calculate_client_metrics-1": ["generate_communication-1"],
+    "generate_communication-1": []
+  },
+  "goal_details": [
+    {
+      "type": "tool_call",
+      "name": "get_client_by_id-1",
+      "tool_name": "get_client_by_id",
+      "args": { "client_id": "CLI005" },
+      "arg_matching": { "client_id": "strict" }
+    },
+    {
+      "type": "tool_call",
+      "name": "calculate_client_metrics-1",
+      "tool_name": "calculate_client_metrics",
+      "args": { "client_type": "<IGNORE>" },
+      "arg_matching": { "client_type": "optional" }
+    },
+    {
+      "type": "tool_call",
+      "name": "generate_communication-1",
+      "tool_name": "generate_communication",
+      "args": {
+        "client_id": "CLI005",
+        "message_type": "missing_reminder",
+        "custom_content": "<IGNORE>"
+      },
+      "arg_matching": {
+        "client_id": "strict",
+        "message_type": "strict",
+        "custom_content": "optional"
+      }
+    }
+  ]
+}

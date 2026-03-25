@@ -1,0 +1,39 @@
+@use '@carbon/react/scss/spacing';
+@use '@carbon/react/scss/theme';
+@use '@carbon/react/scss/type';
+
+.chart-container {
+  background-color: theme.$layer-01;
+  border: 1px solid theme.$border-subtle;
+  border-radius: 4px;
+  padding: spacing.$spacing-06;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-header {
+  margin-bottom: spacing.$spacing-05;
+}
+
+.chart-title {
+  @include type.type-style('heading-compact-02');
+  color: theme.$text-primary;
+  margin-bottom: spacing.$spacing-03;
+}
+
+.chart-description {
+  @include type.type-style('body-short-01');
+  color: theme.$text-secondary;
+  line-height: 1.4;
+}
+
+.chart-canvas {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+// Made with Bob

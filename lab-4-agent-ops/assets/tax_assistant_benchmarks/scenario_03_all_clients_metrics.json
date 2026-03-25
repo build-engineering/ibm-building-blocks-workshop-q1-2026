@@ -1,0 +1,37 @@
+{
+  "agent": "tax_document_assistant",
+  "story": "You want to see all clients and calculate their overall document completion metrics. Do NOT end the conversation until you receive the calculated metrics.",
+  "starting_sentence": "Show me all clients and calculate their overall document completion metrics.",
+  "goals": {
+    "get_client_data-1": ["calculate_client_metrics-1"],
+    "calculate_client_metrics-1": []
+  },
+  "goal_details": [
+    {
+      "type": "tool_call",
+      "name": "get_client_data-1",
+      "tool_name": "get_client_data",
+      "args": {
+        "client_id": "<IGNORE>",
+        "client_type": "<IGNORE>",
+        "filing_status": "<IGNORE>",
+        "status": "<IGNORE>",
+        "limit": "<IGNORE>"
+      },
+      "arg_matching": {
+        "client_id": "optional",
+        "client_type": "optional",
+        "filing_status": "optional",
+        "status": "optional",
+        "limit": "optional"
+      }
+    },
+    {
+      "type": "tool_call",
+      "name": "calculate_client_metrics-1",
+      "tool_name": "calculate_client_metrics",
+      "args": { "client_type": "<IGNORE>" },
+      "arg_matching": { "client_type": "optional" }
+    }
+  ]
+}

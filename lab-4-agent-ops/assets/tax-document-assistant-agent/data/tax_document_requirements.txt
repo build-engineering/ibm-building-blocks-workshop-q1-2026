@@ -1,0 +1,149 @@
+TAX DOCUMENT REQUIREMENTS GUIDE
+
+This guide outlines the required tax documents for different client types.
+
+=== INDIVIDUAL CLIENTS ===
+
+Required Documents (Standard):
+1. W-2 Forms - Wage and Tax Statement from all employers
+2. 1099 Forms - Income from freelance work, investments, or other sources
+   - 1099-INT (Interest Income)
+   - 1099-DIV (Dividend Income)
+   - 1099-MISC (Miscellaneous Income)
+   - 1099-NEC (Non-Employee Compensation)
+3. 1098 Forms - Mortgage Interest Statement
+4. Receipts for Deductible Expenses
+   - Medical expenses (if itemizing)
+   - Charitable contributions
+   - State and local taxes paid
+5. Prior Year Tax Return (for reference)
+6. Social Security Numbers for all dependents
+7. Bank Account Information (for direct deposit)
+8. Health Insurance Form 1095-A, B, or C
+
+Additional Documents (If Applicable):
+- Student loan interest statements (1098-E)
+- Tuition statements (1098-T)
+- Childcare provider information
+- Retirement account contributions (IRA, 401k)
+- Property tax statements
+- Business use of home expenses
+
+=== SMALL BUSINESS CLIENTS ===
+
+Required Documents (In Addition to Individual Requirements):
+1. Schedule C - Profit or Loss from Business
+2. Business Income Records
+   - Sales receipts
+   - Invoice records
+   - Payment processor statements (PayPal, Stripe, etc.)
+3. Business Expense Records
+   - Office supplies
+   - Equipment purchases
+   - Software subscriptions
+   - Professional services
+   - Marketing and advertising
+4. Mileage Log (if claiming vehicle expenses)
+5. Home Office Documentation (if applicable)
+6. Quarterly Estimated Tax Payment Records
+7. Business Bank Statements
+8. Depreciation Schedules for Assets
+9. Inventory Records (if applicable)
+10. Independent Contractor Payments (1099-NEC issued)
+11. Business Insurance Policies
+12. Business Licenses and Permits
+
+=== CORPORATE CLIENTS ===
+
+Required Documents (Comprehensive):
+1. Form 1120 - U.S. Corporation Income Tax Return
+2. Financial Statements
+   - Balance Sheet
+   - Income Statement (Profit & Loss)
+   - Cash Flow Statement
+3. General Ledger and Trial Balance
+4. Payroll Records
+   - W-2s for all employees
+   - W-3 Transmittal
+   - 941 Quarterly Federal Tax Returns
+   - State payroll tax returns
+5. Accounts Receivable and Payable Aging Reports
+6. Bank Statements (all business accounts)
+7. Loan Documents and Interest Statements
+8. Depreciation Schedules
+9. Asset Purchase and Disposal Records
+10. Stock Transaction Records
+11. Shareholder Information and K-1s
+12. Prior Year Corporate Tax Returns
+13. Estimated Tax Payment Records
+14. State and Local Tax Returns
+15. Sales Tax Returns (if applicable)
+16. Property Tax Assessments
+17. Insurance Policies and Premiums
+18. Lease Agreements
+19. Contract and Agreement Documentation
+20. Board Meeting Minutes (if required)
+
+=== IMPORTANT DEADLINES ===
+
+Individual Filers:
+- April 15 - Standard filing deadline
+- October 15 - Extended filing deadline (if extension filed by April 15)
+
+Small Business (Sole Proprietors):
+- April 15 - Same as individual filers (Schedule C filed with Form 1040)
+- Quarterly Estimated Taxes: April 15, June 15, September 15, January 15
+
+Corporate Filers:
+- March 15 - S-Corporations and Partnerships (Form 1120-S, 1065)
+- April 15 - C-Corporations (Form 1120)
+- September 15 - Extended deadline for S-Corps and Partnerships
+- October 15 - Extended deadline for C-Corporations
+
+=== DOCUMENT ORGANIZATION TIPS ===
+
+1. Keep digital copies of all documents
+2. Organize by category and year
+3. Use clear, descriptive file names
+4. Store securely with encryption
+5. Maintain backups in multiple locations
+6. Keep records for at least 7 years
+7. Separate personal and business documents
+8. Track document submission status
+9. Set reminders for missing documents
+10. Review completeness before deadline
+
+=== COMMON QUESTIONS ===
+
+Q: What if I'm missing a W-2 or 1099?
+A: Contact the issuer immediately. If unavailable by filing deadline, use Form 4852 as a substitute.
+
+Q: Can I file without all documents?
+A: It's not recommended. Filing incomplete returns can lead to audits and penalties.
+
+Q: What if I miss the deadline?
+A: File as soon as possible. Late filing penalties apply, but they're less severe than not filing at all.
+
+Q: Do I need receipts for all deductions?
+A: Yes, keep receipts for all claimed deductions. The IRS may request proof during an audit.
+
+Q: How long should I keep tax documents?
+A: Generally 3-7 years. Keep indefinitely for property records and retirement accounts.
+
+Q: What's the difference between filing status options?
+A: Single, Married Filing Jointly, Married Filing Separately, Head of Household, and Qualifying Widow(er) have different tax rates and deduction limits.
+
+=== CONTACT INFORMATION ===
+
+For questions about document requirements:
+- Email: support@taxdocumentassistant.com
+- Phone: 1-800-TAX-DOCS
+- Hours: Monday-Friday, 8 AM - 8 PM EST
+
+For technical support with document uploads:
+- Email: techsupport@taxdocumentassistant.com
+- Live Chat: Available on our website
+
+For urgent deadline-related questions:
+- Priority Support: 1-800-TAX-URGENT
+- Available 24/7 during tax season (January 1 - April 15)

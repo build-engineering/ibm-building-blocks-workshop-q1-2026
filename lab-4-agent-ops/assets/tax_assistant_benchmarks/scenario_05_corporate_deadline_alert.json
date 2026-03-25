@@ -1,0 +1,33 @@
+{
+  "agent": "tax_document_assistant",
+  "story": "You want to check which Corporate clients have upcoming deadlines. Show all Corporate clients, then generate a deadline alert for Global Solutions LLC (client ID CLI007) since their June 15 deadline is approaching and they haven't started their submission. Do NOT end the conversation until you receive the deadline alert.",
+  "starting_sentence": "Show me all Corporate clients. I need to send a deadline alert to Global Solutions LLC — their June 15 filing deadline is coming up.",
+  "goals": {
+    "get_clients_by_type-1": ["generate_communication-1"],
+    "generate_communication-1": []
+  },
+  "goal_details": [
+    {
+      "type": "tool_call",
+      "name": "get_clients_by_type-1",
+      "tool_name": "get_clients_by_type",
+      "args": { "client_type": "Corporate" },
+      "arg_matching": { "client_type": "strict" }
+    },
+    {
+      "type": "tool_call",
+      "name": "generate_communication-1",
+      "tool_name": "generate_communication",
+      "args": {
+        "client_id": "CLI007",
+        "message_type": "deadline_alert",
+        "custom_content": "<IGNORE>"
+      },
+      "arg_matching": {
+        "client_id": "strict",
+        "message_type": "strict",
+        "custom_content": "optional"
+      }
+    }
+  ]
+}

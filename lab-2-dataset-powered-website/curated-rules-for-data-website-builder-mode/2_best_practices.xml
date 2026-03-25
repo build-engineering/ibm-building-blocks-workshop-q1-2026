@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<best_practices>
+  <general_principles>
+    <principle priority="high">
+      <name>Data-Driven Decision Making</name>
+      <description>Always base visualization choices on the actual data characteristics and user needs</description>
+      <rationale>Different data types and distributions require different visualization approaches for clarity</rationale>
+      <guidelines>
+        <guideline>Perform thorough EDA before choosing chart types</guideline>
+        <guideline>Consider the story you want the data to tell</guideline>
+        <guideline>Match visualization complexity to audience expertise</guideline>
+      </guidelines>
+    </principle>
+
+    <principle priority="high">
+      <name>Responsive Design</name>
+      <description>Build interfaces that work seamlessly across all device sizes</description>
+      <rationale>Users access analytics dashboards from various devices</rationale>
+      <guidelines>
+        <guideline>Use Tailwind responsive classes (sm:, md:, lg:, xl:)</guideline>
+        <guideline>Test on mobile, tablet, and desktop viewports</guideline>
+        <guideline>Make charts responsive with maintainAspectRatio: false</guideline>
+        <guideline>Consider touch targets for mobile users (minimum 44x44px)</guideline>
+      </guidelines>
+    </principle>
+
+    <principle priority="medium">
+      <name>Performance Optimization</name>
+      <description>Ensure fast load times and smooth interactions</description>
+      <rationale>Slow dashboards frustrate users and reduce engagement</rationale>
+      <guidelines>
+        <guideline>Limit initial data loads to essential information</guideline>
+        <guideline>Implement pagination for large datasets</guideline>
+        <guideline>Use async/await for API calls</guideline>
+        <guideline>Consider caching frequently accessed data</guideline>
+        <guideline>Lazy load charts that aren't immediately visible</guideline>
+      </guidelines>
+    </principle>
+  </general_principles>
+
+  <code_conventions>
+    <convention category="chartjs">
+      <rule>Always configure responsive options</rule>
+      <example><![CDATA[
+options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+            text: 'Chart Title'
+        }
+    }
+}
+      ]]></example>
+    </convention>
+
+    <convention category="chartjs">
+      <rule>Use Carbon Design System colors for consistency</rule>
+      <example><![CDATA[
+// Carbon color tokens
+const colors = {
+    blue: '#0f62fe',
+    purple: '#8a3ffc',
+    cyan: '#1192e8',
+    teal: '#009d9a',
+    magenta: '#ee5396',
+    red: '#da1e28',
+    orange: '#ff832b',
+    yellow: '#f1c21b'
+};
+      ]]></example>
+    </convention>
+
+    <convention category="tailwind">
+      <rule>Use consistent spacing scale</rule>
+      <example><![CDATA[
+<!-- Use Tailwind spacing classes consistently -->
+<div class="p-4 md:p-6 lg:p-8">
+    <h1 class="text-2xl md:text-3xl lg:text-4xl mb-4">Title</h1>
+    <div class="space-y-4">
+        <!-- Content -->
+    </div>
+</div>
+      ]]></example>
+    </convention>
+
+    <convention category="html">
+      <rule>Use semantic HTML5 elements</rule>
+      <example><![CDATA[
+<main>
+    <section aria-labelledby="overview-heading">
+        <h2 id="overview-heading">Overview</h2>
+        <!-- Content -->
+    </section>
+    
+    <section aria-labelledby="charts-heading">
+        <h2 id="charts-heading">Data Visualizations</h2>
+        <!-- Charts -->
+    </section>
+</main>
+      ]]></example>
+    </convention>
+  </code_conventions>
+
+  <data_visualization_guidelines>
+    <guideline category="chart-selection">
+      <rule>Choose the right chart type for your data</rule>
+      <chart_types>
+        <type name="line">
+          <use_when>Showing trends over time</use_when>
+          <example>Sales over months, temperature changes, stock prices</example>
+        </type>
+        <type name="bar">
+          <use_when>Comparing discrete categories</use_when>
+          <example>Sales by region, product comparisons, survey results</example>
+        </type>
+        <type name="pie">
+          <use_when>Showing parts of a whole (use sparingly)</use_when>
+          <example>Market share, budget allocation</example>
+          <caution>Limit to 5-7 segments maximum</caution>
+        </type>
+        <type name="scatter">
+          <use_when>Showing correlation between two variables</use_when>
+          <example>Price vs. sales, age vs. income</example>
+        </type>
+        <type name="table">
+          <use_when>Precise values are important</use_when>
+          <example>Detailed records, exact comparisons</example>
+        </type>
+      </chart_types>
+    </guideline>
+
+    <guideline category="color-usage">
+      <rule>Use color purposefully and consistently</rule>
+      <best_practices>
+        <practice>Limit color palette to 5-7 distinct colors</practice>
+        <practice>Use sequential colors for ordered data</practice>
+        <practice>Use diverging colors for data with a meaningful midpoint</practice>
+        <practice>Ensure sufficient contrast between colors</practice>
+        <practice>Test with color blindness simulators</practice>
+      </best_practices>
+    </guideline>
+
+    <guideline category="labels-and-legends">
+      <rule>Make labels clear and informative</rule>
+      <best_practices>
+        <practice>Use descriptive axis labels with units</practice>
+        <practice>Format numbers appropriately (e.g., $1.2M not 1200000)</practice>
+        <practice>Position legends where they don't obscure data</practice>
+        <practice>Use tooltips for additional context</practice>
+      </best_practices>
+    </guideline>
+  </data_visualization_guidelines>
+
+  <common_pitfalls>
+    <pitfall>
+      <description>Overcomplicating visualizations</description>
+      <why_problematic>Complex charts confuse users and obscure insights</why_problematic>
+      <correct_approach>Start simple, add complexity only when necessary</correct_approach>
+    </pitfall>
+
+    <pitfall>
+      <description>Not handling edge cases in data</description>
+      <why_problematic>Missing values, outliers, or empty datasets cause errors</why_problematic>
+      <correct_approach>Always validate data and handle edge cases gracefully</correct_approach>
+    </pitfall>
+
+    <pitfall>
+      <description>Hardcoding values instead of using configuration</description>
+      <why_problematic>Makes code inflexible and hard to maintain</why_problematic>
+      <correct_approach>Use configuration files or environment variables</correct_approach>
+    </pitfall>
+
+    <pitfall>
+      <description>Ignoring mobile users</description>
+      <why_problematic>Charts may be unreadable or interactions may not work on mobile</why_problematic>
+      <correct_approach>Test on mobile devices and use responsive design patterns</correct_approach>
+    </pitfall>
+
+    <pitfall>
+      <description>Not providing context for data</description>
+      <why_problematic>Users can't interpret visualizations without context</why_problematic>
+      <correct_approach>Include titles, descriptions, and data sources</correct_approach>
+    </pitfall>
+  </common_pitfalls>
+
+  <quality_checklist>
+    <category name="before_starting">
+      <item>Understand all page requirements from the user</item>
+      <item>Have access to all necessary datasets</item>
+      <item>Know the target audience and their needs</item>
+      <item>Understand any branding or styling requirements</item>
+    </category>
+
+    <category name="during_development">
+      <item>Perform EDA before building visualizations</item>
+      <item>Test API endpoints as you build them</item>
+      <item>Verify charts render correctly with real data</item>
+      <item>Check responsive design at each breakpoint</item>
+      <item>Validate accessibility with keyboard navigation</item>
+    </category>
+
+    <category name="before_completion">
+      <item>All pages from template are implemented</item>
+      <item>All charts display correct data</item>
+      <item>Responsive design works on mobile, tablet, desktop</item>
+      <item>Color contrast meets WCAG 2.1 AA standards</item>
+      <item>All interactive elements are keyboard accessible</item>
+      <item>Error handling works for edge cases</item>
+      <item>Code is well-documented</item>
+      <item>README includes setup and run instructions</item>
+    </category>
+  </quality_checklist>
+</best_practices>
+
+<!-- Made with Bob -->
