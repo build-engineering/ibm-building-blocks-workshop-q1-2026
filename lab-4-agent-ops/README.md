@@ -9,7 +9,7 @@ Evaluate, analyze, and security-test watsonx Orchestrate agents using the WXO AD
 
 ## 🚀 Getting Started
 
-**Step 1.** Set up your environment: [PREREQS-AgentOps-Trust-Lab.md](PREREQS-AgentOps-Trust-Lab.md)
+**Step 1.** Set up your environment: [PREREQS-AgentOps-Trust-Lab_UPDATED.md](PREREQS-AgentOps-Trust-Lab_UPDATED.md)
 
 
 **Step 2.** Start the lab: [WXO_BUILD_TIME_EVALUATION_LAB.md](WXO_BUILD_TIME_EVALUATION_LAB.md)
@@ -52,7 +52,7 @@ Validate an agent **before deploying it** using LLM-simulated users, automated m
 
 ```
 lab-4-agent-ops/
-├── PREREQS-AgentOps-Trust-Lab.md              # Prerequisites and setup instructions
+├── PREREQS-AgentOps-Trust-Lab_UPDATED.md              # Prerequisites and setup instructions
 ├── WXO_BUILD_TIME_EVALUATION_LAB.md           # Hands-on lab exercises
 └── assets/
     ├── tax-document-assistant-agent/          # The agent under test
