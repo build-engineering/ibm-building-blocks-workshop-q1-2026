@@ -676,7 +676,8 @@ Quick-eval only works with **Python tools**. Other tool types are not supported.
 
 ---
 
-## Exercise 5: Generate Benchmarks from User Stories (25 min) — *Take-Home*
+<details>
+<summary><h2>Exercise 5: Generate Benchmarks from User Stories (25 min) — <em>Take-Home</em></h2></summary>
 
 ### Objective
 Use the `generate` command to auto-create benchmark JSON files from simple user stories.
@@ -779,9 +780,12 @@ The `generate` command works best for **tool-based scenarios**. For RAG/KB stori
 - When is auto-generation sufficient vs when do you need hand-written benchmarks?
 - How would you handle edge cases that the generator gets wrong?
 
+</details>
+
 ---
 
-## Exercise 6: Red Teaming — Security Testing (25 min) — *Take-Home*
+<details>
+<summary><h2>Exercise 6: Red Teaming — Security Testing (25 min) — <em>Take-Home</em></h2></summary>
 
 ### Objective
 Use the red-teaming commands to test your agent's resilience against adversarial attacks.
@@ -932,6 +936,8 @@ Watch the terminal output — you'll see the simulated attacker try to social-en
 - Which attack types do you think are most relevant for your agents?
 - How would you prioritize on-policy vs off-policy testing?
 - What would you change in the agent's instructions if it failed a red-teaming test?
+
+</details>
 
 ---
 
