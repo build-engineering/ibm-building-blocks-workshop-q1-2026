@@ -44,15 +44,15 @@ In this lab, you will learn how to evaluate, analyze, and security-test a watson
 
 | Exercise | Topic | Time | Session |
 |----------|-------|------|---------|
-| 1 | Fundamentals | 15 min | In-Lab |
-| 2 | Evaluate | 25 min | In-Lab |
-| 3 | Analyze | 20 min | In-Lab |
-| 4 | Quick-Eval | 20 min | In-Lab |
-| 5 | Generate Benchmarks | 25 min | Take-Home |
-| 6 | Red-Teaming | 25 min | Take-Home |
-| 7 | Langfuse | 25 min | In-Lab |
-| 8 | Putting It Together | 15 min | In-Lab |
-| Stretch | Bring Your Own Agent | 30 min | Take-Home |
+| 1 | [📖 Fundamentals](#-exercise-1-agent-evaluation-fundamentals-15-min) | 15 min | In-Lab |
+| 2 | [🧪 Evaluate](#-exercise-2-run-your-first-evaluation-25-min) | 25 min | In-Lab |
+| 3 | [🔍 Analyze](#-exercise-3-analyze-results-20-min) | 20 min | In-Lab |
+| 4 | [⚡ Quick-Eval](#-exercise-4-quick-eval--referenceless-validation-20-min) | 20 min | In-Lab |
+| 5 | [🏗️ Generate Benchmarks](#%EF%B8%8F-exercise-5-generate-benchmarks-from-user-stories-25-min--take-home) | 25 min | Take-Home |
+| 6 | [🛡️ Red-Teaming](#%EF%B8%8F-exercise-6-red-teaming--security-testing-25-min--take-home) | 25 min | Take-Home |
+| 7 | [📊 Langfuse](#-exercise-7-langfuse-integration--cost-latency-and-trace-visibility-25-min) | 25 min | In-Lab |
+| 8 | [🎯 Putting It Together](#-exercise-8-putting-it-all-together-15-min) | 15 min | In-Lab |
+| Stretch | [Bring Your Own Agent](#stretch-goal-bring-your-own-agent-30-min--take-home) | 30 min | Take-Home |
 
 ---
 
@@ -156,7 +156,7 @@ lab-4-agent-ops/                               # Everything needed for the lab
 
 ---
 
-## Exercise 1: Agent Evaluation Fundamentals (15 min)
+## 📖 Exercise 1: Agent Evaluation Fundamentals (15 min)
 
 Before diving into the exercises, it's important to understand the evaluation model. These concepts are new — take a few minutes to read through them.
 
@@ -383,7 +383,7 @@ How does a RAG scenario differ in the benchmark structure? What does the `goal_d
 
 ---
 
-## Exercise 2: Run Your First Evaluation (25 min)
+## 🧪 Exercise 2: Run Your First Evaluation (25 min)
 
 ### Objective
 Run the `evaluate` command against the Tax Document Assistant and interpret the results.
@@ -514,7 +514,7 @@ Open `lab_eval_results/<timestamp>/messages/scenario_01_client_lookup_and_status
 
 ---
 
-## Exercise 3: Analyze Results (20 min)
+## 🔍 Exercise 3: Analyze Results (20 min)
 
 ### Objective
 Use the `analyze` command (default and enhanced modes) to diagnose evaluation results.
@@ -593,7 +593,7 @@ Answer these questions:
 
 ---
 
-## Exercise 4: Quick-Eval — Referenceless Validation (20 min)
+## ⚡ Exercise 4: Quick-Eval — Referenceless Validation (20 min)
 
 > **Prerequisite:** This exercise reuses `./lab_eval_subset` created in Exercise 2 (Step 1). If you skipped Exercise 2, go back and run that step first.
 >
@@ -677,7 +677,7 @@ Quick-eval only works with **Python tools**. Other tool types are not supported.
 ---
 
 <details>
-<summary><h2>Exercise 5: Generate Benchmarks from User Stories (25 min) — <em>Take-Home</em></h2></summary>
+<summary><h2>🏗️ Exercise 5: Generate Benchmarks from User Stories (25 min) — <em>Take-Home</em></h2></summary>
 
 ### Objective
 Use the `generate` command to auto-create benchmark JSON files from simple user stories.
@@ -785,7 +785,7 @@ The `generate` command works best for **tool-based scenarios**. For RAG/KB stori
 ---
 
 <details>
-<summary><h2>Exercise 6: Red Teaming — Security Testing (25 min) — <em>Take-Home</em></h2></summary>
+<summary><h2>🛡️ Exercise 6: Red Teaming — Security Testing (25 min) — <em>Take-Home</em></h2></summary>
 
 ### Objective
 Use the red-teaming commands to test your agent's resilience against adversarial attacks.
@@ -941,7 +941,7 @@ Watch the terminal output — you'll see the simulated attacker try to social-en
 
 ---
 
-## Exercise 7: Langfuse Integration — Cost, Latency, and Trace Visibility (25 min)
+## 📊 Exercise 7: Langfuse Integration — Cost, Latency, and Trace Visibility (25 min)
 
 ### Objective
 Enable Langfuse to get deeper insights from your evaluation runs — per-call latency breakdowns, token usage, cost tracking, and a visual trace explorer.
@@ -1101,7 +1101,7 @@ Compare the output from this exercise with Exercise 2:
 
 ---
 
-## Exercise 8: Putting It All Together (15 min)
+## 🎯 Exercise 8: Putting It All Together (15 min)
 
 ### Objective
 Design a complete evaluation strategy for a new agent.
