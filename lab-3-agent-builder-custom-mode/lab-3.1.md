@@ -12,6 +12,9 @@ You'll work through these topics and more during this setup process:
 - Deploy agent to Orchestrate using Bob
 - Connect agent to new **Q&A** screen in your Data Analytics website
 
+And here's what you'll build by the end of this lab.  Your website with have a Q&A capability where the website queries an agent in Orchestrate that uses the Pandas Dataset MCP server to generate HTML replies that contain natural language and chartjs answers to user queries.
+<img src="images/lab-3.1-final-website.png" width="600">
+
 ## 1. Enable watsonx Orchestrate's MCP servers 
 Open Bob's Settings panel, search for "Orchestrate" under the MCP server section.  Install both MCP servers provided by the watsonx Orchestrate team. We recommend keeping both servers at the **Project** level.
 
@@ -336,9 +339,9 @@ After a short time, the agent should reply with a formatted HTML response.  We n
 ### 8.4 Where's the HTML and charts?
 Orchestrate's chat UI doesn't understand how to display the full HTML response.  So you'll likely only see the natural language portion.  To view the full response, click on the copy button (next to the up/down thumbs) then paste the text into a text editor
 
-<img src="images/copy-chat-response-text.png" width="800">
+<img src="images/copy-chat-response-text.png" width="500">
 
-You should see something like this, only part of which is visible in Orchestrate's Chat:
+Now that the full text is visible in your Text Editor, you should see something like this, only part of which was visible in Orchestrate's Chat:
 ```
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div style="padding: 20px; font-family: Arial, sans-serif;">
@@ -362,3 +365,63 @@ You should see something like this, only part of which is visible in Orchestrate
 ```
 
 If you don't see this then let the instructor know.
+
+## 9. Connecting your agent to the Q&A dropdown 
+Now you need to connect the Q&A dropdown's submit button to your Q&A agent then capture the output of the Q&A agent and display it on your Q&A web page.  To achieve this, Bob needs to know about Orchestrate's REST API plus how to handle authentication with Orchestrate's token based security.  Fortunatley, the Agent Builder skill added earlier will provide Bob with those details.
+
+Review this prompt then submit to Bob through the Chat window:
+```
+Update the `acme-analytics` website so that the dropdown submit button on the `Q&A with Data` page passes these two items to the Q&A agent in orchestrate:
+1. user's question
+2. Name of the dataset
+Now extracts HTML from response.result.data.message.content[0].text
+
+### Response Formatting
+1. In the iframe, only display the final result at: htmlResponse["result"]["data"]["message"]["content"][0]["text]
+2. Above the iframe, display the "Step History" in an expandable/closeable <div> that contains htmlResponse["result"]["data"]["message"]["step_history"], which is an array.
+3. Between the step history and the iframe, display the full json htmlResponse. 
+
+### Additional Requirements
+- This is a single-turn Question and Answer not a back-and-forth chat conversation.  
+- The agent should not ask follow-up questions but instead always respond in HTML format, even if the response is an error or recommendation on how to better ask the question.
+- Use Orchestrate's REST API and token based security.
+- The agent will take up-to a minute to respond:
+   - Poll the server until the conversation is complete.
+   - Provide visual feedback that the Agent is think and, when the agent has sent a final response.
+```
+
+### 9.3 Review your updated Q&A page
+If all goes well, Bob will have connected your Q&A page to the Agent in Orchestrate.  You should now be able to select a question then click submit.  The screen should update showing that it's waiting for the agent's response.
+
+<img src="images/waiting-for-agent-response.png" width="500">
+
+If you don't see a screen similar to above when clicking submit, ask a colleage or the instructor for assistance.
+
+### 9.2 Debugging your results
+Handling agent responses can be tricky as noted in the `Response Formatting` section of the promp above.  When debugging HTML, the best solution is to use the **Developer Tools capability** in **Chrome**.  
+
+You can access Developer Tools by going to the `View` menu at top and selecting `Developer > Developer Tools`.  This will open the Developer Tools panel on the right side of your Chrome browser. 
+
+<img src="images/chrome-developer-tools.png" width="600">
+
+At the top of the Developer Tools, click on the Element Inspection tool then move your mouse to hover over the various HTML elements in the browser page.  This will show the related <html> element in the Developer Tools panel which is a quick way to debug what's being rendered in your browser.
+
+<img src="images/element-inspection-tool.png" width="500">
+
+Hover over the section of the the Q&A page showing your agent's response and you'll see the full <html> response from the agent, similar to below.
+
+<img src="images/inspect-agent-response-element.png" width="500">
+
+### 10 Improving the Agent Builder Skill
+You may have encountered limitations of the Agent Builder Skill.  If not now, then you will in the future as the ADK changes.  This is to-be expected and why all Building Block Skills must be a community-driven effort. 
+
+Everyone on the Build Engineering team can help to improve these skills.  If you encounter problems with a Skill in the future, identiy who on the Build Engineering team is supporting each skill and work with them to improve it.
+
+- Agents: [Dheeraj Arremsetty](https://ibm.enterprise.slack.com/team/WDRKP9Z41)
+- Trusted AI: [Shima Rahimi-Moghaddam](https://ibm.enterprise.slack.com/team/U063DSGFECW)
+- Data: [Himangshu Mech](https://ibm.enterprise.slack.com/team/W54H7JSKV)
+- Automation: [Sunil Gajula](https://ibm.enterprise.slack.com/team/WSYFC8E48) and [Yasser ]()
+
+
+### 11 Ready for your next challenge?
+Once you have successfully connected your agent to the Q&A page, consider other features you could add.  Try adding different capabilities and when you're ready for the next team-oriented challenge, proceed to the next lab.
