@@ -10,7 +10,7 @@ You'll work through these topics and more during this setup process:
 - Deploy MCP server to Orchestrate using Bob
 - Build Data Analytics Agent using Agent Builder Skill
 - Deploy agent to Orchestrate using Bob
-- Connect agent to new **Q & A** screen in your Data Analytics website
+- Connect agent to new **Q&A** screen in your Data Analytics website
 
 ## 1. Enable watsonx Orchestrate's MCP servers 
 Open Bob's Settings panel, search for "Orchestrate" under the MCP server section.  Install both MCP servers provided by the watsonx Orchestrate team. We recommend keeping both servers at the **Project** level.
@@ -62,14 +62,20 @@ Bob will open a web browser, and in my case, took 1 minute and 15 page scrolls w
 
 <img src="images/bob-scrolls-to-find-agent-yaml.png" width="400">
 
-## 2.1. 😲 And now uninstall the Orchestrate ADK Docs MCP Server 🔥
-For now then, go to **Settings > MCP** then select the Orchestrate ADK Docs MCP Server and click **uninstall**.  Do not uninstall the Orchestrate ADK MCP Server (one without "Docs" in its name).  
+## 2.1. 😲 And now uninstall BOTH Orchestrate ADK MCP Servers 🔥
+At least you can say that you were told about the Orchestrate Docs MCP Servers. Both servers have been buggy lately so let's stick with the Orchestrate ADK's CLI for today's lab.
 
-The ADK Docs MCP server is provided by [Mintlify](https://www.mintlify.com/) which provides document hosting for the watsonxOrchestrate team. We are working with them to update their functionality plus submitted a [request for the Orchestrate team to provide a more agentic solution](https://github.ibm.com/WatsonOrchestrate/wxo-internal-support/issues/1714).  
+For today's workshop at least, go to **Settings > MCP** then select BOTH ADK MCP Servers and click **uninstall**.  Once you're done **uninstalling** the BOTH ADK Docs MCP Server, proceed to the next section.
 
-Ideally the ADK Docs MCP server returns links to documents in markdown format, which is the most agent friendly approach.  Companies like Cloud Flare are already embedding "web pages as markdown" into the internet with capabilities like [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/).
+<img src="images/uninstall-adk-mcp-servers.png" width="400">
 
-Once you're done **uninstalling** the ADK Docs MCP Server, proceed to the next section.
+## 2.2. Also delete Pandas Dataset MCP Server
+In the next sections, you will deploy the Pandas Dataset MCP Server to watsonX Orchestrate so you will no longer need the locally running version.  
+
+- Close the terminal window that was running Pandas MCP server
+- Go to Bob's **Settings > MCP**, select the Pandas Dataset MCP server tile and click **Delete**.
+
+<img src="images/delete-pandas-mcp-server.png" width="400">
 
 ## 3. IBM Bob Skills
 During the next few sections, we will explore a new **Skills** capability that just launched in Bob's v1.0.1 version on March 24th, 2026.  The concept of Skills was introduced by Anthropic when they launched [Skills for Claude](https://claude.com/blog/skills) last year so great to see this capability coming to IBM Bob too.
@@ -235,7 +241,7 @@ Bob may struggle to validate the website functionality as browsing websites is n
 
 Test to ensure Bob has created unique questions for each dataset by looking at the other dataset pages. Once you have a functional dropdown, proceed to the next section.
 
-### 8 Creating a Q&A agent
+## 8 Creating a Q&A agent
 For the Q&A functionality to work, clicking the **Submit** button should send the question to an Agent (in orchestrate) that can:
 
 1. Query the Pandas Dataset MCP server to obtain information about the dataset
@@ -247,21 +253,112 @@ For the Q&A functionality to work, clicking the **Submit** button should send th
 
 Let's start by having Bob design, build and deploy such an agent to Orchestrate.  Then we will connect our website to that agent.
 
-Enter this text into the Chat window:
+Thoroughly read through the following prompt then enter the text into the Chat window.  
 ```
 A. Create an agent that uses the Pandas MCP toolkit hosted in Orchestrate to answer questions about dataset hosted by the Pandas Dataset MCP server.  The agent should:
-1. Accept input as JSON with two items:
-   - question: in natural language about a dataset
-   - dataset_name: must match name supported by the MCP server
-2. Query the dataset mcp server for information about the dataset
-3. Compare the question to the dataset info then generate code to answer the question
-3. Submit the code to the Pandas server for execution
-4. Review the Pandas response
-5. Return a JSON answer with two items:
-   - answer: in natural language
-   - html: graph/chart in chartjs that visually answers the question
+  1. Accept input a question in natural language about a dataset supported by the Pandas Dataset MCP server.
+  2. Query the dataset mcp server for information about the dataset
+  3. Compare the question to the dataset info then generate code that will obtain an answer the question
+  4. Submit the code to the Pandas server for execution
+  5. Review the Pandas response
+  6. Reply in formatted HTML that includes (1) an answer in natural language followed by (2) a graph/chart written in chart.js or plotly.js that visually represents the answer.  
+  7. Ensure that the returned html includes <script> tags with any required imports and such.  
 
-B. Deploy the agent to Orchestrate.
-C. Do not edit the website code, but use questions from the website's Q&A page to validate the agent's functionality for all three dataset.
-D. Stop after that as we will integrate into the website's Q&A page later
+B. Import the agent to Orchestrate.
+C. Do not test the agent.  Testing the agent must be done via the Orchestrate UI so I will do that manually.
+D. Do not edit the website code, but use questions from the website's Q&A page to validate the agent's functionality for all three dataset.
+E. Stop after that as we will integrate into the website's Q&A page later
+
+Activate any relevant Skills required to accomplish this task.
 ```
+
+After submitting to Bob, pay attention to how it solves problems and works around challenges.  This is a rough outline of the process that you'll see Bob work through.
+
+<img src="images/q&a-agents-workflow.png" width="700">
+
+### 8.1 Reviewing your Q&A agent's YAML
+When Bob is done, an agent file should have been added to your project.  Check for a file in `lab-3-agent-builder-custom-mode/agents`.  Double click to open the agent's .yaml.  The start of the file will look something like this:
+
+```
+spec_version: v1
+kind: native
+name: pandas_dataset_qa_agent
+llm: groq/openai/gpt-oss-120b
+style: react
+description: |
+  Expert data analyst agent that answers natural language questions about datasets 
+  using pandas analysis and generates Chart.js visualizations. Accepts JSON input 
+  with question and dataset_name, returns JSON with natural language answer and 
+  HTML visualization code.
+
+instructions: |
+  You are an expert data analyst specializing in pandas data analysis and visualization.
+  Your role is to answer questions about datasets by generating and executing pandas code,
+  then providing clear answers with visual representations.
+```
+
+Review your own agent .yaml file.  Take note of how Bob converted the prompt above into the description and instructions for the agent.
+
+### 8.2 Was your agent deployed by Bob
+Bob will should deploy the Q&A agent for you.  If not, Bob would have created a deployment script for you.  If your agent wasn't deployed, either ask Bob to run the deployment for you or manually do this yourself.
+
+If you get stuck, ask an instructor for help or tap a colleague for advice.
+
+### 8.3 Testing the Q&A agent
+OK, your agent's deployed so let's test it.  There are two ways to test an agent once imported into Orchestrate:
+1. Via the Orchestrate UI
+2. Via REST APIs or CURL commands
+
+You will test using the Orchestrate UI by navigating via the left-side navigation menu to Build then selecting your agent called "pandas_dataset_qa_agent" or similar.  
+
+<img src="images/q&a-agent-in-orchestrate.png" width="500">
+
+<img src="images/q&a-agent-chat.png" width="800">
+
+In the chat window at the bottom-right of your agent window, enter one or all of the examples below:
+
+```
+What are the most popular product categories by sales volume according to the ecommerce order and supply chain dataset?
+```
+
+```
+Which top 5 neighborhoods with in San Francisco have the most building permits?
+```
+
+```
+What factors contribute most to customer churn according to multi-channel customer behavior?
+```
+
+The Q&A agent will follow the instructions defined in its .yaml file, like getting dataset info then executing code on the MCP server to answer your question. 
+
+After a short time, the agent should reply with a formatted HTML response.  We need the reply in HTML format as this will be easier to render later as you improve your website design.  
+
+### 8.4 Where's the HTML and charts?
+Orchestrate's chat UI doesn't understand how to display the full HTML response.  So you'll likely only see the natural language portion.  To view the full response, click on the copy button (next to the up/down thumbs) then paste the text into a text editor
+
+<img src="images/copy-chat-response-text.png" width="800">
+
+You should see something like this, only part of which is visible in Orchestrate's Chat:
+```
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div style="padding: 20px; font-family: Arial, sans-serif;">
+  <div style="margin-bottom: 30px; padding: 15px; background-color: #f5f5f5; border-radius: 8px;">
+    <h3 style="color: #333; margin-top: 0;">Answer</h3><p style="font-size: 16px; line-height: 1.6; color: #555;">The five neighborhoods in San Francisco with the highest number of building permits are:<ul>
+      <li><strong>Financial District/South Beach</strong> – 21,816 permits</li>
+      <li><strong>Mission</strong> – 14,681 permits</li>
+      <li><strong>Sunset/Parkside</strong> – 10,207 permits</li>
+      <li><strong>West of Twin Peaks</strong> – 8,739 permits</li>
+      <li><strong>Castro/Upper Market</strong> – 8,527 permits</li>
+      </ul>These areas together account for a large share of the city's construction activity during the period covered by the dataset.</p></div>
+  
+  <div style="margin-top: 30px;"><h3 style="color: #333;">Top 5 Neighborhoods by Building Permits</h3>
+  <canvas id="neighborhoodChart" style="max-width: 800px; max-height: 400px;"></canvas></div></div>
+
+<script> const ctx = document.getElementById('neighborhoodChart').getContext('2d'); const data = { labels: ['Financial District/South Beach', 'Mission', 'Sunset/Parkside', 'West of Twin Peaks', 'Castro/Upper Market'],
+    datasets: [{label: 'Number of Permits',data: [21816, 14681, 10207, 8739, 8527],backgroundColor: 'rgba(75, 192, 192, 0.5)',borderColor: 'rgba(75, 192, 192, 1)',borderWidth: 1}]
+  };
+  const config = {type: 'bar',data: data,options: {responsive: true,plugins: {title: {display: true,text: 'Top 5 San Francisco Neighborhoods by Building Permits'},legend: { display: false }},scales: {y: {beginAtZero: true,title: { display: true, text: 'Permit Count' }},x: {title: { display: true, text: 'Neighborhood' }}}}};new Chart(ctx, config);
+</script>
+```
+
+If you don't see this then let the instructor know.

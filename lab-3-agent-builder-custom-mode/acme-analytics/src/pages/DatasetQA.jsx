@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Grid, Column, Select, SelectItem, Button } from '@carbon/react';
+import { Grid, Column, Select, SelectItem, Button, Loading, InlineNotification } from '@carbon/react';
 import { useDataset } from '../context/DatasetContext';
 import { getDatasetById } from '../data/datasetsConfig';
 import './datasetqa.scss';
@@ -32,10 +32,15 @@ const datasetQuestions = {
   ]
 };
 
+const API_BASE_URL = 'http://localhost:3001';
+
 function DatasetQA() {
   const { selectedDataset } = useDataset();
   const dataset = getDatasetById(selectedDataset);
   const [selectedQuestion, setSelectedQuestion] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [htmlResponse, setHtmlResponse] = useState(null);
 
   if (!dataset) {
     return <div>Loading...</div>;
@@ -43,9 +48,45 @@ function DatasetQA() {
 
   const questions = datasetQuestions[selectedDataset] || [];
 
-  const handleSubmit = () => {
-    // For now, do nothing when submit is clicked
-    console.log('Submit clicked with question:', selectedQuestion);
+  const handleSubmit = async () => {
+    if (!selectedQuestion) return;
+
+    setLoading(true);
+    setError(null);
+    setHtmlResponse(null);
+
+    try {
+      console.log('Sending question to backend:', { question: selectedQuestion, dataset: selectedDataset });
+
+      const response = await fetch(`${API_BASE_URL}/api/ask`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          question: selectedQuestion,
+          dataset: selectedDataset,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to get response from agent');
+      }
+
+      if (data.success && data.html) {
+        setHtmlResponse(data.html);
+      } else {
+        throw new Error('Invalid response format from server');
+      }
+
+    } catch (err) {
+      console.error('Error calling agent:', err);
+      setError(err.message || 'Failed to get answer. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,19 +95,23 @@ function DatasetQA() {
         <Column sm={4} md={8} lg={16}>
           <div className="datasetqa-header">
             <h1 className="datasetqa-heading">Ask questions of your data</h1>
+            <p className="datasetqa-subheading">
+              Select a question about the {dataset.name} dataset and get AI-powered insights with visualizations
+            </p>
           </div>
         </Column>
       </Grid>
 
       <Grid className="datasetqa-content">
-        <Column sm={4} md={8} lg={10} xlg={8}>
+        <Column sm={4} md={8} lg={16}>
           <div className="datasetqa-form">
             <Select
               id="question-select"
-              labelText=""
+              labelText="Select a question"
               placeholder="Select a question"
               value={selectedQuestion}
               onChange={(e) => setSelectedQuestion(e.target.value)}
+              disabled={loading}
             >
               <SelectItem value="" text="Select a question" />
               {questions.map((question, index) => (
@@ -81,11 +126,44 @@ function DatasetQA() {
             <Button 
               className="datasetqa-submit"
               onClick={handleSubmit}
-              disabled={!selectedQuestion}
+              disabled={!selectedQuestion || loading}
             >
-              submit
+              {loading ? 'Analyzing...' : 'Submit'}
             </Button>
           </div>
+
+          {loading && (
+            <div className="datasetqa-loading">
+              <Loading description="Analyzing data and generating insights..." withOverlay={false} />
+              <p className="loading-message">
+                The AI agent is analyzing your data. This may take 30-60 seconds...
+              </p>
+            </div>
+          )}
+
+          {error && (
+            <InlineNotification
+              kind="error"
+              title="Error"
+              subtitle={error}
+              onCloseButtonClick={() => setError(null)}
+              className="datasetqa-error"
+            />
+          )}
+
+          {htmlResponse && !loading && (
+            <div className="datasetqa-results">
+              <h2 className="results-title">Results</h2>
+              <div className="results-container">
+                <iframe
+                  srcDoc={htmlResponse}
+                  title="Agent Response"
+                  className="results-iframe"
+                  sandbox="allow-scripts allow-same-origin"
+                />
+              </div>
+            </div>
+          )}
         </Column>
       </Grid>
     </div>
