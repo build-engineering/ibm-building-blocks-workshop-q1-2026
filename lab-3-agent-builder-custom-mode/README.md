@@ -6,16 +6,15 @@ This lab has two sub-labs.  It's recommended to complete each in order, but if y
 
 ### Lab 3.1 : Add Q&A with Data to your Data Analytics Website
 You'll work through these topics and more during this setup process:
-- Orchestrate ADK MCP servers
+- watsonx Orchestrate ADK MCP servers
 - IBM Bob Skills
-- Agent Builder Skill
-- Deploy MCP server to Orchestrate using Bob
-- Build Data Analytics Agent using Agent Builder Skill
+- Building Blocks Agent Builder Skill
+- Build agents using Bob then deploy to Orchestrate
+- Add agentic Q&A using Orchestrate's REST APIs
 
 🤖 Get started now with [lab 3.1](lab-3.1.md). 
 
-### Lab 3.2 Add Q&Chat with Data
-
-⚠️  Details coming Soon ⚠️ 
+### Lab 3.2 Agentic multi-turn exploratory datset analysis
+Bring together everything you've learned and race against the other teams to be first to build a REST-based chat UI where agents interactively answer questions about your data then reply with charts, graphs and more.
 
 🤖 Get started now with [lab 3.2](lab-3.2.md). 

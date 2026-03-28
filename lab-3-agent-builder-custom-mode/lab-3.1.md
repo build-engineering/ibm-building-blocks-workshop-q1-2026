@@ -190,11 +190,7 @@ Click on **Launch watsonX Orchestrate** to launch it in your browser. In a few m
 Once you're an expert at using the AKD, you could use the `orchestrate` CLI to manually deploy an MCP server.  However let's ask Bob to deploy for us.
 
 ### 6.1 Ask Bob to deploy the MCP server
-Select the Agent Builder mode from Bob's chat window.
-
-<img src="images/select-agent-builder-mode.png" width="400">
-
-The Agent Builder mode provides Bob with extensive knowledge on building and deploying agents and MCP server tools into watsonx Orchestrate.  Combined with the watsonX Orchestrate ADK MCP servers, Bob is now ready to automate most of your agentic engineering tasks.  
+The Agent Builder Skill provides Bob with extensive knowledge on building and deploying agents and MCP server tools into watsonx Orchestrate.  Combined with the watsonX Orchestrate ADK MCP servers, Bob is now ready to automate most of your agentic engineering tasks.  
 ```
 Deploy the MCP server in the "lab-3-agent-builder-custom-mode/pandas-mcp-server" folder to watsonx Orchestrate.  
 - Orchestrate should use **server.py** to start the server. 
@@ -203,9 +199,13 @@ Deploy the MCP server in the "lab-3-agent-builder-custom-mode/pandas-mcp-server"
 Activate any relevant Skills required to accomplish this task.
 ```
 
+One of Bob's first actions should be to activate the Agent Builder Skill as shown below.  If Bob starts doing work without this happening, ask your instructor for help.
+
+<img src="images/agent-builder-skill-activation.png" width="500">
+
 Answer any questions Bob asks, and once Bob is done, you'll likely be provided a deployment script.  You can execute this manually or ask Bob to deploy the MCP server for you.
 
-### 6.2 Ask Bob to deploy the MCP server
+### 6.2 Validate deployment of the MCP server
 Once deployed, go to your browser tab with watsonX Orchestrate.  Navigate to **Build** in the left-side navigation dropdown then select **All Tools**.  You should see your deployed MCP tools as below.
 
 <img src="images/deployed-pandas-mcp-server.png" width="700">
@@ -300,10 +300,10 @@ instructions: |
   then providing clear answers with visual representations.
 ```
 
-Review your own agent .yaml file.  Take note of how Bob converted the prompt above into the description and instructions for the agent.
+Review your agent .yaml file.  Take note of how Bob converted the prompt above into the description and instructions for the agent.
 
-### 8.2 Was your agent deployed by Bob
-Bob will should deploy the Q&A agent for you.  If not, Bob would have created a deployment script for you.  If your agent wasn't deployed, either ask Bob to run the deployment for you or manually do this yourself.
+### 8.2 Was your agent deployed by Bob?
+Bob should deploy the Q&A agent for you.  If not, Bob would have created a deployment script for you.  If your agent wasn't deployed, either ask Bob to run the deployment for you or look for the deployment script then manually execute it yourself.
 
 If you get stuck, ask an instructor for help or tap a colleague for advice.
 
@@ -332,7 +332,7 @@ Which top 5 neighborhoods with in San Francisco have the most building permits?
 What factors contribute most to customer churn according to multi-channel customer behavior?
 ```
 
-The Q&A agent will follow the instructions defined in its .yaml file, like getting dataset info then executing code on the MCP server to answer your question. 
+Notice how the qustions don't explicitely mention the dataset.  The Q&A agent will follow the instructions defined in its .yaml file, like getting dataset info then executing code on the MCP server to answer your question. 
 
 After a short time, the agent should reply with a formatted HTML response.  We need the reply in HTML format as this will be easier to render later as you improve your website design.  
 
@@ -379,7 +379,7 @@ Now extracts HTML from response.result.data.message.content[0].text
 ### Response Formatting
 1. In the iframe, only display the final result at: htmlResponse["result"]["data"]["message"]["content"][0]["text]
 2. Above the iframe, display the "Step History" in an expandable/closeable <div> that contains htmlResponse["result"]["data"]["message"]["step_history"], which is an array.
-3. Between the step history and the iframe, display the full json htmlResponse. 
+3. Between the step history and the iframe, display the full json htmlResponse in an expandable/closeable <div>. 
 
 ### Additional Requirements
 - This is a single-turn Question and Answer not a back-and-forth chat conversation.  
@@ -389,6 +389,8 @@ Now extracts HTML from response.result.data.message.content[0].text
    - Poll the server until the conversation is complete.
    - Provide visual feedback that the Agent is think and, when the agent has sent a final response.
 ```
+
+You'll notice the prompt has some highly technical details such as the json location for the agent's final response.  We've also added details like tool calling and the full JSON response from the agent.  These are useful during development for debugging purposes. 
 
 ### 9.3 Review your updated Q&A page
 If all goes well, Bob will have connected your Q&A page to the Agent in Orchestrate.  You should now be able to select a question then click submit.  The screen should update showing that it's waiting for the agent's response.
@@ -412,16 +414,42 @@ Hover over the section of the the Q&A page showing your agent's response and you
 
 <img src="images/inspect-agent-response-element.png" width="500">
 
-### 10 Improving the Agent Builder Skill
-You may have encountered limitations of the Agent Builder Skill.  If not now, then you will in the future as the ADK changes.  This is to-be expected and why all Building Block Skills must be a community-driven effort. 
+### 9.3 OK, now try to break the agent!
+Always test your agentic solutions with the intent to break it.  If you don't know in which ways your agents system will fail, then you shouldn't be releasing it into production.  You should always devise increasingly hard challenges until it only fails in ways that you don't expect your end users to experience.  
 
-Everyone on the Build Engineering team can help to improve these skills.  If you encounter problems with a Skill in the future, identiy who on the Build Engineering team is supporting each skill and work with them to improve it.
+What are the limits of this agent?  Within reason, ask different question to determine where the agent fails to understand and answer the question.  
+
+Once you find a bug or missing feature, ask Bob to fix it. Keep iterating until Bob passes most of your tests.
+
+### 10 Improving Bob through better Skills
+What was the reason for Bob not functioning as expected"
+- Should the prompt have been rewritten?
+- What knowledge was Bob missing?
+- Would it help if Bob had more information in the Agent Builder skill?
+
+### 10.1 Ask Bob to fix itself
+Once you have improved on the website and found limitations of the Agent Builder Skill, there's an easy way to improve the Skill.
+
+Type this into the Chat window and see what Bob recommends:
+```
+Don't make any edits to code unless I tell you to do so.  
+
+Review the problems that you've encounted when executing the past set of Tasks.  Consider where you made mistakes and how you solved them.  
+
+Now look at the Agent Builder Skill files located in `./bob/skills/agent-builder/*`.  What improvements could you make to these files so that similar mistakes could be avoided in the future?  Only consider the minimal edits required to prevent the same mistakes.
+```
+
+Here's where checkpoints come in handy.  You can ask Bob to edit the Agent Builder Skill's file then rollback to a checkpoint prior to where Bob made mistakes.  Ask Bob to reload the Agent Builder Skill and have Bob try again from that checkpoint.  If your Skill updates worked, then Bob shoudl no longer make the same mistake.
+
+ Once you've identified defects in the Agent Builder Skill and found a solution that improves it, submit a pull request to share your updates with everyone else.
+
+### 10.2 It takes a village to build an Agent Builder Skill
+Each of the Building Block Skills is a community-driven effort. We need everyone on the Build Engineering team to help improve these skills.  If you encounter problems with a Skill in the future, identiy who on the Build Engineering team is supporting each skill and work with them to improve it.
 
 - Agents: [Dheeraj Arremsetty](https://ibm.enterprise.slack.com/team/WDRKP9Z41)
 - Trusted AI: [Shima Rahimi-Moghaddam](https://ibm.enterprise.slack.com/team/U063DSGFECW)
 - Data: [Himangshu Mech](https://ibm.enterprise.slack.com/team/W54H7JSKV)
-- Automation: [Sunil Gajula](https://ibm.enterprise.slack.com/team/WSYFC8E48) and [Yasser ]()
-
-
-### 11 Ready for your next challenge?
+- Automation: [Sunil Gajula](https://ibm.enterprise.slack.com/team/WSYFC8E48) and [Yasser Sherriff](https://ibm.enterprise.slack.com/team/W52CC6YJJ)
+  
+## 11 Ready for your next challenge?
 Once you have successfully connected your agent to the Q&A page, consider other features you could add.  Try adding different capabilities and when you're ready for the next team-oriented challenge, proceed to the next lab.
