@@ -366,7 +366,7 @@ Now that the full text is visible in your Text Editor, you should see something 
 
 If you don't see this then let the instructor know.
 
-## 9. Connecting your agent to the Q&A dropdown 
+## 9 Connecting your agent to the Q&A dropdown 
 Now you need to connect the Q&A dropdown's submit button to your Q&A agent then capture the output of the Q&A agent and display it on your Q&A web page.  To achieve this, Bob needs to know about Orchestrate's REST API plus how to handle authentication with Orchestrate's token based security.  Fortunatley, the Agent Builder skill added earlier will provide Bob with those details.
 
 Review this prompt then submit to Bob through the Chat window:
@@ -392,7 +392,7 @@ Now extracts HTML from response.result.data.message.content[0].text
 
 You'll notice the prompt has some highly technical details such as the json location for the agent's final response.  We've also added details like tool calling and the full JSON response from the agent.  These are useful during development for debugging purposes. 
 
-### 9.3 Review your updated Q&A page
+### 9.1 Review your updated Q&A page
 If all goes well, Bob will have connected your Q&A page to the Agent in Orchestrate.  You should now be able to select a question then click submit.  The screen should update showing that it's waiting for the agent's response.
 
 <img src="images/waiting-for-agent-response.png" width="500">
@@ -420,6 +420,13 @@ Always test your agentic solutions with the intent to break it.  If you don't kn
 What are the limits of this agent?  Within reason, ask different question to determine where the agent fails to understand and answer the question.  
 
 Once you find a bug or missing feature, ask Bob to fix it. Keep iterating until Bob passes most of your tests.
+
+### 9.4 More improvements?
+Once you have successfully connected your agent to the Q&A page, consider other features you could add.  Try adding different capabilities like these:
+
+- Instead of showing the tool calls as JSON, ask Bob to create an intuitive UI showing each tool call individually.  More like Orchestrate does in it's UI.
+- Likewise for the full JSON response.  Are there other useful elements to extract and show to the user?
+
 
 ### 10 Improving Bob through better Skills
 What was the reason for Bob not functioning as expected"
@@ -450,6 +457,6 @@ Each of the Building Block Skills is a community-driven effort. We need everyone
 - Trusted AI: [Shima Rahimi-Moghaddam](https://ibm.enterprise.slack.com/team/U063DSGFECW)
 - Data: [Himangshu Mech](https://ibm.enterprise.slack.com/team/W54H7JSKV)
 - Automation: [Sunil Gajula](https://ibm.enterprise.slack.com/team/WSYFC8E48) and [Yasser Sherriff](https://ibm.enterprise.slack.com/team/W52CC6YJJ)
-  
+
 ## 11 Ready for your next challenge?
-Once you have successfully connected your agent to the Q&A page, consider other features you could add.  Try adding different capabilities and when you're ready for the next team-oriented challenge, proceed to the next lab.
+When you're ready for the next team-oriented challenge, proceed to the next lab.

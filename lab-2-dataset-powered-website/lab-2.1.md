@@ -111,10 +111,13 @@ Let's follow best practices and test the MCP server logic prior to deployment in
 
 #### 6.1 Launch the MCP server locally:
 ```bash
+# During the pre-requisite setup of your laptop environment, you created
+# a virtual python environment = wxo-eval-lab.  You will now activate it here.
+# Replace {path-to-wxo-eval-lab-venv} with the path to your venv.
+source {path-to-wxo-eval-lab-venv}/bin/activate
+# For windows: {path-to-wxo-eval-lab-venv}\Scripts\activate.bat
+
 cd pandas-mcp-server
-python3 -m venv venv
-source venv/bin/activate
-# For windows: venv\Scripts\activate.bat
 pip install -r requirements.txt
 python3 server-https.py
 ```
