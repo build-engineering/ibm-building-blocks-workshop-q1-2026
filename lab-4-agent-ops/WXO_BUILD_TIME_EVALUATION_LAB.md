@@ -44,28 +44,62 @@ In this lab, you will learn how to evaluate, analyze, and security-test a watson
 
 | Exercise | Topic | Time | Session |
 |----------|-------|------|---------|
-| 1 | Fundamentals | 15 min | In-Lab |
-| 2 | Evaluate | 25 min | In-Lab |
-| 3 | Analyze | 20 min | In-Lab |
-| 4 | Quick-Eval | 20 min | In-Lab |
-| 5 | Generate Benchmarks | 25 min | Take-Home |
-| 6 | Red-Teaming | 25 min | Take-Home |
-| 7 | Langfuse | 25 min | In-Lab |
-| 8 | Putting It Together | 15 min | In-Lab |
-| Stretch | Bring Your Own Agent | 30 min | Take-Home |
+| 1 | [📖 Fundamentals](#-exercise-1-agent-evaluation-fundamentals-15-min) | 15 min | In-Lab |
+| 2 | [🧪 Evaluate](#-exercise-2-run-your-first-evaluation-25-min) | 25 min | In-Lab |
+| 3 | [🔍 Analyze](#-exercise-3-analyze-results-20-min) | 20 min | In-Lab |
+| 4 | [⚡ Quick-Eval](#-exercise-4-quick-eval--referenceless-validation-20-min) | 20 min | In-Lab |
+| 5 | [🏗️ Generate Benchmarks](#%EF%B8%8F-exercise-5-generate-benchmarks-from-user-stories-25-min--take-home) | 25 min | Take-Home |
+| 6 | [🛡️ Red-Teaming](#%EF%B8%8F-exercise-6-red-teaming--security-testing-25-min--take-home) | 25 min | Take-Home |
+| 7 | [📊 Langfuse](#-exercise-7-langfuse-integration--cost-latency-and-trace-visibility-25-min) | 25 min | In-Lab |
+| 8 | [🎯 Putting It Together](#-exercise-8-putting-it-all-together-15-min) | 15 min | In-Lab |
+| Stretch | [Bring Your Own Agent](#stretch-goal-bring-your-own-agent-30-min--take-home) | 30 min | Take-Home |
 
 ---
 
 ## Prerequisites
 
-Before starting the exercises, complete **all steps** in [PREREQS-AgentOps-Trust-Lab.md](PREREQS-AgentOps-Trust-Lab.md). This covers Python environment setup, ADK installation, lab asset setup, Developer Edition server, Langfuse configuration. Next you need to import the pre-built agent.
+Before starting the exercises, complete **all steps** in [PREREQS-AgentOps-Trust-Lab_UPDATED.md](PREREQS-AgentOps-Trust-Lab_UPDATED.md). This covers Python environment setup, ADK installation, lab asset setup, Developer Edition server, Langfuse configuration.
 
+---
 
-### Import the Lab Agent
+## Getting Started
 
-The lab agent must be imported to Developer Edition before any evaluation command will work. From inside the `lab-4-agent-ops/` directory, run these commands **in order** (tools → knowledge base → agent config):
+Before importing the lab agent, you must activate your virtual environment and start the Developer Edition server.
+
+### Activate Your Virtual Environment
 
 ```bash
+source <path-to-venv>/bin/activate
+```
+
+> Replace `<path-to-venv>` with the path to your virtual environment. If you followed the prerequisites, this is likely `wxo-eval-lab`.
+
+### Start the Developer Edition Server
+
+```bash
+orchestrate server start -e <path-to-your-.env-file> -l
+```
+
+> The `-e` flag points to your `.env` file containing `WO_INSTANCE` and `WO_API_KEY`. The `-l` flag starts the server locally. Wait until you see **"Orchestrate services initialized successfully"** before proceeding.
+
+### Activate the Local Environment
+
+```bash
+orchestrate env activate local
+```
+
+> This tells the CLI to target your local Developer Edition server. If you skip this step, you may get a token error pointing to a previously configured remote environment.
+
+---
+
+## Import the Lab Agent
+
+The lab agent must be imported to Developer Edition before any evaluation command will work. Navigate to the `lab-4-agent-ops/` directory, then run these commands **in order** (tools → knowledge base → agent config):
+
+```bash
+# Navigate to the lab directory
+cd <path-to-workshop>/lab-4-agent-ops
+
 # Import tools (one file at a time — the -k python flag is required)
 orchestrate tools import -k python -f assets/tax-document-assistant-agent/tools/client_tools.py
 orchestrate tools import -k python -f assets/tax-document-assistant-agent/tools/communication_tools.py
@@ -89,9 +123,10 @@ orchestrate agents list
 > **Re-importing?** If you get "already exists" errors, remove the existing resource first (e.g., `orchestrate tools remove -n get_client_data`) and then re-run the import command.
 
 > **Before each session:** If you closed your terminal or started a new one, make sure to:
-> 1. Re-activate your virtual environment: `source wxo-eval-lab/bin/activate`
-> 2. Start the Developer Edition server: `orchestrate server start -l`
-> 3. Navigate to the lab directory: `cd lab-4-agent-ops`
+> 1. Re-activate your virtual environment: `source <path-to-venv>/bin/activate`
+> 2. Start the Developer Edition server: `orchestrate server start -e <path-to-your-.env-file> -l`
+> 3. Point the CLI to the local server: `orchestrate env activate local`
+> 4. Navigate to the lab directory: `cd <path-to-workshop>/lab-4-agent-ops`
 
 ---
 
@@ -101,7 +136,7 @@ Before you begin, familiarize yourself with the folder contents:
 
 ```
 lab-4-agent-ops/                               # Everything needed for the lab
-├── PREREQS-AgentOps-Trust-Lab.md              # Prerequisites and setup instructions
+├── PREREQS-AgentOps-Trust-Lab_UPDATED.md              # Prerequisites and setup instructions
 ├── WXO_BUILD_TIME_EVALUATION_LAB.md           # This lab document
 └── assets/
     ├── tax-document-assistant-agent/          # The agent under test
@@ -121,7 +156,7 @@ lab-4-agent-ops/                               # Everything needed for the lab
 
 ---
 
-## Exercise 1: Agent Evaluation Fundamentals (15 min)
+## 📖 Exercise 1: Agent Evaluation Fundamentals (15 min)
 
 Before diving into the exercises, it's important to understand the evaluation model. These concepts are new — take a few minutes to read through them.
 
@@ -348,7 +383,7 @@ How does a RAG scenario differ in the benchmark structure? What does the `goal_d
 
 ---
 
-## Exercise 2: Run Your First Evaluation (25 min)
+## 🧪 Exercise 2: Run Your First Evaluation (25 min)
 
 ### Objective
 Run the `evaluate` command against the Tax Document Assistant and interpret the results.
@@ -399,11 +434,7 @@ ls lab_eval_results/
 # You'll see a timestamped subdirectory, e.g., 2026-03-09_10-00-00/
 ```
 
-Open `summary_metrics.csv` — this is the main results file:
-
-```bash
-cat lab_eval_results/*/summary_metrics.csv
-```
+Open `lab_eval_results/<timestamp>/summary_metrics.csv` in your editor or a spreadsheet application — this is the main results file.
 
 **Key metrics to look for:**
 
@@ -443,9 +474,7 @@ cat lab_eval_results/*/summary_metrics.csv
 
 Since scenario_07 is a RAG scenario (the user asks about tax document requirements from the knowledge base), the evaluator produces additional **RAG metrics**. These measure how well the agent retrieves and uses information from its knowledge base.
 
-```bash
-cat lab_eval_results/*/knowledge_base_summary_metrics.json | python3 -m json.tool
-```
+Open `knowledge_base_summary_metrics.json` from the timestamped subdirectory in your editor.
 
 **RAG metrics explained:**
 
@@ -456,13 +485,9 @@ cat lab_eval_results/*/knowledge_base_summary_metrics.json | python3 -m json.too
 | Response Confidence | LLM's confidence in its generated response | > 0.5 | The retrieved context didn't give the LLM enough information to be confident |
 | Retrieval Confidence | How relevant are the retrieved document chunks to the query? | > 0.5 | The KB's vector search returned **poor matches** — may need better chunking or content |
 
-For more detailed per-retrieval metrics, examine:
+> **Note:** A value of `-1.0` for Response Confidence or Retrieval Confidence means the metric is **not available**. This is expected in Developer Edition, where the underlying LLM/retrieval system does not always expose confidence scores.
 
-```bash
-cat lab_eval_results/*/knowledge_base_metrics/knowledge_base_detailed_metrics.json | python3 -m json.tool
-```
-
-This shows the metrics broken down by individual KB query, which is useful when a scenario makes multiple KB calls.
+For more detailed per-retrieval metrics, open `lab_eval_results/<timestamp>/knowledge_base_metrics/knowledge_base_detailed_metrics.json` in your editor. This shows the metrics broken down by individual KB query, which is useful when a scenario makes multiple KB calls.
 
 **Common pattern:** High Faithfulness (1.0) but low Retrieval Confidence (0.4–0.5) means the agent is correctly sticking to what the documents say, but the documents themselves weren't highly relevant to the query. This is a **KB content/chunking issue**, not an agent issue.
 
@@ -479,11 +504,7 @@ You can have high Faithfulness with low Retrieval Confidence — the documents w
 
 ### Step 4: Examine Conversation Traces
 
-```bash
-cat lab_eval_results/*/messages/scenario_01*.messages.json | python3 -m json.tool | head -80
-```
-
-This shows the full conversation between the simulated user and the agent, including every tool call and response.
+Open `lab_eval_results/<timestamp>/messages/scenario_01_client_lookup_and_status.messages.json` in your editor. This shows the full conversation between the simulated user and the agent, including every tool call and response.
 
 ### Discussion
 
@@ -493,7 +514,7 @@ This shows the full conversation between the simulated user and the agent, inclu
 
 ---
 
-## Exercise 3: Analyze Results (20 min)
+## 🔍 Exercise 3: Analyze Results (20 min)
 
 ### Objective
 Use the `analyze` command (default and enhanced modes) to diagnose evaluation results.
@@ -511,10 +532,7 @@ Running `evaluate` tells you *what* happened (pass/fail, metrics). The `analyze`
 Point `analyze` at the results from Exercise 2:
 
 ```bash
-# Find the most recent timestamped results directory
-RESULTS_DIR=$(ls -dt lab_eval_results/*/ | head -1)
-
-orchestrate evaluations analyze -d "$RESULTS_DIR"
+orchestrate evaluations analyze -d lab_eval_results/<timestamp>
 ```
 
 The output is a rich TUI (Text User Interface) showing:
@@ -543,18 +561,22 @@ If a scenario failed, the analysis will pinpoint which tool call went wrong and 
 
 > **Understanding "Problematic" status:** You may see scenarios marked as **"Status: Problematic"** even when Journey Success is True. This does NOT mean the scenario failed. "Problematic" means the agent made additional tool calls beyond what the benchmark expected (e.g., the simulated user continued the conversation and triggered extra tool calls). Check **Journey Success** for the actual pass/fail result. A "Problematic" scenario with Journey Success: True means the agent completed all goals but also did extra work — this is typically acceptable behavior.
 
+> Press `q` to exit the TUI when you're done reviewing.
+
 ### Step 3: Run Enhanced Analysis
 
-Enhanced mode adds tool docstring quality inspection. When a tool fails, it checks whether a poor docstring might be the cause:
+Enhanced mode adds tool docstring quality inspection. If the agent is calling the wrong tool or passing wrong arguments, the root cause might be a poorly written docstring rather than a bug in the agent logic — enhanced mode helps you diagnose that. When a tool fails, it checks whether a poor docstring might be the cause:
 
 ```bash
 orchestrate evaluations analyze \
-  -d "$RESULTS_DIR" \
+  -d lab_eval_results/<timestamp> \
   --tools-path ./assets/tax-document-assistant-agent/tools/ \
   --mode enhanced
 ```
 
 Enhanced mode will show **docstring quality ratings** (OK / Warning) for any tools involved in failures.
+
+> Press `q` to exit the TUI when you're done reviewing.
 
 ### Step 4: Compare the Two Modes
 
@@ -571,9 +593,11 @@ Answer these questions:
 
 ---
 
-## Exercise 4: Quick-Eval — Referenceless Validation (20 min)
+## ⚡ Exercise 4: Quick-Eval — Referenceless Validation (20 min)
 
 > **Prerequisite:** This exercise reuses `./lab_eval_subset` created in Exercise 2 (Step 1). If you skipped Exercise 2, go back and run that step first.
+>
+> **Note:** In a real development workflow, you would run `quick-eval` before `evaluate` — but we covered `evaluate` first so you'd understand the full evaluation model.
 
 ### Objective
 Run `quick-eval` to validate tool schemas without scoring against ground truth.
@@ -607,17 +631,11 @@ orchestrate evaluations quick-eval \
 
 ### Step 2: Examine tool_spec.json
 
-```bash
-cat lab_quick_eval_results/quick-eval/tool_spec.json | python3 -m json.tool
-```
-
-This file shows the tool schemas that quick-eval extracted from your Python tool files. It's what the validator uses to check for mismatches.
+Open `lab_quick_eval_results/quick-eval/tool_spec.json` in your editor. This file shows the tool schemas that quick-eval extracted from your Python tool files. It's what the validator uses to check for mismatches.
 
 ### Step 3: Examine Per-Scenario Results
 
-```bash
-cat lab_quick_eval_results/quick-eval/messages/scenario_01*.metrics.json | python3 -m json.tool
-```
+Open `lab_quick_eval_results/quick-eval/messages/scenario_01_client_lookup_and_status.metrics.json` in your editor.
 
 Look for:
 
@@ -658,7 +676,8 @@ Quick-eval only works with **Python tools**. Other tool types are not supported.
 
 ---
 
-## Exercise 5: Generate Benchmarks from User Stories (25 min) — *Take-Home*
+<details>
+<summary><h2>🏗️ Exercise 5: Generate Benchmarks from User Stories (25 min) — <em>Take-Home</em></h2></summary>
 
 ### Objective
 Use the `generate` command to auto-create benchmark JSON files from simple user stories.
@@ -712,9 +731,7 @@ You should see files like `synthetic_test_case_1.json`, `synthetic_test_case_2.j
 
 Open one and compare it to the hand-written scenario_01:
 
-```bash
-cat lab_generated_benchmarks/tax_document_assistant_test_cases/synthetic_test_case_1.json | python3 -m json.tool
-```
+Open `lab_generated_benchmarks/tax_document_assistant_test_cases/synthetic_test_case_1.json` in your editor.
 
 Compare:
 1. Does the generated benchmark have the right tool calls?
@@ -750,9 +767,7 @@ orchestrate evaluations generate \
 
 ### Step 5: Inspect the snapshot_llm.json
 
-```bash
-cat lab_generated_benchmarks/tax_document_assistant_snapshot_llm.json | python3 -m json.tool | head -40
-```
+Open `lab_generated_benchmarks/tax_document_assistant_snapshot_llm.json` in your editor.
 
 This file shows the LLM's internal reasoning about which tools to call and in what order. It's useful for understanding why the generator made certain choices.
 
@@ -765,9 +780,12 @@ The `generate` command works best for **tool-based scenarios**. For RAG/KB stori
 - When is auto-generation sufficient vs when do you need hand-written benchmarks?
 - How would you handle edge cases that the generator gets wrong?
 
+</details>
+
 ---
 
-## Exercise 6: Red Teaming — Security Testing (25 min) — *Take-Home*
+<details>
+<summary><h2>🛡️ Exercise 6: Red Teaming — Security Testing (25 min) — <em>Take-Home</em></h2></summary>
 
 ### Objective
 Use the red-teaming commands to test your agent's resilience against adversarial attacks.
@@ -861,9 +879,7 @@ ls lab_red_teaming/
 
 Open one attack file:
 
-```bash
-cat lab_red_teaming/*instruction_override*.json | python3 -m json.tool | head -50
-```
+Open any of the generated attack files (e.g., one containing `instruction_override` in the name) from the `lab_red_teaming/` directory in your editor.
 
 Notice how the framework transforms a normal benchmark into an adversarial one:
 
@@ -921,9 +937,11 @@ Watch the terminal output — you'll see the simulated attacker try to social-en
 - How would you prioritize on-policy vs off-policy testing?
 - What would you change in the agent's instructions if it failed a red-teaming test?
 
+</details>
+
 ---
 
-## Exercise 7: Langfuse Integration — Cost, Latency, and Trace Visibility (25 min)
+## 📊 Exercise 7: Langfuse Integration — Cost, Latency, and Trace Visibility (25 min)
 
 ### Objective
 Enable Langfuse to get deeper insights from your evaluation runs — per-call latency breakdowns, token usage, cost tracking, and a visual trace explorer.
@@ -956,8 +974,10 @@ The `evaluate` command produces aggregate metrics (journey success, tool precisi
 
 Langfuse is built into Developer Edition. The `-l` flag starts 3 additional containers (langfuse-web, langfuse-worker, langfuse-clickhouse) that share the existing server infrastructure.
 
+> **Already running?** If your server is already running from the Getting Started steps, skip the start command below — Langfuse is already included. Just verify it's running in the next step.
+
 ```bash
-orchestrate server start -l
+orchestrate server start -e <path-to-your-.env-file> -l
 ```
 
 Wait for the server to start, then verify Langfuse is running:
@@ -1026,7 +1046,7 @@ orchestrate evaluations evaluate \
 
 Open **http://localhost:3010** in your browser.
 
-**Login:** `orchestrate@ibm.com` / `orchestrate` (or your master password if you set one during first start)
+**Login:** `orchestrate@ibm.com` / the password shown in your terminal output when the server started (look for the line starting with `password:`, e.g., `MyDevEditionPassXXXX!`)
 
 You should see:
 
@@ -1081,7 +1101,7 @@ Compare the output from this exercise with Exercise 2:
 
 ---
 
-## Exercise 8: Putting It All Together (15 min)
+## 🎯 Exercise 8: Putting It All Together (15 min)
 
 ### Objective
 Design a complete evaluation strategy for a new agent.
@@ -1218,7 +1238,7 @@ orchestrate evaluations red-teaming run -a <attack-files> -o <output>
 
 ```bash
 # Start server with Langfuse
-orchestrate server start -l
+orchestrate server start -e <path-to-your-.env-file> -l
 
 # Verify Langfuse is running
 curl -s http://localhost:3010/api/public/health
@@ -1239,7 +1259,7 @@ curl -s -X POST \
 # Run evaluation with Langfuse tracing
 orchestrate evaluations evaluate -p <benchmarks> -o <output> --with-langfuse
 
-# Dashboard: http://localhost:3010 (login: orchestrate@ibm.com / orchestrate)
+# Dashboard: http://localhost:3010 (login: orchestrate@ibm.com / password from server start output)
 ```
 
 ### Metrics Cheat Sheet

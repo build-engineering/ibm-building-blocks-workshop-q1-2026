@@ -13,8 +13,8 @@ If you have any previous Developer Edition installation or virtual environment f
 - Removing the old virtual environment clears out any previously installed Python packages that may have version conflicts.
 
 ```bash
-orchestrate server reset # Restarts the local Developer Edition server and clears the current session state
-orchestrate server purge # Stop and purge the Developer Edition server (removes VM + all server data)
+# Stop and purge the Developer Edition server (removes VM + all server data)
+orchestrate server purge
 
 # Remove the old virtual environment (if it exists)
 deactivate 2>/dev/null   # exit venv if currently active
@@ -154,7 +154,7 @@ orchestrate server start -e <path-to-.env-file> -l
 
 > **Note:** The `-l` flag enables Langfuse. First start may take up to 7 minutes to pull container images.
 >
-> **Langfuse login credentials:** When the server finishes starting, the Langfuse credentials are printed in the terminal output. **Look for the line starting with `You can access the observability platform Langfuse at`** — it contains the username and password. The password may be auto-generated (e.g., `MyDevEditionPass2026!`) and will differ between installations. **Copy it now — you will need it to log in.**
+> **Langfuse login credentials:** When the server finishes starting, the Langfuse credentials are printed in the terminal output. **Look for the line starting with `You can access the observability platform Langfuse at`** — it contains the username and password. The password may be auto-generated (e.g., `MyDevEditionPassXXXX!`) and will differ between installations. **Copy it now — you will need it to log in.**
 > - **Username:** `orchestrate@ibm.com`
 > - **Password:** *(check your terminal output — do not assume a default)*
 

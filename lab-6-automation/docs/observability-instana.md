@@ -516,7 +516,24 @@ Ask IBM Bob to analyze your application performance:
 
 **Prompt to IBM Bob:**
 ```
-Use the Instana API custom mode to build a Python Dash application that provides observability insights for the Retail application. The app should include separate tabs for Service Overview, Trace Details, and Intelligent Analysis & Insights Create a script to start the app.
+Use the Application Observability custom mode Build a modular Python Dash application for Observability for the Retail application.
+
+Requirements:
+- Title: "Application Observability using IBM Instana"
+- Subtitle: "With IBM Bob, Instana"
+- Create 3 tabs for Service Overview, Trace Details, and Intelligent Analysis & Insights.
+- Creae meaningful charts to showcase application performance in Service Overview sub tab.
+- Provide a ver detailed Analysis & Insights in Intelligent Analysis & Insights sub tab.
+- Use Dash Bootstrap Components for modern, responsive layout design, and Plotly charts
+- Implement asynchronous data fetching where applicable to prevent UI blocking
+- All config via .env file
+- Follow modular architecture with separate python file for each tab.
+- Follow Python best practices for the folders structure i.e. src, docs, scripts,..etc.
+
+Project Structure (follow best practices):
+- app.py: Main application and UI
+- instana_integration.py: Instana API client and data processing (Using Bob Mode: Application Observability)
+- requirements.txt, .env.example, setup scripts, documentation
 ```
 
 
