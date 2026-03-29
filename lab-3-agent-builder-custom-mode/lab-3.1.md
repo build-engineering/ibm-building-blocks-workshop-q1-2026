@@ -153,7 +153,14 @@ Bob should reply that the **agent-builder** skill is available for use.
 
 <img src="images/bob-access-to-agent-builder-skill.png" width="600">
 
-## 5. Configure your .env for watsonx Orchestrate
+## 5. Accept your invitation to an instance of watsonx Orchestrate
+Check your email inbox for an invitation to join a TechZone instance.  The email might be in your Junk/Spam folder so look there too.  It will look like this:
+
+<img src="images/tz-invitation-email.png" width="400">
+
+Click the "Join Now" link near the bottom of the email and follow instructions to accept the invitation.  Take note of which account you've been invited to, for instance `itz-watsonx-8` or `itz-watsonx-16`.
+
+## 6. Configure your .env for watsonx Orchestrate
 Copy [env_template](env_template) to **.env**.  We'll populate these environment variables with info from the Tech Zone instance provided for this workshop.  
 
 ```
@@ -183,13 +190,13 @@ You should obtain an API key by going to [https://cloud.ibm.com/resources](https
 2. Go to Manage > Access (IAM) > API Keys
 3. Click Create+
 
-### 5.1 Launch watsonX Orchestrate
+### 6.1 Launch watsonX Orchestrate
 Click on **Launch watsonX Orchestrate** to launch it in your browser. In a few minutes, we'll return to the open browser tab to ensure your MCP server was properly deployed.  Also remember how to get to the **Launch watsonX Orchestrate** button as you'll need to re-launch watsonX Orchestrate multiple times during these labs.
 
-## 6. Deploy Pandas MCP server using Agent Builder Skill
-Once you're an expert at using the AKD, you could use the `orchestrate` CLI to manually deploy an MCP server.  However let's ask Bob to deploy for us.
+## 7. Deploy Pandas MCP server using Agent Builder Skill
+Once you're an expert at using the ADK, you could use the `orchestrate` CLI to manually deploy an MCP server.  However let's ask Bob to deploy for us.
 
-### 6.1 Ask Bob to deploy the MCP server
+### 7.1 Ask Bob to deploy the MCP server
 The Agent Builder Skill provides Bob with extensive knowledge on building and deploying agents and MCP server tools into watsonx Orchestrate.  Combined with the watsonX Orchestrate ADK MCP servers, Bob is now ready to automate most of your agentic engineering tasks.  
 ```
 Deploy the MCP server in the "lab-3-agent-builder-custom-mode/pandas-mcp-server" folder to watsonx Orchestrate.  
@@ -205,12 +212,12 @@ One of Bob's first actions should be to activate the Agent Builder Skill as show
 
 Answer any questions Bob asks, and once Bob is done, you'll likely be provided a deployment script.  You can execute this manually or ask Bob to deploy the MCP server for you.
 
-### 6.2 Validate deployment of the MCP server
+### 7.2 Validate deployment of the MCP server
 Once deployed, go to your browser tab with watsonX Orchestrate.  Navigate to **Build** in the left-side navigation dropdown then select **All Tools**.  You should see your deployed MCP tools as below.
 
 <img src="images/deployed-pandas-mcp-server.png" width="700">
 
-## 7 Updating your website to support agentic Q & A
+## 8. Updating your website to support agentic Q & A
 For the following steps, you can use your own Data Analytics website created during the prior labs, or you can use the one provided at `/lab-3-agent-builder-custom-mode/acme-analytics`.  If you want to use the website code that you just built then update any reference to the website folder in the following commands as-needed.
 
 We want to add the ability to interactively ask questions of the datasets.  To achieve this, we need to add a new Q & A page to our website. 
@@ -227,7 +234,7 @@ Let's ask Bob to implement these capabilities:
 4. in watsonx Orchestrate to handle the Q&A functionality by 
 5. Deploy the agent to watsonx Orchestrate
 
-### 7.1 Add dropdown list of questions unique to each dataset
+### 8.1 Add dropdown list of questions unique to each dataset
 It's best to separate these items across multiple requests for Bob to implement.  So start by pasting this request into the Chat window:
 
 ```
@@ -244,7 +251,7 @@ Bob may struggle to validate the website functionality as browsing websites is n
 
 Test to ensure Bob has created unique questions for each dataset by looking at the other dataset pages. Once you have a functional dropdown, proceed to the next section.
 
-## 8 Creating a Q&A agent
+## 9. Creating a Q&A agent
 For the Q&A functionality to work, clicking the **Submit** button should send the question to an Agent (in orchestrate) that can:
 
 1. Query the Pandas Dataset MCP server to obtain information about the dataset
@@ -279,7 +286,7 @@ After submitting to Bob, pay attention to how it solves problems and works aroun
 
 <img src="images/q&a-agents-workflow.png" width="700">
 
-### 8.1 Reviewing your Q&A agent's YAML
+### 9.1 Reviewing your Q&A agent's YAML
 When Bob is done, an agent file should have been added to your project.  Check for a file in `lab-3-agent-builder-custom-mode/agents`.  Double click to open the agent's .yaml.  The start of the file will look something like this:
 
 ```
@@ -302,12 +309,12 @@ instructions: |
 
 Review your agent .yaml file.  Take note of how Bob converted the prompt above into the description and instructions for the agent.
 
-### 8.2 Was your agent deployed by Bob?
+### 9.2 Was your agent deployed by Bob?
 Bob should deploy the Q&A agent for you.  If not, Bob would have created a deployment script for you.  If your agent wasn't deployed, either ask Bob to run the deployment for you or look for the deployment script then manually execute it yourself.
 
 If you get stuck, ask an instructor for help or tap a colleague for advice.
 
-### 8.3 Testing the Q&A agent
+### 9.3 Testing the Q&A agent
 OK, your agent's deployed so let's test it.  There are two ways to test an agent once imported into Orchestrate:
 1. Via the Orchestrate UI
 2. Via REST APIs or CURL commands
@@ -336,7 +343,7 @@ Notice how the qustions don't explicitely mention the dataset.  The Q&A agent wi
 
 After a short time, the agent should reply with a formatted HTML response.  We need the reply in HTML format as this will be easier to render later as you improve your website design.  
 
-### 8.4 Where's the HTML and charts?
+### 9.4 Where's the HTML and charts?
 Orchestrate's chat UI doesn't understand how to display the full HTML response.  So you'll likely only see the natural language portion.  To view the full response, click on the copy button (next to the up/down thumbs) then paste the text into a text editor
 
 <img src="images/copy-chat-response-text.png" width="500">
@@ -366,7 +373,7 @@ Now that the full text is visible in your Text Editor, you should see something 
 
 If you don't see this then let the instructor know.
 
-## 9 Connecting your agent to the Q&A dropdown 
+## 10. Connecting your agent to the Q&A dropdown 
 Now you need to connect the Q&A dropdown's submit button to your Q&A agent then capture the output of the Q&A agent and display it on your Q&A web page.  To achieve this, Bob needs to know about Orchestrate's REST API plus how to handle authentication with Orchestrate's token based security.  Fortunatley, the Agent Builder skill added earlier will provide Bob with those details.
 
 Review this prompt then submit to Bob through the Chat window:
@@ -392,14 +399,14 @@ Now extracts HTML from response.result.data.message.content[0].text
 
 You'll notice the prompt has some highly technical details such as the json location for the agent's final response.  We've also added details like tool calling and the full JSON response from the agent.  These are useful during development for debugging purposes. 
 
-### 9.1 Review your updated Q&A page
+### 10.1 Review your updated Q&A page
 If all goes well, Bob will have connected your Q&A page to the Agent in Orchestrate.  You should now be able to select a question then click submit.  The screen should update showing that it's waiting for the agent's response.
 
 <img src="images/waiting-for-agent-response.png" width="500">
 
 If you don't see a screen similar to above when clicking submit, ask a colleage or the instructor for assistance.
 
-### 9.2 Debugging your results
+### 10.2 Debugging your results
 Handling agent responses can be tricky as noted in the `Response Formatting` section of the promp above.  When debugging HTML, the best solution is to use the **Developer Tools capability** in **Chrome**.  
 
 You can access Developer Tools by going to the `View` menu at top and selecting `Developer > Developer Tools`.  This will open the Developer Tools panel on the right side of your Chrome browser. 
@@ -414,27 +421,27 @@ Hover over the section of the the Q&A page showing your agent's response and you
 
 <img src="images/inspect-agent-response-element.png" width="500">
 
-### 9.3 OK, now try to break the agent!
+### 10.3 OK, now try to break the agent!
 Always test your agentic solutions with the intent to break it.  If you don't know in which ways your agents system will fail, then you shouldn't be releasing it into production.  You should always devise increasingly hard challenges until it only fails in ways that you don't expect your end users to experience.  
 
 What are the limits of this agent?  Within reason, ask different question to determine where the agent fails to understand and answer the question.  
 
 Once you find a bug or missing feature, ask Bob to fix it. Keep iterating until Bob passes most of your tests.
 
-### 9.4 More improvements?
+### 10.4 More improvements?
 Once you have successfully connected your agent to the Q&A page, consider other features you could add.  Try adding different capabilities like these:
 
 - Instead of showing the tool calls as JSON, ask Bob to create an intuitive UI showing each tool call individually.  More like Orchestrate does in it's UI.
 - Likewise for the full JSON response.  Are there other useful elements to extract and show to the user?
 
 
-### 10 Improving Bob through better Skills
+### 11. Improving Bob through better Skills
 What was the reason for Bob not functioning as expected"
 - Should the prompt have been rewritten?
 - What knowledge was Bob missing?
 - Would it help if Bob had more information in the Agent Builder skill?
 
-### 10.1 Ask Bob to fix itself
+### 11.1 Ask Bob to fix itself
 Once you have improved on the website and found limitations of the Agent Builder Skill, there's an easy way to improve the Skill.
 
 Type this into the Chat window and see what Bob recommends:
@@ -450,7 +457,7 @@ Here's where checkpoints come in handy.  You can ask Bob to edit the Agent Build
 
  Once you've identified defects in the Agent Builder Skill and found a solution that improves it, submit a pull request to share your updates with everyone else.
 
-### 10.2 It takes a village to build an Agent Builder Skill
+### 11.2 It takes a village to build an Agent Builder Skill
 Each of the Building Block Skills is a community-driven effort. We need everyone on the Build Engineering team to help improve these skills.  If you encounter problems with a Skill in the future, identiy who on the Build Engineering team is supporting each skill and work with them to improve it.
 
 - Agents: [Dheeraj Arremsetty](https://ibm.enterprise.slack.com/team/WDRKP9Z41)
@@ -458,5 +465,5 @@ Each of the Building Block Skills is a community-driven effort. We need everyone
 - Data: [Himangshu Mech](https://ibm.enterprise.slack.com/team/W54H7JSKV)
 - Automation: [Sunil Gajula](https://ibm.enterprise.slack.com/team/WSYFC8E48) and [Yasser Sherriff](https://ibm.enterprise.slack.com/team/W52CC6YJJ)
 
-## 11 Ready for your next challenge?
+## 12 Ready for your next challenge?
 When you're ready for the next team-oriented challenge, proceed to the next lab.

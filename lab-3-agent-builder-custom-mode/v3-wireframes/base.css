@@ -1,0 +1,73 @@
+/* ============================================
+   Global CSS Styles - Used Across Website
+   ============================================ */
+
+/* CSS Variables - Color Palette */
+:root {
+  /* Primary Blue Colors */
+  --color-blue-600: rgb(37, 99, 235);
+  --color-blue-700: rgb(30, 64, 175);
+  --color-blue-500: rgb(59, 130, 246);
+  --color-blue-900: rgb(0, 0, 225);
+  
+  /* Gray Scale */
+  --color-gray-50: rgb(249, 250, 251);
+  --color-gray-100: rgb(243, 244, 246);
+  --color-gray-200: rgb(229, 231, 235);
+  --color-gray-500: rgb(107, 114, 128);
+  --color-gray-600: rgb(75, 85, 99);
+  --color-gray-700: rgb(55, 65, 81);
+  --color-gray-900: rgb(17, 24, 39);
+  
+  /* Semantic Colors */
+  --color-white: rgb(255, 255, 255);
+  --color-black: rgb(0, 0, 0);
+}
+
+/* Base Styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Table Styles */
+th {
+  color: black;
+  background-color: lightgrey;
+  border-bottom: 1px solid gray;
+  padding: 8px 16px;
+  text-align: start;
+}
+
+td {
+  border-bottom: 1px solid gray;
+  padding: 8px 16px;
+  text-align: start;
+  vertical-align: middle;
+}
+
+/* Navigation Bar */
+.nav {
+  background: linear-gradient(to right, var(--color-blue-700), var(--color-blue-500)) !important;
+}
+
+/* Main Content Area */
+#main-content {
+  flex: 1 0 auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Footer */
+footer {
+  flex-shrink: 0;
+}
+
+/* Made with Bob */

@@ -12,22 +12,45 @@ You'll work through these topics and more during this setup process:
 
 At the end of Lab 2.2, you'll have created a website similar to the one below.  Actually 3 different websites with data analysis by IBM Bob executing Pandas code in your locally deployed MCP server:
 
-<img src="images/data-website-1.png" width="400">
-<img src="images/data-website-2.png" width="500">
+<img src="images/data-website-1.png" width="700">
+<img src="images/data-website-2.png" width="700">
 
-## 1. Setup the Carbon React mode and MCP server
-You likely know how to install Modes and MCP servers from Bob's Marketplace so we'll skip providing step-by-step instructions.  If you have questions, ask a colleague for assistance.
+## 1. Setup the Carbon React mode
+You will build your using IBM's Carbon website design system, so you'll need to provide IBM Bob with context on how to use IBM Carbon. 
 
-Select installation scope as **Project** when asked:
+- **IBM partners:** you will not have access to IBM Bob's Marketplace, which is currently accessible only to IBMers.  Proceed to 1.1 and skip 1.2
+- **IBM employees:** Skip to 1.2
 
-1. Install the **Carbon** MCP server
-   - NOTE: Because this MCP server is only available via internal preview access, you'll need to generate an Authorization Token and Session ID by going through the [Carbon MCP server onboarding process](https://carbondesignsystem.com/developing/carbon-mcp/onboarding-and-setup/)
-2. Install the **Carbon React** Mode
+## 1.1 IBM Partner => Setup the Carbon React Mode and MCP server
+You will need to manually install the Carbon React Mode and MCP server.
 
-Read more about the [Carbon React mode in Bob's docs](https://internal.bob.ibm.com/docs/ide/features/carbon-modes/carbon-react-walkthrough).
+Download the [Workshop modes and MCP server .zip file](https://ibm.box.com/s/73hnujuga5l3hs3bn8fxdaoodutsjqom). Unzip the file and you will will see a folder structure like below. 
+
+<img src="images/workshop-mode-mcp-files.png" width="600">
+
+Next, move this `.bob` folder to the root-level of the Workspace that you have open in IBM Bob.  Once you've done this, you should see the `.bob` folder at the top of Bob's Files panel as below.
+
+<img src="images/partner-bob-with-mode-mcp-files.png" width="400">
+
+Next you need to setup your Carbon MCP server with access credentials as the Carbon MCP server is public preview access. You will need to generate an Authorization Token and Session ID by going through the [Carbon MCP server onboarding process](https://carbondesignsystem.com/developing/carbon-mcp/onboarding-and-setup/).  
+
+Once at the page listing your **Authorization code** and **Session ID**, open the [.bob/mcp.json](../.bob/mcp.json) file and update it with your own credentials.  
+
+Validate that your Carbon MCP server is setup properly by going to Settings > MCP and looking for the Carbon MCP Server with a green 🟢 circle as below.
+
+<img src="images/carbon-mode-setup-success.png" width="600">
+
+Now skip step 1.2 below.
+
+## 1.2 IBM Employee => Setup the Carbon React mode and MCP server
+Don't know how to install Modes and MCP Servers from Bob's Marketplace yet?  No problem, this is your chance to ask a teammate so we'll skip providing step-by-step instructions.  Hint: start by clicking on Bob's Settings icon.
+
+1. Install the **Carbon React** Custom Mode and select installation scope as **Project** when asked. Read more about the [Carbon React mode in Bob's docs](https://internal.bob.ibm.com/docs/ide/features/carbon-modes/carbon-react-walkthrough).
+
+2. Install the **Carbon** MCP server into **Project** scope.  Because this MCP server is only available via public preview access, you'll need to generate an Authorization Token and Session ID by going through the [Carbon MCP server onboarding process](https://carbondesignsystem.com/developing/carbon-mcp/onboarding-and-setup/)
 
 ## 2. Convert wireframe sketches into a React website template
-Yes, you could interactively describe your website design to Bob in the Chat interface, but an image is worth a thousand words.  By quickly sketching a few website screens then supplementing with a textual description, Bob can rapidly create a website template in React for you.  Your website vision could be sketched on a napkin or a whiteboard.  
+Yes, you could interactively describe your website design to Bob in the Chat interface, but an image is worth a thousand words.  By quickly sketching a couple website screens then supplementing with a textual description, Bob can rapidly create a website template in React for you.  Your website vision could be sketched on a napkin or a whiteboard.  
 
 For this lab, we chose to design the [website template in Powerpoint](v1-wireframes/website-wireframes.pptx) deck then create images from each slide:
 
@@ -36,8 +59,8 @@ For this lab, we chose to design the [website template in Powerpoint](v1-wirefra
 2. [dashboard page](v1-wireframes/2-dashboard-page.png)
    - Charts and tables to-be-generated by Bob using the Pandas code execution MCP server
 
-<img src="v1-wireframes/1-home-page-about.png" width="400">
-<img src="v1-wireframes/2-dashboard-page.png" width="400">
+<img src="v1-wireframes/1-home-page-about.png" width="600">
+<img src="v1-wireframes/2-dashboard-page.png" width="600">
 
 ### 2.1. Use the Carbon React mode to convert images into React
 Select the **Carbon React** mode in the Bob's chat window.
@@ -47,34 +70,34 @@ Select the **Carbon React** mode in the Bob's chat window.
 Enter this prompt into Bob's Chat interface:
 
 ```
-I have two images in @/lab-2-dataset-powered-website/v1-wireframes/ which show the website that I want to build.  Use these to create a website template.  Create the site using Carbon and React but don't add anything beyond what's in the template images.
+I have two images in @/lab-2-dataset-powered-website/v1-wireframes/ which show the website that I want to build.  Use these to create a website template.  Create the site using Carbon and React but don't add anything beyond what's in the template images.  For css styling, use the @/lab-2-dataset-powered-website/v1-wireframes/base.css as a reference.
 ```
 
 Bob may ask you a few questions like:
-- What size the website should be? Keep at width = 1024 pixels.
-- Single or multi-page app?  Go ahead and select single page if asked.
+- What size the website should be? Keep at width = **1024 pixels**.
+- Single or multi-page app?  Select **single page** if asked.
 
 Overall, keep Bob on task to only create the website template. Once Bob has all the info required to get started, Bob will call the **update-todo-list** tool which creates as a list of to-do's like below:
 
 <img src="images/react-carbon-todo-list.png" width="600">
 
-Here's the signature for the **update-todo-list** tool, as we found in Lab 1.1. when asking Bob to list all available tools:
+You saw the **update-todo-list** tool in Lab 1.1. when asking Bob to list all available tools. Here's the signature for that tool.
 
-<img src="images/update-todo-list.png" width="500">
+<img src="images/update-todo-list.png" width="600">
 
-Take time to monitor each step that Bob executes to follow along with Bob's development process. If Bob asks to launch a server to validate the website's look and feel, go ahead and review the website template.  However don't let Bob do anything else.
+Take time to monitor each step that Bob executes to follow along with Bob's development process. Bob may ask to launch a server to validate the website's look and feel, go ahead and let Bob review the website template.  
 
 The template won't look exactly like the wireframe images, but that's not an issue.  We'll improve on the final look and feel later.  Here's an example of what the template could look like when converted to Carbon React.
 
 <img src="images/initial-website-template-from-bob.png" width="500">
 
-Once you're finished reviewing the website, tell Bob to shutdown the webserver to reduce resource usage: 
+Review the website files generated by Bob.  Once you're finished reviewing the website, tell Bob to shutdown the webserver to reduce resource usage: 
 
 ```
 Shutdown the webserver
 ```
 
-## 5. 🤯 Execute arbitrary but secure code in an MCP Server
+## 3. 🤯 Execute arbitrary but secure code in an MCP Server
 Let's give Bob a superpower now.  
 
 There are times when Bob needs to perform a task that requires complex logic.  Like determining if a certain number is a prime, or in the current case of our data analytics website, performing complex analysis of a dataset for which the question and thus code doesn't exist at design time.  
@@ -88,9 +111,9 @@ For these and many other tasks, we can:
 
 This raises an intriguing question.  If Bob can write arbitrary code and execute it, then do we really need **text-to-sql** anymore? 😲 
 
-Seldom can you solve a complex problem by converting its description into a single SQL query. Most would require chaining multiple **text-to-sql** queries then performing data processing separately.  With an Pandas code execution MCP server, Bob can write combine any queries plus all data analysis into a single python file for execution.  Much faster and easier to scale.
+Seldom can you solve a complex problem by converting its description into a single SQL query. Most would require chaining multiple **text-to-sql** queries then performing data processing separately.  With the Pandas code execution MCP server, Bob can combine multiple queries plus all data analysis into a single python file for execution.  Much faster and easier to scale.
 
-### 5.1 Read through the MCP server code 
+### 3.1 Read through the MCP server code 
 In the [pandas-mcp-server](pandas-mcp-server) folder, you'll find an MCP server that allows Bob to do exactly that.  We've written the MCP server for Pandas code pre-validation and execution plus provided tools to inspect different datasets.  However you could easily rewrite the MCP server to validate then execute any code written by Bob.
 
 Take a few minutes to review the code.  Specifically look at:
@@ -100,16 +123,16 @@ Take a few minutes to review the code.  Specifically look at:
 - get_file_paths_for_dataset()
 - run_pandas_code()
 
-[server.py](pandas-mcp-server/execution.py)
+[execution.py](pandas-mcp-server/execution.py)
 - execute_pandas_code()
 - get_forbidden_reason()
 
-### 6. Validate tool functionality prior to deployment 🛠️
+## 4. Validate tool functionality prior to deployment 🛠️
 A common complaint about watsonx Orchestrate is that it sometimes fails to call the correct tool.  In many cases however, Orchestrate is not the problem. Instead, the MCP server code was not fully tested.
 
 Let's follow best practices and test the MCP server logic prior to deployment into watsonx Orchestrate.  We will use [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) which is an easy-to-use browser-based tool built by the MCP community.
 
-#### 6.1 Launch the MCP server locally:
+### 4.1 Launch the MCP server locally:
 ```bash
 # During the pre-requisite setup of your laptop environment, you created
 # a virtual python environment = wxo-eval-lab.  You will now activate it here.
@@ -134,7 +157,7 @@ Your MCP server is now running at [http://127.0.0.1:8000/mcp](http://127.0.0.1:8
 
 To handle the event stream returned by this URL, you need threaded streaming logic.  Hopefully we have time to explore how to do that in Lab 3.  For now, we'll use MCP Inspector.
 
-#### 6.2 Launch MCP Inspector
+### 4.2 Launch MCP Inspector
 To launch MCP Inspector, you'll use the [npx command (Node Package eXecute)](https://dev.to/orlikova/understanding-npx-1m4) which is a command-line tool that let's us execute Node.js packages directly from the npm registry without needing to install the packages permanently on your system. 
 
 If you don't have npm or if you get an error, install the latest version of npm. npx is automatically bundled with npm version 5.2.0 and higher,
@@ -149,12 +172,12 @@ You should see something like this.
 <img src="images/launching-mcp-inspector.png" width="800">
 
 
-### 7. Use MCP Inspector to validate tool calling
+## 5. Use MCP Inspector to validate tool calling
 View MCP Inspector by visitiing [http://localhost:6274/](http://localhost:6274/). Ensure that **Transport Type** is set to **Streamable HTTP**.  The other default settings should be fine.
 
 <img src="images/mcp-inspector-home.png" width="300">
 
-### 7.1. Connect
+### 5.1. Connect
 Click **Connect** and you should see **🟢 Connected** at bottom-left plus the middle section will load with options for interacting with the MCP Inspector.  
 
 <img src="images/mcp-inspector-connected.png" width="800">
@@ -163,14 +186,14 @@ Click the **Tools** tab at top-middle then click List **Tools**.
 
 <img src="images/mcp-inspector-select-tools.png" width="400">
 
-### 7.2 Test get_datasets tool
+### 5.2 Test get_datasets tool
 You will see a list of tools available in the MCP server.  Select the **get_datasets** tool to view what Bob sees when being told how this tool functions.
 
 <img src="images/mcp-inspector-get-datasets.png" width="=700">
 
 Scroll down and click **Run Tool**. The section below **Run Tool** will update to show the tool was successfully called plus the ouput that Bob would see when executing this tool.
 
-### 7.3 Test run_pandas_code tool
+### 5.3 Test run_pandas_code tool
 Scroll back and select the **run_pandas_code** tool. 
 
 <img src="images/mcp-inspector-run-pandas-code.png" width="800">
@@ -188,7 +211,7 @@ Scroll down and click **Run Tool**. The section below **Run Tool** will update t
 
 Take a few minutes to explore MCP Inspector.  Write a different version of the Pandas code and try executing it.
 
-### 8 Add the local MCP server to Bob
+### 6 Add the local MCP server to Bob
 In the next lab, 2.2, Bob will use the MCP server to build a data analytics website for you. Open **Settings > MCP** and click the **Open** button for your **Project MCPs**.
 
 <img src="images/settings-project-mcp.png" width="700">
@@ -208,5 +231,5 @@ Save your edtis then return to the **Settings > MCP** screen to validate that al
 
 <img src="images/settings-project-mcp-all-green.png" width="700">
 
-### 9. Next steps?  Provide Bob enough context to build our website for us.
+### 7. Next steps?  Provide Bob enough context to build our website for us.
 Proceed to [Lab 2.2](lab-2.2.md) where you'll write a Custom Mode which configures Bob to build data analytics websites hosted in watsonx Orchestrate.
