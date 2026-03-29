@@ -155,6 +155,8 @@ Before using IBM Bob with Cloudability, you need to import the Cloudability cust
 
 When setting up a new project and adding the Application Observability Bob mode for the first time, there are no existing custom modes to consider. In this case:
 
+[← Download the bob mode zip file and eexpand it to your .bob folder](https://github.com/ibm-self-serve-assets/building-blocks/tree/finops/optimize/finops/bob-modes/base-modes) 
+
 1. Create Budget insights dashboard with IBM Bob
    
    Simply copy the provided mode configuration and rules files directly into your project:
