@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides step-by-step instructions for provisioning an OpenShift environment on IBM TechZone for the Build Academy Workshop. The environment will serve as the foundation for demonstrating Infrastructure as Code principles using Ansible and exploring Terraform concepts.
+This guide provides step-by-step instructions for provisioning a Cloudability environment on IBM TechZone.
 
 ---
 
