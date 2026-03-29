@@ -6,13 +6,15 @@ Gemfile.lock
 */__pycache__
 *.pyc
 ~$*
+*/package-lock.json
+*/node_modules
+*/venv
 
 # Workshop
 /.bob
 
 # Lab 2 exclusions
 /lab-2-dataset-powered-website/acme-analytics
-/lab-2-dataset-powered-website/pandas-mcp-server/venv
 
 # Lab 3 exclusions
 /lab-3-agent-builder-custom-mode/acme-analytics/node_modules
@@ -21,3 +23,6 @@ Gemfile.lock
 /lab-3-agent-builder-custom-mode/scripts
 lab-3-agent-builder-custom-mode/agents/dataset_qa_agent.yaml
 /lab-3-agent-builder-custom-mode/agents
+/lab-3-agent-builder-custom-mode/docs
+
+

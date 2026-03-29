@@ -11,7 +11,7 @@ This guide explains how to deploy the Pandas MCP Server as a toolkit to watsonx 
 
 1. **watsonx Orchestrate ADK** installed in a Python virtual environment
 2. **Environment Configuration**: A `.env` file in the `lab-3-agent-builder-custom-mode` directory with:
-   - `WO_ADK_ENVIRONMENT_NAME`: Your Orchestrate environment name
+   - `WO_ADK_ENVIRONMENT_NAME`: Your Orchestrate ADK environment name
    - `PATH_TO_PYTHON_VENV_WITH_ORCHESTRATE_ADK`: Path to Python venv with orchestrate CLI
    - `WO_INSTANCE`: Your watsonx Orchestrate instance URL
    - `WO_API_KEY`: Your API key for authentication
