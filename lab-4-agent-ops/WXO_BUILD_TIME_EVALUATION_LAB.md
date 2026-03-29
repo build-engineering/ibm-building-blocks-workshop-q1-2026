@@ -136,7 +136,7 @@ Before you begin, familiarize yourself with the folder contents:
 
 ```
 lab-4-agent-ops/                               # Everything needed for the lab
-├── PREREQS-AgentOps-Trust-Lab_UPDATED.md              # Prerequisites and setup instructions
+├── PREREQS-AgentOps-Trust-Lab_UPDATED.md      # Prerequisites and setup instructions
 ├── WXO_BUILD_TIME_EVALUATION_LAB.md           # This lab document
 └── assets/
     ├── tax-document-assistant-agent/          # The agent under test
@@ -217,7 +217,9 @@ Open `assets/tax-document-assistant-agent/agent_config.yaml` and answer:
 
 ### Step 2: Understand Benchmark Format
 
-Use this as a quick reference when writing or reading benchmarks in later exercises.
+This lab includes 8 benchmarks located in [assets/tax_assistant_benchmarks](assets/tax_assistant_benchmarks). Each benchmark must follow a well-defined format.
+
+Expand each of the following items to explore this quick reference guide for writing or reading benchmarks in later exercises.
 
 <details>
 <summary><strong>Benchmark Required Fields</strong></summary>
@@ -235,7 +237,7 @@ Use this as a quick reference when writing or reading benchmarks in later exerci
 <details>
 <summary><strong>Goals Dependency DAG</strong></summary>
 
-The `goals` field is a **Directed Acyclic Graph (DAG)** defining which goals depend on which:
+The `goals` field is a **Directed Acyclic Graph (DAG)** defining which goals depend on which, where goals could be calling a tool or responding with text:
 
 ```json
 "goals": {

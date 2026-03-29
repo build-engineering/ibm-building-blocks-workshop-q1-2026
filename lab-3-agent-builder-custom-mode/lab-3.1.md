@@ -119,7 +119,7 @@ Your project's `.bob` folder will look similar to this.
 
 <img src="images/project-bob-files.png" width="700">
 
-### 4.2 Inspect supporting in .bob/skills/agent-builder
+### 4.2 Inspect supporting files in .bob/skills/agent-builder
 As we design, build and deploy agents and MCP tools during the following labs, Bob will rely on the guidance from the files in `.bob/skills/agent-builder` so let's take a quick look at them.
 
 If all your files were properly moved into `.bob/skills/agent-builder`, then the following links should work for you:
@@ -308,6 +308,14 @@ instructions: |
 ```
 
 Review your agent .yaml file.  Take note of how Bob converted the prompt above into the description and instructions for the agent.
+
+Answer these questions:
+1. What LLM does this agent use?
+2. What style agent was selected?
+3. Which tools does the agent have?
+4. What workflow will agent follow when answering questions?
+5. What example code and HTML is provided?
+6. Are there any instructions you'd want to add/remove?
 
 ### 9.2 Was your agent deployed by Bob?
 Bob should deploy the Q&A agent for you.  If not, Bob would have created a deployment script for you.  If your agent wasn't deployed, either ask Bob to run the deployment for you or look for the deployment script then manually execute it yourself.

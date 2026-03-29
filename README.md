@@ -14,7 +14,8 @@ In this workshop, you'll learn advanced techniques for using IBM Bob to ideate o
 <img src="images/bob.png" width="50">
 
 ## Pre-requisite laptop environment setup
-Before running the labs, make sure you have completed the following [prerequisite laptop setup](prerequisite-laptop-setup.md) which will install and verify required software on your laptop:
+Before running the labs, make sure you have completed the following [prerequisite laptop setup](prerequisite-laptop-setup.md) which will install and verify required software on your laptop. This covers Python environment setup, ADK installation, lab asset setup, Developer Edition server and Langfuse configuration.
+
 
 ## Labs
 Labs in this workshop are organized around these Core Capability areas of the IBM Building Blocks, with development and deployment simplified using IBM Bob:
@@ -23,11 +24,10 @@ Labs in this workshop are organized around these Core Capability areas of the IB
 - Data for AI
 - Automation
 
-It's recommended to complete all lab in-order, but if you encounter this repository outside of a workshop, then jump into any lab that you find interesting.
-
+It's recommended to complete all labs in-order, but if you encounter this repository outside of a workshop, then jump into any lab that you find interesting.
 
 ### Lab 1: Advanced IBM Bob and the IBM Building Blocks (1 hour)
-This lab teaches best practices for advanced AI engineering using IBM Bob as your AI coding assistant.  You'll learn what happens when IBM Bob is exposed to Captchas. You'll have fun building a creative web application while learning about topics like prompt caching plus visit your personal Bobalytics dashboard.
+This lab teaches best practices for advanced AI engineering using IBM Bob as your AI coding assistant.  You'll learn about IBM Bob's hidden tools, what happens when Bob is exposed to Captchas, prompt caching, your personal Bobalytics dashboard and more while building a creative web application.
 
 🤖 [Get started with Lab 1](lab-1-advanced-ibm-bob/README.md)
 
