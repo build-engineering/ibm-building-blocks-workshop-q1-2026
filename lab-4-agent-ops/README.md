@@ -5,7 +5,7 @@ Evaluate, analyze, and security-test watsonx Orchestrate agents using the WXO AD
 | | |
 |---|---|
 | **Duration** | ~2 hours (in-lab) + take-home exercises |
-| **ADK Version** | 2.5.1+ |
+| **ADK Version** | 2.6.0 (pinned — 2.7.0 has breaking changes) |
 
 ## 🚀 Getting Started
 
