@@ -1,6 +1,6 @@
 # Build Academy Workshop - FinOps
 
-Welcome to the Build Academy Workshop for FinOps . This workshop demonstrates how Apptio Cloudability and kubecost provide the visibility and actionable insights needed to maximize the return on your cloud investments while ensuring optimal resource allocation for peak application performance.
+Welcome to the Build Academy Workshop for FinOps. This workshop demonstrates how Apptio Cloudability can provide the visibility and actionable insights needed to maximize the return on your cloud investments while ensuring optimal resource allocation for peak application performance.
 
 ---
 

@@ -1,4 +1,4 @@
-# Organize, Optimoze and Govern Cloud spend with IBM Bob and cloudability
+# Organize, Optimoze and Govern Cloud spend with IBM Bob and Cloudability
 
 ## Table of Contents
 
@@ -14,8 +14,7 @@
 
 ## Overview
 
-This lab guide demonstrates how to implement comprehensive application observability using IBM Instana for monitoring and IBM Bob for intelligent analysis. You'll learn to set up Instana monitoring, integrate it with your applications, and leverage IBM Bob to gain actionable insights from observability data.
-
+This lab guide demonstrates how to implement IBM Cloudability to provide visibility and actionable insights needed to maximize the return on your cloud investments
 
 ## Key features for Apptio Cloudability
 
@@ -78,7 +77,9 @@ This lab guide demonstrates how to implement comprehensive application observabi
 
 ## Provision a Apptio Cloudability Techzone instance
 
-Use these instructions to provision a demo Cloudability instance in Techzone:
+[← Steps to create a Cloudabilit techzone instance](techzone-setup.md) 
+
+> **Note for Build Academy Workshop Participants:** If you are part of the Build Academy workshop, the environment will be pre-provisioned in TechZone. You can ignore the provisioning steps and proceed directly to accessing your cloudability instance.
 
 ## Access and Explore Apptio Cloudability Demo Enviornment
 
@@ -94,11 +95,7 @@ Use these instructions to provision a demo Cloudability instance in Techzone:
 
 2. Review Dashbaord components
 
-   ![](cloudability-dashboard.png)
-
-   Note the Total spend shows total spend by client acocunt. on Azure
-
-3. 
+   ![](../images/cloudability-dashboard.png)
 
 
 ## Create a API Key
@@ -108,7 +105,7 @@ Use these instructions to provision a demo Cloudability instance in Techzone:
    ```
    https://app.apptio.com/shell/launcher
    ```
-   ![alt text](cloudability-launcher.png)
+   ![alt text](../images/cloudability-launcher.png)
 
 2. Select the API Keys tab and Select the Create API Key button on the right.
 
@@ -149,7 +146,7 @@ Use these instructions to provision a demo Cloudability instance in Techzone:
 - ✅ **Apptio Cloudability instance**
 
 
-### Step 1: Import Cloudability Custom Bob Mode
+### Import Cloudability Custom Bob Mode
 
 Before using IBM Bob with Cloudability, you need to import the Cloudability custom mode.
 
@@ -157,7 +154,7 @@ Before using IBM Bob with Cloudability, you need to import the Cloudability cust
 
 When setting up a new project and adding the Application Observability Bob mode for the first time, there are no existing custom modes to consider. In this case:
 
-1. ## Step 9: Create Budget insights dashboard with IBM Bob
+1. Create Budget insights dashboard with IBM Bob
    
    Simply copy the provided mode configuration and rules files directly into your project:
    ```
@@ -171,8 +168,6 @@ When setting up a new project and adding the Application Observability Bob mode 
 2. **Start Using Bob**
    
    Once the files are in place, you can start using the Cloudability mode in IBM Bob.
-
-#### For Existing Projects
 
 If your project already has a custom Bob mode defined in `custom_modes.yaml`, you must take care not to overwrite the existing configuration:
 
@@ -225,4 +220,4 @@ Create a python dash application that shows the budgets for August 2025
 
 5. Bob will create a pythion dash application. Use the output url to view the budgets dashboard
 
-![alt text](cloudability-budgets.png)
+![alt text](../images/cloudability-budgets.png)
