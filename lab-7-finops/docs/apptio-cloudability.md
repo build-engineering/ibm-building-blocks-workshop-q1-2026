@@ -77,7 +77,7 @@ This lab guide demonstrates how to implement IBM Cloudability to provide visibil
 
 ## Provision a Apptio Cloudability Techzone instance
 
-[← Steps to create a Cloudabilit techzone instance](techzone-setup.md) 
+[← Steps to create a Cloudability techzone instance](techzone-setup.md) 
 
 > **Note for Build Academy Workshop Participants:** If you are part of the Build Academy workshop, the environment will be pre-provisioned in TechZone. You can ignore the provisioning steps and proceed directly to accessing your cloudability instance.
 
@@ -111,15 +111,15 @@ This lab guide demonstrates how to implement IBM Cloudability to provide visibil
 
    Enter a name and select the desired key rotation policy
 
-![alt text](../images/cloudability-api-key.png)
+   ![alt text](../images/cloudability-api-key.png)
 
 3. Select Manage Profile from the top right corner dropdown
 
-![alt text](../images/cloudability-mmanage-profile.png)
+   ![alt text](../images/cloudability-mmanage-profile.png)
 
 4. Select the preferences tab and generate a new API key
 
-![alt text](../images/cloudability-genrateapi.png)
+   ![alt text](../images/cloudability-genrateapi.png)
 
    Note down the API Key. 
 
@@ -131,12 +131,13 @@ This lab guide demonstrates how to implement IBM Cloudability to provide visibil
 
 6. Test the API using a curl command
 
+   ```bash
+      curl  --request GET \
+            --url https://api.cloudability.com/v3/views \
+            --header 'Authorization: Basic <YOUR-BASE64-API-KEY>' \
+            --header 'User-Agent: insomnia/12.3.0'
    ```
-   curl --request GET \
-  --url https://api.cloudability.com/v3/views \
-  --header 'Authorization: Basic <YOUR-BASE64-API-KEY>' \
-  --header 'User-Agent: insomnia/12.3.0'
-   ```
+   
    The Cloudability Views allow customers to give each and every user a unique view or set of views of your cloud spend and usage. It also supports limiting the scope of what is visible to individual users. 
 
 ## Use Bob to for Budget Insights
