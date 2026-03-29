@@ -12,11 +12,6 @@ You'll explore these topics as you build expertise on application development us
 - Analyzing IBM Bob's Task History built
 - Your personal Bobalytics dashboard 
 
-## 0. Team work and Knowledge Sharing
-Please take your time to work through these labs.  These labs are about exploring and understanding these Bob, not about being the first to complete them.  The only thing that happens after you're done, is that you are back to Slacks and eMails.  
-
-If you're doing this lab in a workshop with others, please take time to help those around you as well. If you have more expertise than other, help ensure everyone gets across the finish line.
-
 ## 1. Select an application for Bob to develop
 Let's have a little fun by asking Bob to create a new application.  We'll then follow along with Bob during the creation process to identify a some of Bob's strengths and few of his weaknesses plus workarounds to them.
 
@@ -48,7 +43,9 @@ Create an app that simulates fireworks exploding in the sky with different color
 
 ### 🌋 Option D. Create 3D Volcanic Island from an image
 
-Start by right-clicking and downloading this image to your laptop.  Use the **Add images to message** at the bottom-right of Bob's prompt input text field then add the following text.  Don't submit yet!
+Start by right-clicking and downloading this image to your laptop.  Use the **Add images to message** at the bottom-right of Bob's prompt input text field then add the following text.  
+
+Don't submit to Bob yet!
 
 <img src="images/volcanic-island-3d.png" width="250">
 
@@ -183,18 +180,25 @@ This more detailed breakdown shows my volcano application required 66.8k input t
 
 How much did it cost for IBM Bob to build your application?
 
-### 7.1 Bobcoins vs. tokens
+### 7.1 GA Pricing for Bob
+Now that IBM Bob is Generally Available (GA), we can see that the costs above do not align with [IBM Bob's public pricing](https://bob.ibm.com/pricing). At the time of this workshop, Bob's pricing ranges from $0.20-0.50/Bob Coin:
+
+<img src="images/ibm-bob-pricing.png" width="700">
+
+### 7.2 Bobcoins vs. tokens
 While Bobcoins measure your usage budget, the underlying AI models consume tokens—the fundamental units of text processing used by language models. Here's how they relate:
 
 **Tokens:** The raw units of model usage. Tokens represent pieces of text (words, characters) that the AI model processes. Every request to the model consumes input tokens (your prompt and context) and output tokens (Bob's response).
 
 **Bobcoins:** Bob's usage metric that abstracts token usage into a predictable budget system. One Bobcoin represents a standardized amount of computational resources, which includes token usage across different models and operations.
 
-### 7.2 Increasing your Bobcoin budget
+### 7.3 Increasing your Bobcoin budget (for IBMers)
 Your Bobcoin budget determines how much you can use IBM Bob each month. You can permanently increase your monthly allocation by providing feedback about your experience.
 
 #### When can you submit feedback?
-IBM Bob prompts you to submit feedback when your remaining budget drops below 3%. You cannot trigger the survey early, you must wait for the prompt to appear. To submit, hover your cursor over the budget gauge in the top-right corner of the Bob panel.  Click the Provide feedback button that appears.
+If you are an IBMer, you can [increase your Bob Coin allocation up-to 500 coins/month](https://internal.bob.ibm.com/docs/ide/basic-usage/bobcoins), which we now see if $200 worth of Bob Coins.  This same functionality may be available to companies that rollout Enterprise Plans of IBM Bob for their employees
+
+Again only for IBMers, IBM Bob prompts you to submit feedback when your remaining budget drops below 3%. You cannot trigger the survey early, you must wait for the prompt to appear. To submit, hover your cursor over the budget gauge in the top-right corner of the Bob panel.  Click the Provide feedback button that appears.
 
 <img src="images/submit-bob-coin-feedback.png" width="400">
 
@@ -213,7 +217,7 @@ This image from [Claude's blog on its Prompt Cache](https://claude.com/blog/prom
 
 <img src="images/claude-cache-statistics.png" width="400">
 
-IBM Bob uses Claude's frontier model so any pricing gains from Prompt Caching ultimately help lower costs for IBM customers. So let's look at how Claude prices their cached prompts to see how caching could impact Bob's costs too.  Cached prompts are priced based on the number of input tokens cached and how frequently that cached content is accessed. Writing to the cache costs 25% more than Claude's base input token price for any given model, while using cached content is significantly cheaper, costing only 10% of the base input token price.
+IBM Bob uses Claude's frontier model so any pricing gains from Prompt Caching ultimately help lower costs for IBM customers too. So let's look at how Claude prices their cached prompts to see how caching could impact Bob's costs too.  Cached prompts are priced based on the number of input tokens cached and how frequently that cached content is accessed. Writing to the cache costs 25% more than Claude's base input token price for any given model, while using cached content is significantly cheaper, costing only 10% of the base input token price.
 
 For example from Claude's Promp Cache documentation:
 
@@ -240,4 +244,6 @@ While not necessarily useful to you, it is likely used by the IBM Bob team to de
 <img src="images/bobalytics-dashboard.png" width="700">
 
 ## 11. Done before the time limit?
-If you get here with time to spare, then spend the remaining time continuing to improve on your application.  Once you are happy with your work, share your results with others.  Specifically share your application with the workshop leads as they'll be excited to learn what you've created.
+If you get here with time to spare, then spend the remaining time continuing to improve on your application.  Or go back and select a different application to build.
+
+Once you are happy with your work, share your results with others.  Specifically share your application with the workshop leads as they'll be excited to learn what you've created.

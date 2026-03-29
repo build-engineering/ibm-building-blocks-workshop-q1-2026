@@ -429,8 +429,9 @@ git clone https://github.com/ibm-self-serve-assets/building-blocks.git
 2. Navigate to the data-generator folder:
 
 ```bash
-cd building-blocks/data-generator
+cd building-blocks\data-for-ai\question-and-answer\rag\bob-modes\base-modes\data-generator.zip
 ```
+unzip the data-generator.zip 
 
 3. Copy the `.bob` folder to your lab working directory:
 

@@ -1,6 +1,10 @@
 # Lab Prerequisites
 
-Before running the build-time evaluation lab, make sure you have the following three things installed and verified.
+Before running the labs in this IBM Building Blocks workshop, ensure you have completed the following setup steps.  This will ensure you have:
+
+- The correct version of python installed
+- All libraries installed
+- Outdated libraries have been removed and updated  
 
 ---
 
@@ -102,12 +106,12 @@ python3 --version
 ```
 
 ```bash
-pip install 'ibm-watsonx-orchestrate[agentops]==2.6.0'
+pip install 'ibm-watsonx-orchestrate[agentops]'
 pip install 'ibm-watsonx-orchestrate-evaluation-framework==1.2.7'
 pip install 'langfuse<4'
 ```
 
-> **Why the extra install steps?** The ADK must be pinned to **2.6.0** — version 2.7.0 introduced breaking changes to the `agentops.record` module that are incompatible with the evaluation framework 1.2.7. The `[agentops]` extra installs the evaluation framework, but the latest version (1.3.x) has breaking changes — pinning to 1.2.7 ensures compatibility. The default install pulls in langfuse 4.x, which removed APIs that the evaluation framework depends on — constraining to `<4` fixes this.
+> **Why the extra install steps?** The `[agentops]` extra installs the evaluation framework, but the latest version (1.3.x) has breaking changes — pinning to 1.2.7 ensures compatibility. The default install pulls in langfuse 4.x, which removed APIs that the evaluation framework depends on — constraining to `<4` fixes this.
 
 **Verify ADK:**
 ```bash
@@ -119,8 +123,7 @@ orchestrate evaluations evaluate --help
 ```bash
 python -c "from ibm_watsonx_orchestrate.cli.commands.evaluations.evaluations_controller import EvaluationsController, EvaluateMode, USE_LEGACY_EVAL; print('OK')"
 # Must print "OK". If it fails:
-#   "No module named 'agentops'" → pip install 'ibm-watsonx-orchestrate[agentops]==2.6.0'
-#   "No module named 'agentops.record'" → you installed ADK 2.7.0+ — reinstall with: pip install 'ibm-watsonx-orchestrate[agentops]==2.6.0'
+#   "No module named 'agentops'" → pip install 'ibm-watsonx-orchestrate[agentops]'
 #   "cannot import name" from agentops → pip install 'ibm-watsonx-orchestrate-evaluation-framework==1.2.7'
 #   "No module named 'langfuse.api.resources'" → pip install 'langfuse<4'
 ```
@@ -195,7 +198,7 @@ export LANGFUSE_PUBLIC_KEY='<public-key-from-langfuse-settings>'
 
 ---
 
-## Notes on Evaluation Model Requirements
+### 3.1 Notes on Evaluation Model Requirements
 
 Most evaluation commands (including journey success) depend on **model-proxy or watsonx.ai models** provided through Developer Edition.
 
@@ -206,7 +209,7 @@ If your Developer Edition is set up with the default local configuration, you wo
 
 ---
 
-## Quick Verification Checklist
+### 3.2 Quick Verification Checklist
 
 > Make sure your virtual environment is activated before running these commands:
 > ```bash
@@ -233,7 +236,7 @@ Then verify in your browser:
 
 ---
 
-## Troubleshooting
+### 3.3 Troubleshooting
 
 **If you have an existing broken installation**, purge and reinstall:
 ```bash
@@ -247,3 +250,13 @@ This happens when you run `orchestrate server start -l` without `-e`. Always pas
 
 **If Langfuse health check fails after server start:**
 The Langfuse containers may still be starting (up to 7 minutes on first start). Wait and retry the health check. If it persists, check that the server was started with the `-l` flag.
+
+---
+
+## 4. Access to 3rd party software (for Automation labs)
+Register for these three trial accounts which will be used during labs 4 and 5.
+
+1. **Docker Registry:** Sign up for a [Docker Registry account](https://hub.docker.com/).
+2. **IBM Instana:** Sign up for [free 14‑day trial of IBM Instana](https://lp2.email.ibm.com/instana-trial.html).
+If you previously signed up for a trial, you can signup again with your personal email or we can provide IBM Sandbox Access, but this could be slower due to others on it.
+3. **IBM Concert:**  Sign up for the [free trial of IBM Concert](https://www.ibm.com/products/concert?utm_source=ibm_developer&utm_content=in_content_link&utm_id=tutorials_observability-security-dashboards-bob-instana-concert&cm_sp=ibmdev-_-developer-tutorials-_-product)
