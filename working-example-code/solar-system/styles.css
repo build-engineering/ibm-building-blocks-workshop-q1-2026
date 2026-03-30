@@ -1,0 +1,423 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    height: 100vh;
+    position: relative;
+}
+
+/* Starfield background */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 60px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 50px 50px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 10px, #fff, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: twinkle 5s infinite;
+    z-index: 0;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+    font-size: 2.5em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    position: relative;
+    z-index: 10;
+}
+
+.timer-display {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+    z-index: 10;
+    background: rgba(0, 20, 40, 0.8);
+    padding: 15px 30px;
+    border-radius: 10px;
+    border: 2px solid rgba(100, 150, 255, 0.3);
+}
+
+.timer-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timer-label {
+    font-size: 0.9em;
+    color: #88aaff;
+    margin-bottom: 5px;
+}
+
+.timer-value {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #4da6ff;
+    font-family: 'Courier New', monospace;
+}
+
+.solar-system {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vmin;
+    height: 90vmin;
+    z-index: 1;
+}
+
+.sun {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #ffd700, #ff8c00);
+    border-radius: 50%;
+    box-shadow: 0 0 60px #ff8c00, 0 0 100px #ff8c00;
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.sun:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.sun.selected {
+    box-shadow: 0 0 60px #ff8c00, 0 0 100px #ff8c00, 0 0 30px rgba(100, 150, 255, 0.8), 0 0 50px rgba(100, 150, 255, 0.6);
+}
+
+.orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: border-color 0.3s, border-width 0.3s, box-shadow 0.3s;
+    pointer-events: all;
+}
+
+.orbit:hover {
+    border-color: rgba(255, 255, 255, 0.8);
+    border-width: 2px;
+}
+
+.orbit.selected {
+    border: 2px solid rgba(100, 150, 255, 0.9) !important;
+    box-shadow: 0 0 20px rgba(100, 150, 255, 0.5);
+}
+
+.planet-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+}
+
+.planet {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+    /* Larger click area */
+    padding: 10px;
+    margin: -10px;
+}
+
+.planet:hover {
+    transform: translateX(-50%) scale(1.3);
+}
+
+.planet.selected {
+    box-shadow: 0 0 15px rgba(100, 150, 255, 0.9), 0 0 25px rgba(100, 150, 255, 0.6);
+}
+
+/* Counter-rotation to keep planets upright */
+.planet-wrapper {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.planet {
+    animation: counter-rotate linear infinite;
+}
+
+@keyframes counter-rotate {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(-360deg); }
+}
+
+/* Mercury */
+.mercury-orbit {
+    width: 120px;
+    height: 120px;
+    z-index: 8;
+}
+
+.mercury-wrapper {
+    animation: orbit 1.21s linear infinite;
+}
+
+.mercury {
+    width: 8px;
+    height: 8px;
+    background: #8c7853;
+    animation-duration: 1.21s;
+}
+
+/* Venus */
+.venus-orbit {
+    width: 160px;
+    height: 160px;
+    z-index: 7;
+}
+
+.venus-wrapper {
+    animation: orbit 3.14s linear infinite;
+}
+
+.venus {
+    width: 14px;
+    height: 14px;
+    background: #ffc649;
+    animation-duration: 3.14s;
+}
+
+/* Earth */
+.earth-orbit {
+    width: 200px;
+    height: 200px;
+    z-index: 6;
+}
+
+.earth-wrapper {
+    animation: orbit 5.06s linear infinite;
+}
+
+.earth {
+    width: 14px;
+    height: 14px;
+    background: #4a90e2;
+    animation-duration: 5.06s;
+}
+
+/* Mars */
+.mars-orbit {
+    width: 250px;
+    height: 250px;
+    z-index: 5;
+}
+
+.mars-wrapper {
+    animation: orbit 9.51s linear infinite;
+}
+
+.mars {
+    width: 10px;
+    height: 10px;
+    background: #e27b58;
+    animation-duration: 9.51s;
+}
+
+/* Jupiter */
+.jupiter-orbit {
+    width: 350px;
+    height: 350px;
+    z-index: 4;
+}
+
+.jupiter-wrapper {
+    animation: orbit 60s linear infinite;
+}
+
+.jupiter {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(to bottom, #c88b3a, #a67c52, #c88b3a);
+    animation-duration: 60s;
+}
+
+/* Saturn */
+.saturn-orbit {
+    width: 450px;
+    height: 450px;
+    z-index: 3;
+}
+
+.saturn-wrapper {
+    animation: orbit 149s linear infinite;
+}
+
+.saturn {
+    width: 26px;
+    height: 26px;
+    background: #fad5a5;
+    position: relative;
+    animation-duration: 149s;
+}
+
+.ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45px;
+    height: 45px;
+    border: 3px solid rgba(210, 180, 140, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Uranus */
+.uranus-orbit {
+    width: 550px;
+    height: 550px;
+    z-index: 2;
+}
+
+.uranus-wrapper {
+    animation: orbit 425s linear infinite;
+}
+
+.uranus {
+    width: 18px;
+    height: 18px;
+    background: #4fd0e7;
+    animation-duration: 425s;
+}
+
+/* Neptune */
+.neptune-orbit {
+    width: 650px;
+    z-index: 1;
+    height: 650px;
+}
+
+.neptune-wrapper {
+    animation: orbit 834s linear infinite;
+}
+
+.neptune {
+    width: 18px;
+    height: 18px;
+    background: #4166f5;
+    animation-duration: 834s;
+}
+
+@keyframes orbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Info Panel - LEFT SIDE */
+.info-panel {
+    position: fixed;
+    left: -400px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 350px;
+    max-height: 80vh;
+    background: rgba(10, 25, 47, 0.95);
+    border: 2px solid rgba(100, 150, 255, 0.5);
+    border-left: none;
+    border-radius: 0 15px 15px 0;
+    padding: 30px;
+    box-shadow: 0 0 30px rgba(0, 100, 255, 0.3);
+    z-index: 1000;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+}
+
+.info-panel.active {
+    left: 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 100, 100, 0.8);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.close-btn:hover {
+    background: rgba(255, 50, 50, 1);
+}
+
+.info-panel h2 {
+    color: #ffd700;
+    margin-bottom: 20px;
+    font-size: 2em;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.info-panel p {
+    margin: 10px 0;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
+.info-panel strong {
+    color: #4da6ff;
+}
+
+/* Scrollbar styling */
+.info-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.info-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.info-panel::-webkit-scrollbar-thumb {
+    background: rgba(100, 150, 255, 0.5);
+    border-radius: 10px;
+}
+
+.info-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 150, 255, 0.8);
+}
+
+/* Made with Bob */

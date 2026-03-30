@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Solar System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Interactive Solar System</h1>
+    
+    <div class="timer-display">
+        <div class="timer-item">
+            <span class="timer-label">Real Time:</span>
+            <span id="realTime" class="timer-value">0.0s</span>
+        </div>
+        <div class="timer-item">
+            <span class="timer-label">Simulation Time:</span>
+            <span id="simTime" class="timer-value">0 days</span>
+        </div>
+    </div>
+
+    <div class="info-panel" id="infoPanel">
+        <button class="close-btn" id="closeBtn">&times;</button>
+        <h2 id="infoTitle"></h2>
+        <div id="infoContent"></div>
+    </div>
+
+    <div class="solar-system">
+        <div class="sun" id="sun"></div>
+        
+        <div class="orbit mercury-orbit">
+            <div class="planet-wrapper mercury-wrapper">
+                <div class="planet mercury" id="mercury"></div>
+            </div>
+        </div>
+        
+        <div class="orbit venus-orbit">
+            <div class="planet-wrapper venus-wrapper">
+                <div class="planet venus" id="venus"></div>
+            </div>
+        </div>
+        
+        <div class="orbit earth-orbit">
+            <div class="planet-wrapper earth-wrapper">
+                <div class="planet earth" id="earth"></div>
+            </div>
+        </div>
+        
+        <div class="orbit mars-orbit">
+            <div class="planet-wrapper mars-wrapper">
+                <div class="planet mars" id="mars"></div>
+            </div>
+        </div>
+        
+        <div class="orbit jupiter-orbit">
+            <div class="planet-wrapper jupiter-wrapper">
+                <div class="planet jupiter" id="jupiter"></div>
+            </div>
+        </div>
+        
+        <div class="orbit saturn-orbit">
+            <div class="planet-wrapper saturn-wrapper">
+                <div class="planet saturn" id="saturn">
+                    <div class="ring"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="orbit uranus-orbit">
+            <div class="planet-wrapper uranus-wrapper">
+                <div class="planet uranus" id="uranus"></div>
+            </div>
+        </div>
+        
+        <div class="orbit neptune-orbit">
+            <div class="planet-wrapper neptune-wrapper">
+                <div class="planet neptune" id="neptune"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

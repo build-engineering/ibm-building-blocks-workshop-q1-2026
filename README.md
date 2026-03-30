@@ -1,7 +1,7 @@
 # Welcome to the the IBM Building Blocks Workshop - Q1 2026
 In this workshop, you'll learn advanced techniques for using IBM Bob to ideate on partner use cases that incorporate the [IBM Building Blocks](https://ibm-self-serve-assets.github.io/building-blocks-docs/), build multi-agent websites using those Building Blocks and then instrument them with IBM's portfolio of Automation solutions to observe plus optimize their performance once deployed into production.
 
-<img src="images/bob.png" width="25">
+<img src="images/bob.png" width="50">
 
 ## Pre-requisite laptop environment setup
 Before running the labs, make sure you have completed the following [prerequisite laptop setup](prerequisite-laptop-setup.md) which will install and verify required software on your laptop. This covers Python environment setup, ADK installation, lab asset setup, Developer Edition server and Langfuse configuration.

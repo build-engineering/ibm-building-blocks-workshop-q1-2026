@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Double Pendulum Simulation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        canvas {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            cursor: grab;
+        }
+
+        canvas:active {
+            cursor: grabbing;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        button {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .info {
+            color: white;
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="pendulumCanvas"></canvas>
+        <div class="controls">
+            <button id="resetBtn">Reset</button>
+            <button id="clearTrailBtn">Clear Trail</button>
+            <button id="pauseBtn">Pause</button>
+        </div>
+        <div class="info">
+            Click and drag to interact • Watch the chaotic motion unfold
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('pendulumCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        canvas.width = 800;
+        canvas.height = 600;
+
+        // Pendulum parameters
+        const origin = { x: canvas.width / 2, y: 100 };
+        let m1 = 10;  // mass of first bob
+        let m2 = 10;  // mass of second bob
+        let L1 = 150; // length of first rod
+        let L2 = 150; // length of second rod
+        let g = 100;    // gravity (increased for much faster motion)
+        
+        // Initial angles (in radians) - slightly offset for chaotic motion
+        let theta1 = Math.PI / 2 + 0.1;
+        let theta2 = Math.PI / 2 - 0.1;
+        let omega1 = 0; // angular velocity of first pendulum
+        let omega2 = 0; // angular velocity of second pendulum
+        
+        // Trail array to store positions
+        const trail = [];
+        const maxTrailLength = 500;
+        
+        // Animation control
+        let isPaused = false;
+        let isDragging = false;
+        let dragTarget = null;
+
+        // Calculate positions of bobs
+        function calculatePositions() {
+            const x1 = origin.x + L1 * Math.sin(theta1);
+            const y1 = origin.y + L1 * Math.cos(theta1);
+            
+            const x2 = x1 + L2 * Math.sin(theta2);
+            const y2 = y1 + L2 * Math.cos(theta2);
+            
+            return { x1, y1, x2, y2 };
+        }
+
+        // Physics equations for double pendulum
+        function updatePhysics(dt) {
+            if (isPaused || isDragging) return;
+
+            // Calculate angular accelerations using Lagrangian mechanics
+            const num1 = -g * (2 * m1 + m2) * Math.sin(theta1);
+            const num2 = -m2 * g * Math.sin(theta1 - 2 * theta2);
+            const num3 = -2 * Math.sin(theta1 - theta2) * m2;
+            const num4 = omega2 * omega2 * L2 + omega1 * omega1 * L1 * Math.cos(theta1 - theta2);
+            const den = L1 * (2 * m1 + m2 - m2 * Math.cos(2 * theta1 - 2 * theta2));
+            const alpha1 = (num1 + num2 + num3 * num4) / den;
+
+            const num5 = 2 * Math.sin(theta1 - theta2);
+            const num6 = omega1 * omega1 * L1 * (m1 + m2);
+            const num7 = g * (m1 + m2) * Math.cos(theta1);
+            const num8 = omega2 * omega2 * L2 * m2 * Math.cos(theta1 - theta2);
+            const den2 = L2 * (2 * m1 + m2 - m2 * Math.cos(2 * theta1 - 2 * theta2));
+            const alpha2 = (num5 * (num6 + num7 + num8)) / den2;
+
+            // Update angular velocities
+            omega1 += alpha1 * dt;
+            omega2 += alpha2 * dt;
+
+            // Update angles
+            theta1 += omega1 * dt;
+            theta2 += omega2 * dt;
+
+            // No friction - continuous motion with energy conservation
+        }
+
+        // Draw the pendulum
+        function draw() {
+            // Semi-transparent background for trail fade effect
+            ctx.fillStyle = 'rgba(30, 60, 114, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const { x1, y1, x2, y2 } = calculatePositions();
+
+            // Add current position to trail
+            if (!isPaused && !isDragging) {
+                trail.push({ x: x2, y: y2 });
+                if (trail.length > maxTrailLength) {
+                    trail.shift();
+                }
+            }
+
+            // Draw trail with fading effect
+            for (let i = 0; i < trail.length; i++) {
+                const alpha = i / trail.length;
+                const size = 2 + alpha * 2;
+                
+                ctx.beginPath();
+                ctx.arc(trail[i].x, trail[i].y, size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(100, 200, 255, ${alpha * 0.6})`;
+                ctx.fill();
+            }
+
+            // Draw rods
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.lineWidth = 3;
+            
+            // First rod
+            ctx.beginPath();
+            ctx.moveTo(origin.x, origin.y);
+            ctx.lineTo(x1, y1);
+            ctx.stroke();
+            
+            // Second rod
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            // Draw origin point
+            ctx.beginPath();
+            ctx.arc(origin.x, origin.y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw first bob
+            ctx.beginPath();
+            ctx.arc(x1, y1, 15, 0, Math.PI * 2);
+            const gradient1 = ctx.createRadialGradient(x1 - 5, y1 - 5, 0, x1, y1, 15);
+            gradient1.addColorStop(0, '#ff6b6b');
+            gradient1.addColorStop(1, '#ee5a6f');
+            ctx.fillStyle = gradient1;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw second bob
+            ctx.beginPath();
+            ctx.arc(x2, y2, 15, 0, Math.PI * 2);
+            const gradient2 = ctx.createRadialGradient(x2 - 5, y2 - 5, 0, x2, y2, 15);
+            gradient2.addColorStop(0, '#4ecdc4');
+            gradient2.addColorStop(1, '#44a8a0');
+            ctx.fillStyle = gradient2;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // Animation loop
+        let lastTime = Date.now();
+        function animate() {
+            const currentTime = Date.now();
+            const dt = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+
+            updatePhysics(dt);
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        // Mouse interaction
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            const { x1, y1, x2, y2 } = calculatePositions();
+            
+            // Check if clicking on second bob
+            if (Math.hypot(mouseX - x2, mouseY - y2) < 20) {
+                isDragging = true;
+                dragTarget = 2;
+            }
+            // Check if clicking on first bob
+            else if (Math.hypot(mouseX - x1, mouseY - y1) < 20) {
+                isDragging = true;
+                dragTarget = 1;
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            if (dragTarget === 1) {
+                theta1 = Math.atan2(mouseX - origin.x, mouseY - origin.y);
+                omega1 = 0;
+            } else if (dragTarget === 2) {
+                const { x1, y1 } = calculatePositions();
+                theta2 = Math.atan2(mouseX - x1, mouseY - y1);
+                omega2 = 0;
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+            dragTarget = null;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            isDragging = false;
+            dragTarget = null;
+        });
+
+        // Button controls
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            theta1 = Math.PI / 2 + (Math.random() - 0.5) * 0.2;
+            theta2 = Math.PI / 2 + (Math.random() - 0.5) * 0.2;
+            omega1 = 0;
+            omega2 = 0;
+            trail.length = 0;
+        });
+
+        document.getElementById('clearTrailBtn').addEventListener('click', () => {
+            trail.length = 0;
+        });
+
+        document.getElementById('pauseBtn').addEventListener('click', (e) => {
+            isPaused = !isPaused;
+            e.target.textContent = isPaused ? 'Resume' : 'Pause';
+        });
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>
