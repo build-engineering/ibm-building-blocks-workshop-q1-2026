@@ -485,6 +485,67 @@ If your project already has a custom Bob mode defined in `custom_modes.yaml`, yo
    - The new Application Observability mode is available
    - No syntax errors in the YAML configuration
 
+5. **Adding Instana MCP Server
+
+- Open  IBM Bob.
+- Click the icon in the Bob pane top navigation.
+- Click Edit Global MCP or Edit Project MCP.
+- Update the below Instana MCP Server detials
+
+```
+   "Application Observability": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy",
+        "--transport",
+        "streamablehttp",
+        "https://mcp-instana.268gjj8oawf7.us-south.codeengine.appdomain.cloud/mcp"
+      ],
+      "description": "Base MCP Server for Application Observability Building Block",
+      "disabled": false,
+      "alwaysAllow": [
+        "manage_instana_resources",
+        "manage_custom_dashboards",
+        "analyze_infrastructure_elicitation",
+        "get_actions",
+        "get_action_details",
+        "get_action_types",
+        "get_action_tags",
+        "get_action_matches",
+        "submit_automation_action",
+        "get_action_instance_details",
+        "list_action_instances",
+        "delete_action_instance",
+        "get_event",
+        "get_kubernetes_info_events",
+        "get_agent_monitoring_events",
+        "get_issues",
+        "get_incidents",
+        "get_changes",
+        "get_events_by_ids",
+        "get_website_page_load",
+        "get_website_catalog_metrics",
+        "get_website_beacon_metrics_v2",
+        "get_website_catalog_tags",
+        "get_website_tag_catalog",
+        "get_website_beacon_groups",
+        "get_website_beacons",
+        "get_websites",
+        "create_website",
+        "delete_website",
+        "rename_website",
+        "get_website_geo_location_configuration",
+        "update_website_geo_location_configuration",
+        "get_website_ip_masking_configuration",
+        "update_website_ip_masking_configuration",
+        "get_website_geo_mapping_rules",
+        "set_website_geo_mapping_rules",
+        "upload_source_map_file",
+        "clear_source_map_upload_configuration"
+      ]
+    }
+```
+
 ### Step 2: Connect IBM Bob to Instana
 
 IBM Bob can analyze Instana observability data to provide intelligent insights:
