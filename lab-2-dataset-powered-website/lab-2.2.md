@@ -51,7 +51,7 @@ Skip to step 2.3
 ### 2.2 Mode Writer for IBM Employees
 Search for the **Mode Writer** mode in Settings > Modes.  Read through its description prior to installing it at the Project level.  
 
-### 2.3 Mode Writer for IBM Employees
+### 2.3 Using the Mode Writer
 Once installed, the Mode Writer's tile will appear at the bottom of the  `Settings > Modes` screen.  Click on the Mode Writer tile to read through its definition.  
 
 You'll notice a quirk in Mode Writer's **role definition** where it outputs **XML** instead of **Markdown**.  It's unclear why XML was chosen given everything else in IBM Bob appears to use Markdown.
@@ -79,9 +79,11 @@ If you've been following directions to this point, then your chat window should 
 ALSO...you should be close to the limit of your context window.  Mine currently shows 96k of 200k tokens consumed.  If all goes as planned, you will hit the limit of your context window and it will be automatically condensed by IBM Bob.
 
 ## 4. Create a "Dataset Website Builder" mode using Mode Writer
-**Mode Writer** will now display as an option to select in Bob's chat window, so **select Mode Writer**.  
+**Mode Writer** will now display as an option to select in Bob's chat window, so select **Mode Writer**.  
 
-Enter this text into Chat.  Click on **Enhance Prompt**.  Read through Bob's enhancements to the Prompt.  Then submit it to Bob.
+<img src="images/mode-writer-selected.png" width="350">
+
+Now that Mode Writer is selected, submit the following text to Bob.
 ```
 Create a custom mode called "data website builder" that will build a data analytics website based off a website template that will be provided by the user.  
 The mode should ask users to describe any specific requirements for each page of the website template.  Also ask users to provide a base.css or other file providing the default styling and colors for the website.  Unless the user specifies otherwise, the mode should build these websites using a FastAPI server and the tailwinds css framework.
