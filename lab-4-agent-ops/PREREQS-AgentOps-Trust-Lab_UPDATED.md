@@ -102,12 +102,12 @@ python3 --version
 ```
 
 ```bash
-pip install 'ibm-watsonx-orchestrate[agentops]'
+pip install 'ibm-watsonx-orchestrate[agentops]==2.6.0'
 pip install 'ibm-watsonx-orchestrate-evaluation-framework==1.2.7'
 pip install 'langfuse<4'
 ```
 
-> **Why the extra install steps?** The `[agentops]` extra installs the evaluation framework, but the latest version (1.3.x) has breaking changes — pinning to 1.2.7 ensures compatibility. The default install pulls in langfuse 4.x, which removed APIs that the evaluation framework depends on — constraining to `<4` fixes this.
+> **Why the extra install steps?** The ADK must be pinned to **2.6.0** — version 2.7.0 introduced breaking changes to the `agentops.record` module that are incompatible with the evaluation framework 1.2.7. The `[agentops]` extra installs the evaluation framework, but the latest version (1.3.x) has breaking changes — pinning to 1.2.7 ensures compatibility. The default install pulls in langfuse 4.x, which removed APIs that the evaluation framework depends on — constraining to `<4` fixes this.
 
 **Verify ADK:**
 ```bash
@@ -119,7 +119,8 @@ orchestrate evaluations evaluate --help
 ```bash
 python -c "from ibm_watsonx_orchestrate.cli.commands.evaluations.evaluations_controller import EvaluationsController, EvaluateMode, USE_LEGACY_EVAL; print('OK')"
 # Must print "OK". If it fails:
-#   "No module named 'agentops'" → pip install 'ibm-watsonx-orchestrate[agentops]'
+#   "No module named 'agentops'" → pip install 'ibm-watsonx-orchestrate[agentops]==2.6.0'
+#   "No module named 'agentops.record'" → you installed ADK 2.7.0+ — reinstall with: pip install 'ibm-watsonx-orchestrate[agentops]==2.6.0'
 #   "cannot import name" from agentops → pip install 'ibm-watsonx-orchestrate-evaluation-framework==1.2.7'
 #   "No module named 'langfuse.api.resources'" → pip install 'langfuse<4'
 ```
