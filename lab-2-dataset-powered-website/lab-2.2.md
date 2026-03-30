@@ -44,7 +44,9 @@ Writing modes can be challenging so IBM has built a Custom Mode that writes Cust
 - **IBM employees:** Skip to 2.2
 
 ### 2.1 Mode Writer for IBM Partners
-Lucky you, you already installed the custom Mode Writer mode earlier when setting up the Carbon React mode during lab 2.1! Skip to step 2.3
+You already installed the custom Mode Writer mode earlier when setting up the Carbon React mode during lab 2.1.  So nothing to do here.
+
+Skip to step 2.3
 
 ### 2.2 Mode Writer for IBM Employees
 Search for the **Mode Writer** mode in Settings > Modes.  Read through its description prior to installing it at the Project level.  
