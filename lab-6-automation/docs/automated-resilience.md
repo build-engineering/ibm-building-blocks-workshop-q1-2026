@@ -965,7 +965,109 @@ Once the custom mode is imported, use IBM Bob to generate a comprehensive insigh
 Copy and paste the following prompt into IBM Bob to generate the dashboard application:
 
 ```
-Using Automate Resilience Builder custom bob mode, create a python dash app that will generate all the insights with meaningful charts. Showcase insights for Application Security, Application vulnerabilities, Software Composition, Certificate Management and System Health
+Automated Resiliency and Security Insights Dashboard
+Use the Automate Resilience custom mode to build a production-ready, modular Python Dash application for comprehensive Resiliency and Security Insights.
+
+Core Requirements:
+Header & Branding:
+
+Title: "Automated Resiliency and Security Insights" (centered, bold, primary color)
+Subtitle: "With IBM Bob and IBM Concert" (centered, muted text)
+Tab Structure:
+
+Application Security (All Applications - Unfiltered)
+- Real-time metrics: Total applications, critical applications, high-risk applications
+- Risk distribution pie chart with color-coded severity levels
+- Top vulnerable applications bar chart
+- Comprehensive sortable/searchable application table with risk scores
+- Auto-refresh capability (60-second interval)
+
+Vulnerability Drill-Through (Filtered to specific application via env config)
+- Application details card with key metrics
+- Build artifacts table with interactive "View CVEs" buttons
+- Dynamic CVE display with severity distribution chart
+- Top CVEs by risk score visualization
+- Detailed CVE table with severity badges and CVSS scores
+- Support for drill-down from artifacts to specific CVEs
+- Packages list table with interactive "View Packages" buttons
+
+Software Composition (All Packages - Unfiltered)
+- Package metrics: Total packages, high vulnerability count, back-level packages
+- Package issues distribution chart
+- Vulnerable packages table with "View CVEs" drill-down
+- CVE tracking status (tracked vs not tracked in Concert database)
+- Package version and risk level indicators
+
+Certificate Management (All Certificates - Unfiltered)
+- Certificate metrics: Total certificates, expiring soon, expired
+- Certificate expiry status distribution chart
+- Certificate issuers pie chart
+- Comprehensive certificate table with expiry dates
+- Status badges: Expired (red), Expiring Soon (yellow), Valid (green)
+- Proactive expiration alerts
+
+System Health (Dashboard & API Monitoring)
+- System status indicators
+- Concert API health check with connectivity status
+- Configuration summary display
+- API metrics: Request counts, error rates, response times
+- Performance tracking over time
+
+Technical Architecture:
+
+Resilience & Performance Features:
+- Connection Pooling: Efficient HTTP session management (10 connections, 20 max size)
+- Retry Logic: Exponential backoff with configurable max retries (default: 3)
+- Rate Limiting: Token bucket algorithm (100 requests/minute)
+- Circuit Breaker: Fail-fast mechanism for degraded services
+- Timeout Management: Configurable connect (5s) and read (30s) timeouts
+- Multi-Level Caching:
+	- Application data: 5-minute TTL
+	- Vulnerability data: 30-minute TTL
+	- Certificate data: 1-hour TTL
+	- Package data: 30-minute TTL
+- Graceful Degradation: Continue functioning with partial data
+- Cache Fallback: Use cached data when API unavailable
+
+Error Handling & Security:
+- Comprehensive logging with structured format to file and console
+- User-friendly error messages without exposing sensitive details
+- Environment-based configuration (all secrets in .env)
+- Input validation and sanitization
+- Type-safe operations with defensive programming
+- Support for varying API response formats (timestamps, ISO strings, etc.)
+
+UI/UX Features:
+- Dash Bootstrap Components for modern, responsive design
+- Plotly interactive charts with hover details
+- Color-coded severity indicators (Critical: red, High: orange, Medium: yellow, Low: blue)
+- Loading spinners for async operations
+- Auto-refresh with configurable intervals
+- Sortable and searchable data tables
+- Responsive layout for different screen sizes
+
+Project Structure (follow best practices):
+- app.py: Main application and UI
+- concert_integration.py: Concert API client and data processing (Using Bob Mode: Automate Resilience)
+- requirements.txt, .env.example, setup scripts, documentation
+
+Deliverables:
+- Fully functional dashboard with all 5 tabs operational
+- Setup scripts for both Windows and Linux/Mac
+- Comprehensive documentation: README.md, QUICK_START.md, PROJECT_SUMMARY.md
+- Production-ready code with error handling, logging, and monitoring
+- Configuration templates: .env.example with all required variables
+- Testing checklist for deployment validation
+
+Success Criteria:
+- Dashboard loads in < 5 seconds
+- All tabs display data correctly
+- Drill-down functionality works seamlessly
+- Auto-refresh operates without UI blocking
+- Graceful handling of API failures
+- Clear error messages for users
+- Comprehensive logging for troubleshooting
+- Responsive design across devices
 ```
 
 #### What IBM Bob Will Generate
