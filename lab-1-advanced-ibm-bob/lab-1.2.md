@@ -247,3 +247,7 @@ While not necessarily useful to you, it is likely used by the IBM Bob team to de
 If you get here with time to spare, then spend the remaining time continuing to improve on your application.  Or go back and select a different application to build.
 
 Once you are happy with your work, share your results with others.  Specifically share your application with the workshop leads as they'll be excited to learn what you've created.
+
+Ready for Lab 2? In the next lab, go deeper into Bob's custom modes by learning to transform wireframe images into an IBM Carbon-based REACT website.  Learn to execute arbitrary (but secure) code in an MCP Server. More important, build skills that will help you generate production-quality code faster.
+
+🤖 [Get started with Lab 2](../lab-2-dataset-powered-website/README.md)

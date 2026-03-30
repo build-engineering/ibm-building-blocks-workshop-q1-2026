@@ -164,7 +164,13 @@ Recommendations are to:
 - Look into the new [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/) from Cloudflare where sites are pre-optimized to be read by AI agents.
 - Use a dedicated search MCP server from companies like [Tavily](https://tavily.com/).
 
-## 5. IBM Bob's Custom Mode and MCP Server Maketplace
+## 5. IBM Bob's Custom Mode and MCP Server Marketplace
+IBM is building a Marketplace for sharing custom modes and MCP servers.  This is not-yet-available externally though.  
+
+## 5.1 Are you an IBM Partner?
+If you are doing these labs as part of a IBM-hosted workshop, ask your assigned IBMer to show you the Marketplace as you won't yet have access.  Doing these labs outside an IBM-hosted workshop? If you know an IBMer, give them a call and ask them to show you this upcoming functionality.
+
+## 5.2 IBM Internal Access to Marketplace
 Head back to the top-level of Bob's Modes screen and explore the numerous modes available from the Modes marketplace.  We'll return here later to enable a Marketplace mode to improve one of the applications that you'll be developing.
 
 You may see this error.  If so, follow the instructions to connect to the IBM VPN then click **Retry Connection**.
@@ -177,7 +183,7 @@ All of the modes with an **Install** button are provided through the [Bob Mode M
 
 You will build your own custom modes soon, and once you have one that you're proud of, consider submitting it to IBM's internal [Github repo hosting Bob's Registry](https://github.ibm.com/code-assistant/bob-marketplace-registry).  
 
-The Bob Marketplace Registry is a public repository that contains definitions for MCP servers and modes that can be used with Bob. These definitions are pulled by the Bob Marketplace server and served to users. Directions for contributing your own modes and MCP servers is provided on the repo's home page.
+The Bob Marketplace Registry is a IBM-only repository that contains definitions for MCP servers and modes that can be used with Bob. These definitions are pulled by the Bob Marketplace server and served to users. Directions for contributing your own modes and MCP servers is provided on the repo's home page.
 
 <img src="images/github-bob-registry.png" width="750">
 
