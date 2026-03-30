@@ -67,7 +67,7 @@ Select the **Carbon React** mode in the Bob's chat window.
 
 <img src="images/carbon-react-mode-selected.png" width="600">
 
-Enter this prompt into Bob's Chat interface:
+Submit this prompt to Bob:
 
 ```
 I have two images in @/lab-2-dataset-powered-website/v1-wireframes/ which show the website that I want to build.  Use these to create a website template.  Create the site using Carbon and React but don't add anything beyond what's in the template images.  For css styling, use the @/lab-2-dataset-powered-website/v1-wireframes/base.css as a reference.

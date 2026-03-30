@@ -70,7 +70,7 @@ At least you can say that you were told about the Orchestrate Docs MCP Servers. 
 
 For today's workshop at least, go to **Settings > MCP** then select BOTH ADK MCP Servers and click **uninstall**.  Once you're done **uninstalling** the BOTH ADK Docs MCP Server, proceed to the next section.
 
-<img src="images/uninstall-adk-mcp-servers.png" width="400">
+<img src="images/uninstall-adk-mcp-servers.png" width="800">
 
 ## 2.2. Also delete Pandas Dataset MCP Server
 In the next sections, you will deploy the Pandas Dataset MCP Server to watsonX Orchestrate so you will no longer need the locally running version.  
@@ -78,7 +78,7 @@ In the next sections, you will deploy the Pandas Dataset MCP Server to watsonX O
 - Close the terminal window that was running Pandas MCP server
 - Go to Bob's **Settings > MCP**, select the Pandas Dataset MCP server tile and click **Delete**.
 
-<img src="images/delete-pandas-mcp-server.png" width="400">
+<img src="images/delete-pandas-mcp-server.png" width="800">
 
 ## 3. IBM Bob Skills
 During the next few sections, we will explore a new **Skills** capability that just launched in Bob's v1.0.1 version on March 24th, 2026.  The concept of Skills was introduced by Anthropic when they launched [Skills for Claude](https://claude.com/blog/skills) last year so great to see this capability coming to IBM Bob too.
@@ -187,8 +187,9 @@ You'll see both a URL and API section along with a link to launch your watsonx O
 You should obtain an API key by going to [https://cloud.ibm.com/resources](https://cloud.ibm.com/resources)
 
 1. Select account with your Orchestrate instance in the top-left drop-down.
-2. Go to Manage > Access (IAM) > API Keys
-3. Click Create+
+2. Go to the **Manage** menu at the top-of-the-screen and select **Access (IAM)** then choose **API Keys** from the left-side.
+   - NOTE: There is also a **Manage** menu at the left-side but use the **Manage** menu at top.
+3. Click **Create+** and copy the API key.
 
 ### 6.1 Launch watsonX Orchestrate
 Click on **Launch watsonX Orchestrate** to launch it in your browser. In a few minutes, we'll return to the open browser tab to ensure your MCP server was properly deployed.  Also remember how to get to the **Launch watsonX Orchestrate** button as you'll need to re-launch watsonX Orchestrate multiple times during these labs.
@@ -422,6 +423,8 @@ Now extracts HTML from response.result.data.message.content[0].text
 3. Between the step history and the iframe, display the full json htmlResponse in an expandable/closeable <div>. 
 
 ### Additional Requirements
+- The agent must deployed from Draft to Live
+- If the agent is not Live, it cannot be accessed by REST APIs
 - This is a single-turn Question and Answer not a back-and-forth chat conversation.  
 - The agent should not ask follow-up questions but instead always respond in HTML format, even if the response is an error or recommendation on how to better ask the question.
 - Use Orchestrate's REST API and token based security.
