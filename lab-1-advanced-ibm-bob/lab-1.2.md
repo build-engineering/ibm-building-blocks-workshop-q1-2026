@@ -134,7 +134,7 @@ Can you recommend additions or improvements to this application that would enhan
 
 Review Bob's recommendations and edit anything you don't like.  Before submitting, don't forget to click the Enhance Prompt button!
 
-Here are [working example code for the each of the applications](../working-example-code/). Click on the index.html to execute.  
+Here are [working example code for the each of the applications](../storage/working-example-code/). Click on the index.html to execute.  
 
 <img src="images/volcano-app.png" width="500">
 

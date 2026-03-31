@@ -15,67 +15,26 @@ You'll work through these topics and more during this setup process:
 And here's what you'll build by the end of this lab.  Your website with have a Q&A capability where the website queries an agent in Orchestrate that uses the Pandas Dataset MCP server to generate HTML replies that contain natural language and chartjs answers to user queries.
 <img src="images/lab-3.1-final-website.png" width="600">
 
-## 1. Enable watsonx Orchestrate's MCP servers 
-Open Bob's Settings panel, search for "Orchestrate" under the MCP server section.  Install both MCP servers provided by the watsonx Orchestrate team. We recommend keeping both servers at the **Project** level.
+## 1. watsonx Orchestrate's MCP servers 
+Open Bob's Settings panel, search for "Orchestrate" under the MCP server section.  You will find two MCP servers provided by the watsonx Orchestrate team. 
 
 1. watsonx Orchestrate ADK
 2. watsonx Orchestrate ADK Docs
 
-You will need to update two fields when adding the MCP server for watsonx Orchestrate ADK
+At the moment, both of these servers have bugs which prevent using them during this workshop.  However take note that they are available, and hopefully soon, the bugs will be fixed
 
-- ADK Version (select to use the latest version)
-- Project directory
-   
-<img src="images/watsonx-orchestrate-adk-mcp-server.png" width="400">
+- The ADK Docs server returns a list of website URLs rather than more agent-friendly markdown.  
+- IBM Bob's web browser:
+  - Is not available in the GA release
+  - Surfs web pages via screenshots rather than by reading the HTML.  Having Bob capture screenshots is slow and consumes high amounts of tokens/coins.
+- The ADK server has had connectivity issues lately.
 
-The MCP server for watsonx Orchestrate ADK requires a project directory. Set the path to the location of this lab's folder. 
+For these reason, we will rely on the Agent Builder Skill to provide Bob the knowledge required to use watsonX Orchestrate.
 
-For example:
-```
-/Users/anthonystevens/github/ibm-building-blocks-workshop-q1-2026/lab-3-agent-builder-custom-mode
-```
+## 2. Delete your local Pandas Dataset MCP Server from Bob
+In the next sections, you will deploy the Pandas Dataset MCP Server to watsonX Orchestrate, so you will no longer need the locally running version.  
 
-You could add Orchestrate's MCP Servers to Global scope then update the project directory path everytime you switch projects, but it's easy to forget. So keep both MCP servers at Project scope and just re-add each time so you don't forget.
-
-If you get an error when installing Orchestrate ADK's MCP server, the issue is likley that your project directory is incorrectly set.  
-
-## 2. Orchestrate ADK Docs MCP Server
-The Orchestrate ADK Docs MCP Server was recently updated to a format that is poorly designed for agents.  
-
-Enter this text into the Chat window and just send.  **Don't optimize this prompt!**
-
-```
-Search Orchestrate ADK Docs MCP Server for "what's the required YAML format used to describe agents?"  I don't care if what's returned seems correct or not.  Just show me exactly what's returned by the MCP server's tool.
-```
-Instead of providing agent-readable answers, the current implementation returns a Google-style list of links.  
-
-<img src="images/orchestrate-adk-answer-as-urls.png" width="500">
-
-Bob will typically ignore these links and keep trying new searches.  That's a good thing as Bob's web browsing capability would take screenshots of the web page, then scroll down to the bottom taking screenshots all along the way.
-
-💰 That's a rapid and inefficient way to blast through your Bob coins!  💰 
-
-Go ahead and ask Bob to search one of those links:
-```
-This link seems to have the info we need about the correct yaml format for orchesrate agents, read it and tell me what the format is:
-https://developer.watson-orchestrate.ibm.com/agents/build_agent#authoring-native-agents 
-```
-
-Bob will open a web browser, and in my case, took 1 minute and 15 page scrolls while consuming 0.6 tokens.  Most document searches like this require reading multiple pages, so this is highly inefficient.
-
-<img src="images/bob-scrolls-to-find-agent-yaml.png" width="400">
-
-## 2.1. 😲 And now uninstall BOTH Orchestrate ADK MCP Servers 🔥
-At least you can say that you were told about the Orchestrate Docs MCP Servers. Both servers have been buggy lately so let's stick with the Orchestrate ADK's CLI for today's lab.
-
-For today's workshop at least, go to **Settings > MCP** then select BOTH ADK MCP Servers and click **uninstall**.  Once you're done **uninstalling** the BOTH ADK Docs MCP Server, proceed to the next section.
-
-<img src="images/uninstall-adk-mcp-servers.png" width="800">
-
-## 2.2. Also delete Pandas Dataset MCP Server
-In the next sections, you will deploy the Pandas Dataset MCP Server to watsonX Orchestrate so you will no longer need the locally running version.  
-
-- Close the terminal window that was running Pandas MCP server
+- Close the terminal window that was running the Pandas MCP server
 - Go to Bob's **Settings > MCP**, select the Pandas Dataset MCP server tile and click **Delete**.
 
 <img src="images/delete-pandas-mcp-server.png" width="800">
@@ -94,11 +53,6 @@ The primary description and functionality of each Skill is stored in a SKILL.md 
 This can be seen in the example below where the YAML-style comment provides the name and description of the Skill.  When Bob is initialized, all Skill names and descriptions are provided so Bob can choose which Skills to read in more detail when executing tasks for the user.
 
 <img src="images/skills-file-example.png" width="700">
-
-### 3.1. Skills are available in IBM Bob v1.0.1
-To ensure you have access to the Skills functionality, open Settings and validate that you are running version 1.0.1.  If not, quit IBM Bob and restart.
-
-<img src="images/bob-version-1.0.1.png" width="500">
 
 ## 4. Agent Builder Skill for the IBM Building Blocks
 The [IBM Building Blocks](https://ibm-self-serve-assets.github.io/building-blocks-docs/) contains a range of capabilities across IBM's AI and Automation portfolio of products. Each of the Building Blocks has an associated Skill for IBM Bob that you can use to accelerate using Bob with that Building Block.  In the Day 2 labs, you'll learn to use the Custom Modes and Skills for the Automation Building Blocks.  
@@ -137,13 +91,13 @@ Take a few mins to look through the other files then continue with the lab.
 ### 4.3 ⚠️ Important notes when using Skills ⚠️
  Keep these two items in mind when using Skills.
  
- 1. Skills are only available if you have Advanced mode selected. This ensures Bob has access to all necessary tools to run skill-based workflows effectively.
+ 1. Ensure you have Advanced mode selected as some modes do not support using Skills.
  2. When selecting to **auto-approve Bob's actions**, there's a new option to auto-approve Bob's use of skills.  For now, leave that option unselected so that you can see when/if Bob is using the **Agent Builder** skill.
 
 <img src="images/auto-approve-skills.png" width="700">
 
 ### 4.4 Validate Bob has access to agent-builder skill
-Ensure you have Advanced mode selected and enter this into the Chat window:
+Ensure you have selected **Advanced**  mode selected in Bob's chat window then submit this to Bob:
 
 ```
 What skills do you have available to you?
@@ -274,7 +228,7 @@ Ensure you have experience with these important topics:
 - [How toolkits are different from tools](https://developer.watson-orchestrate.ibm.com/tools/toolkits/overview)
 - [Python toolkits](https://developer.watson-orchestrate.ibm.com/tools/toolkits/local_mcp_toolkits#local-python)
 
-## 10. Deploying a Q&A agent into watsonX Orchestrate
+## 10. Deploying a draft Q&A agent into watsonX Orchestrate
 Next you will ask Bob to design then deploy a Q&A agent that can answer questions about the datasets in the MCP server. 
 
 ## 10.1 Design your Q&A agent
@@ -344,7 +298,7 @@ Answer these questions:
 6. Are there any instructions you'd want to add/remove?
 
 ### 10.3 Was your agent deployed by Bob?
-Bob should deploy the Q&A agent for you.  If not, Bob would have created a deployment script for you.  If your agent wasn't deployed, either ask Bob to run the deployment for you or look for the deployment script then manually execute it yourself.
+Bob should deploy a Draft version of the Q&A agent for you.  If not, Bob would have created a deployment script for you.  If your agent wasn't deployed, either ask Bob to run the deployment for you or look for the deployment script then manually execute it yourself.
 
 If you get stuck, ask an instructor for help or tap a colleague for advice.
 
@@ -407,7 +361,30 @@ Now that the full text is visible in your Text Editor, you should see something 
 
 If you don't see this then let the instructor know.
 
-## 11. Connecting your agent to the Q&A dropdown 
+## 11. Deploy Q&A agent from Draft to Live access
+Agents in watsonx Orchestrate operate in one of two states: draft or live.
+- A draft agent is actively being developed or modified by a builder. You can access draft agents from the Manage Agents page in the UI.
+- A live agent is available to end users through the Web chat UI on the Orchestrate landing page.
+
+### 11.1 Deploy to live access
+Bob has deployed your in draft mode so that you could test it prior to deployment for live access.  Now you will ask Bob to deploy your Agent for live access.
+
+Submit this to Bob:
+```
+Deploy the Q&A agent from Draft to Live access.
+```
+
+### 11.2 Test live agent
+Open Orchestrate and select **Chat** from the left-side menu then select your agent from the drop-down menu.
+
+<img src="images/agent-deployed-to-live.png" width="500">
+
+Enter this text into the Orchestrate chat to ensure the live agent is functioning properly:
+```
+How many permits are issued in San Francisco each year?
+```
+
+## 12. Connecting your agent to the Q&A dropdown 
 Now you need to connect the Q&A dropdown's submit button to your Q&A agent then capture the output of the Q&A agent and display it on your Q&A web page.  To achieve this, Bob needs to know about Orchestrate's REST API plus how to handle authentication with Orchestrate's token based security.  Fortunatley, the Agent Builder skill added earlier will provide Bob with those details.
 
 Review this prompt then submit to Bob through the Chat window:
@@ -423,8 +400,6 @@ Now extracts HTML from response.result.data.message.content[0].text
 3. Between the step history and the iframe, display the full json htmlResponse in an expandable/closeable <div>. 
 
 ### Additional Requirements
-- The agent must deployed from Draft to Live
-- If the agent is not Live, it cannot be accessed by REST APIs
 - This is a single-turn Question and Answer not a back-and-forth chat conversation.  
 - The agent should not ask follow-up questions but instead always respond in HTML format, even if the response is an error or recommendation on how to better ask the question.
 - Use Orchestrate's REST API and token based security.
@@ -435,14 +410,14 @@ Now extracts HTML from response.result.data.message.content[0].text
 
 You'll notice the prompt has some highly technical details such as the json location for the agent's final response.  We've also added details like tool calling and the full JSON response from the agent.  These are useful during development for debugging purposes. 
 
-### 11.1 Review your updated Q&A page
+### 12.1 Review your updated Q&A page
 If all goes well, Bob will have connected your Q&A page to the Agent in Orchestrate.  You should now be able to select a question then click submit.  The screen should update showing that it's waiting for the agent's response.
 
 <img src="images/waiting-for-agent-response.png" width="500">
 
 If you don't see a screen similar to above when clicking submit, ask a colleage or the instructor for assistance.
 
-### 11.2 Debugging your results
+### 12.2 Debugging your results
 Handling agent responses can be tricky as noted in the `Response Formatting` section of the promp above.  When debugging HTML, the best solution is to use the **Developer Tools capability** in **Chrome**.  
 
 You can access Developer Tools by going to the `View` menu at top and selecting `Developer > Developer Tools`.  This will open the Developer Tools panel on the right side of your Chrome browser. 
@@ -457,27 +432,27 @@ Hover over the section of the the Q&A page showing your agent's response and you
 
 <img src="images/inspect-agent-response-element.png" width="500">
 
-### 11.3 OK, now try to break the agent!
+### 12.3 OK, now try to break the agent!
 Always test your agentic solutions with the intent to break it.  If you don't know in which ways your agents system will fail, then you shouldn't be releasing it into production.  You should always devise increasingly hard challenges until it only fails in ways that you don't expect your end users to experience.  
 
 What are the limits of this agent?  Within reason, ask different question to determine where the agent fails to understand and answer the question.  
 
 Once you find a bug or missing feature, ask Bob to fix it. Keep iterating until Bob passes most of your tests.
 
-### 11.4 More improvements?
+### 12.4 More improvements?
 Once you have successfully connected your agent to the Q&A page, consider other features you could add.  Try adding different capabilities like these:
 
 - Instead of showing the tool calls as JSON, ask Bob to create an intuitive UI showing each tool call individually.  More like Orchestrate does in it's UI.
 - Likewise for the full JSON response.  Are there other useful elements to extract and show to the user?
 
 
-### 12. Improving Bob through better Skills
+### 13. Improving Bob through better Skills
 What was the reason for Bob not functioning as expected"
 - Should the prompt have been rewritten?
 - What knowledge was Bob missing?
 - Would it help if Bob had more information in the Agent Builder skill?
 
-### 12.1 Ask Bob to fix itself
+### 13.1 Ask Bob to fix itself
 Once you have improved on the website and found limitations of the Agent Builder Skill, there's an easy way to improve the Skill.
 
 Type this into the Chat window and see what Bob recommends:
@@ -493,7 +468,7 @@ Here's where checkpoints come in handy.  You can ask Bob to edit the Agent Build
 
  Once you've identified defects in the Agent Builder Skill and found a solution that improves it, submit a pull request to share your updates with everyone else.
 
-### 12.2 It takes a village to build an Agent Builder Skill
+### 13.2 It takes a village to build an Agent Builder Skill
 Each of the Building Block Skills is a community-driven effort. We need everyone on the Build Engineering team to help improve these skills.  If you encounter problems with a Skill in the future, identiy who on the Build Engineering team is supporting each skill and work with them to improve it.
 
 - Agents: [Dheeraj Arremsetty](https://ibm.enterprise.slack.com/team/WDRKP9Z41)
@@ -501,5 +476,5 @@ Each of the Building Block Skills is a community-driven effort. We need everyone
 - Data: [Himangshu Mech](https://ibm.enterprise.slack.com/team/W54H7JSKV)
 - Automation: [Sunil Gajula](https://ibm.enterprise.slack.com/team/WSYFC8E48) and [Yasser Sherriff](https://ibm.enterprise.slack.com/team/W52CC6YJJ)
 
-## 13 Ready for your next challenge?
+## 14 Ready for your next challenge?
 When you're ready for the next team-oriented challenge, proceed to the next lab.
