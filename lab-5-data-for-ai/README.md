@@ -75,85 +75,6 @@ On Windows, if `python3.12` does not work, use:
 py -3.12 --version
 ```
 
-### Environment provisioning (TechZone instances)
-
-The following services need to be set up on your TechZone instance:
-
-#### 1. Setup Milvus in watsonx.data
-
-Milvus will be configured as the vector database for this lab:
-- Access your TechZone watsonx.data instance
-- Milvus service should be pre-configured and running
-- If not configured, enable Milvus from the Infrastructure manager
-- Connection details (host, port, credentials) will be provided
-- A collection named `product_insights`(or the name you choose) will be created during ingestion
-
-#### 2. Setup watsonx.ai Runtime
-
-**If watsonx.ai runtime is already provisioned:**
-- Verify access to your TechZone watsonx.ai instance
-- Confirm runtime has access to foundation models
-- Verify embedding model `intfloat/multilingual-e5-large` is available
-
-**If watsonx.ai runtime is NOT provisioned:**
-1. Log in to IBM Cloud Console
-2. Navigate to **Catalog** → Search for "watsonx.ai"
-3. Select **watsonx.ai** service
-4. Choose your region (e.g., `us-south`)
-5. Select an appropriate plan (Lite or Standard)
-6. Click **Create**
-7. Wait for the service to provision (5-10 minutes)
-8. Click **Launch watsonx.ai** to access the platform
-
-#### 3. Setup watsonx.ai Studio Project
-
-**If watsonx.ai project is already provisioned:**
-- Access your existing project in watsonx.ai
-- Verify the project is associated with Watson Machine Learning runtime
-- Note the Project ID from the project settings
-
-**If watsonx.ai project is NOT provisioned:**
-1. In the watsonx.ai console, click **Projects** → **New project**
-2. Select **Create an empty project**
-3. Configure the project:
-   - **Name**: `Retail Product Insights`
-   - **Description**: "Project for retail product insights with RAG and vector search"
-   - **Storage**: Select or create a Cloud Object Storage instance
-4. Click **Create**
-5. Once created, go to **Manage** tab → **General**
-6. Copy the **Project ID** (format: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
-7. Verify Watson Machine Learning is associated:
-   - Go to **Manage** → **Services & integrations**
-   - Confirm **Watson Machine Learning** is listed
-   - If not, click **Associate service** and select your Watson Machine Learning instance
-
-#### 4. Generate IBM Cloud API Key
-
-1. From IBM Cloud Console, click **Manage** → **Access (IAM)**
-2. In the left sidebar, click **API keys**
-3. Click **Create an IBM Cloud API key**
-4. Provide a name: `watsonx-retail-app-key`
-5. Click **Create**
-6. **Important**: Copy and save the API key immediately
-7. Click **Download** to save a backup copy
-
-#### 5. Collect Required Details
-
-After completing the setup, collect the following credentials:
-- **WATSONX_URL**: Based on your region (e.g., `https://us-south.ml.cloud.ibm.com`)
-- **WATSONX_API_KEY**: The IBM Cloud API key you generated
-- **WATSONX_PROJECT_ID**: From the watsonx.ai project settings
-- **MILVUS_HOST**: From watsonx.data Milvus connection details
-- **MILVUS_PORT**: Usually `19530`
-- **MILVUS_USER**: From watsonx.data Milvus credentials
-- **MILVUS_PASSWORD**: From watsonx.data Milvus credentials
-
-These details will be used to configure the retail application deployment.
-
-### Complete prerequisite lab
-
-#### Complete [this](https://github.com/build-engineering/ibm-building-blocks-workshop-q1-2026/blob/main/lab-6-automation/docs/ansible-deployment.md) lab before starting the main workshop steps
-
 ### Access and setup needed before the lab
 
 The following will be provided or prepared before the lab:
@@ -249,7 +170,42 @@ data-for-ai/
 
 ---
 
-## Step 1: Create a working directory
+## Step 1: Deploying Retail Application with Ansible
+
+Before working with the RAG ingestion pipeline, you must deploy the retail application infrastructure using Ansible.
+
+Complete the [Ansible Deployment Lab](https://github.com/build-engineering/ibm-building-blocks-workshop-q1-2026/blob/main/lab-6-automation/docs/ansible-deployment.md) which covers:
+
+### What You'll Learn
+
+- **Docker Hub Setup** - Create and configure Docker Hub account
+- **Ansible Installation** - Install Ansible on bastion host
+- **Playbook Configuration** - Download and configure deployment scripts
+- **Application Deployment** - Execute Ansible playbooks
+- **Verification** - Validate successful deployment
+- **Troubleshooting** - Resolve common deployment issues
+
+### What You'll Deploy
+
+- Multi-tier retail application
+- PostgreSQL database with persistent storage
+- Microservices architecture
+- Frontend web interface
+
+### Why This Step is Required
+
+The Ansible deployment sets up the complete retail application infrastructure that you will enhance with AI-powered insights in the subsequent steps. This includes:
+
+- The retail application frontend and backend services
+- Database infrastructure for product data
+- Network configuration and service connectivity
+- The FastAPI service that will later retrieve insights from Milvus
+
+**Important:** Complete the entire Ansible deployment lab before proceeding to Step 2. Verify that your retail application is running and accessible before continuing.
+
+---
+
+## Step 2: Create a working directory
 
 ```bash
 mkdir -p data-for-ai
@@ -258,7 +214,7 @@ cd data-for-ai
 
 ---
 
-## Step 2: Clone the Building Blocks repository
+## Step 3: Clone the Building Blocks repository
 
 ```bash
 git clone https://github.com/ibm-self-serve-assets/building-blocks.git
@@ -266,7 +222,7 @@ git clone https://github.com/ibm-self-serve-assets/building-blocks.git
 
 ---
 
-## Step 3: Copy the ingestion asset locally
+## Step 4: Copy the ingestion asset locally
 
 ```bash
 cp -r building-blocks/data-for-ai/question-and-answer/rag/assets/rag-ingestion-sse-mcp-server .
@@ -282,7 +238,7 @@ data-for-ai/
 
 ---
 
-## Step 4: Create a Python virtual environment
+## Step 5: Create a Python virtual environment
 
 ### macOS / Linux
 
@@ -307,7 +263,7 @@ pip install -r rag-ingestion-sse-mcp-server/app/requirements.txt
 
 ---
 
-## Step 5: Configure the ingestion MCP server
+## Step 6: Configure the ingestion MCP server
 
 Go to the ingestion folder:
 
@@ -374,7 +330,7 @@ This helps split retail documents into smaller overlapping pieces so embeddings 
 
 ---
 
-## Step 6: Start the ingestion MCP server
+## Step 7: Start the ingestion MCP server
 
 Make sure your Python virtual environment is active, then run:
 
@@ -400,7 +356,7 @@ curl http://localhost:8080/health
 curl http://localhost:8080/
 ```
 
-## Step 7: Workshop - Generate Product Data Using Bob
+## Step 8: Workshop - Generate Product Data Using Bob
 
 Before ingesting data into Milvus, you need product documentation to work with. This workshop shows how to use Bob's Product Documentation Generator mode to automatically create comprehensive product documentation from a retail website.
 
@@ -417,60 +373,54 @@ Before ingesting data into Milvus, you need product documentation to work with. 
 - A retail application running locally (e.g., on `http://localhost:3000`)
 - The Product Documentation Generator mode configured in Bob
 
-### Step 7.1: Set up the Product Documentation Generator mode
+### Step 8.1: Set up the Product Documentation Generator mode
 
-1. Clone or pull the Building Blocks repository if you haven't already:
+The Product Documentation Generator mode is located in the Building Blocks repository you cloned in Step 3.
+
+1. Navigate to the data-generator folder and extract it:
 
 ```bash
-cd data-for-ai
-git clone https://github.com/ibm-self-serve-assets/building-blocks.git
+cd building-blocks/data-for-ai/question-and-answer/rag/bob-modes/base-modes
+unzip data-generator.zip
 ```
 
-2. Navigate to the data-generator folder:
+2. Copy the `.bob` folder to your main working directory:
 
 ```bash
-cd building-blocks\data-for-ai\question-and-answer\rag\bob-modes\base-modes\data-generator.zip
-```
-unzip the data-generator.zip 
-
-3. Copy the `.bob` folder to your lab working directory:
-
-```bash
-cp -r .bob /path/to/your/lab/directory/
+cd data-generator
+cp -r .bob ~/data-for-ai/
 ```
 
-For example, if your lab directory is `~/data-for-ai/my-retail-lab`:
+3. Return to your main working directory and open it in Bob IDE:
 
 ```bash
-cp -r .bob ~/data-for-ai/my-retail-lab/
-```
-
-4. Open your lab directory in Bob IDE:
-
-```bash
-cd /path/to/your/lab/directory
+cd ~/data-for-ai
 code .
 ```
 
-### Step 7.2: Switch to Product Documentation Generator mode
+**Note:** The `.bob` folder contains the custom mode configuration that Bob will automatically detect when you open the `data-for-ai` directory.
+
+### Step 8.2: Switch to Product Documentation Generator mode
 
 1. In Bob IDE, open the mode selector (usually in the bottom status bar or command palette)
 2. Select **"📦 Product Documentation Generator"** mode
 3. Bob will greet you and explain its capabilities
 
-### Step 7.3: Generate product documentation
+### Step 8.3: Generate product documentation
 
 1. Start a conversation with Bob in the Product Documentation Generator mode:
 
 ```text
-Hello
+Can you generate product documentation?
 ```
 
-2. Bob will respond with a greeting and ask for the website URL. Provide your retail application URL:
+2. Bob will respond with a greeting and ask for the website URL. Provide your retail application URL (for example):
 
 ```text
 http://localhost:3000
 ```
+
+**Note:** Replace `http://localhost:3000` with your actual retail application URL if it's running on a different port or host.
 
 3. Bob will:
    - Launch a browser and navigate to your retail site
@@ -480,7 +430,7 @@ http://localhost:3000
    - Create a `product-data` folder in your workspace
    - Generate detailed markdown documentation for each product
 
-### Step 7.4: Review the generated documentation
+### Step 8.4: Review the generated documentation
 
 After Bob completes the generation, you should have:
 
@@ -498,7 +448,7 @@ After Bob completes the generation, you should have:
   - Best For
   - Conclusion
 
-### Step 7.5: Verify the generated files
+### Step 8.5: Verify the generated files
 
 List the generated files:
 
@@ -508,7 +458,7 @@ ls -la product-data/
 
 You should see multiple `.md` files, one for each product from your retail application.
 
-### Step 7.6: Prepare for ingestion
+### Step 8.6: Prepare for ingestion
 
 The generated markdown files in the `product-data` folder are now ready to be:
 1. Uploaded to IBM Cloud Object Storage (COS)
@@ -531,7 +481,7 @@ The generated markdown files in the `product-data` folder are now ready to be:
 
 ---
 
-## Step 8: Configure the ingestion MCP server in Bob
+## Step 9: Configure the ingestion MCP server in Bob
 
 Once the ingestion MCP server is running, configure it in **Bob**.
 
@@ -576,9 +526,63 @@ After configuration:
 - confirm `rag-ingestion-local-mcp` appears in the connected servers list
 - confirm the status is **Connected**
 
+### Alternative: Manual ingestion using CURL
+
+If you prefer to trigger the ingestion process directly without using Bob, you can use the following CURL command:
+
+```bash
+curl -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "ingest_from_cos",
+      "arguments": {
+        "prefix": "",
+        "bucket": "",
+        "destination_index": ""
+      }
+    }
+  }'
+```
+
+**Parameters:**
+- `prefix`: Optional COS prefix to filter files (leave empty for all files)
+- `bucket`: Your COS bucket name (leave empty to use the default from `.env`)
+- `destination_index`: Target Milvus collection name (leave empty to use the default from `.env`)
+
+**Example with specific values:**
+
+```bash
+curl -X POST http://localhost:8080/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "ingest_from_cos",
+      "arguments": {
+        "prefix": "product-data/",
+        "bucket": "retail-product-docs",
+        "destination_index": "product_insights"
+      }
+    }
+  }'
+```
+
+This command directly calls the MCP server's ingestion tool and is useful for:
+- Automated scripts and CI/CD pipelines
+- Testing the ingestion process independently
+- Troubleshooting when Bob connectivity issues occur
+
 ---
 
-## Step 9: Inspect available tools in Bob
+## Step 10: Inspect available tools in Bob
 
 Try one of the following prompts in Bob:
 
@@ -598,7 +602,7 @@ At this stage, students should understand that Bob is not storing the data itsel
 
 ---
 
-## Step 10: Ingest retail content from COS into Milvus
+## Step 11: Ingest retail content from COS into Milvus
 
 Use Bob and ask it to call the ingestion server.
 
@@ -624,7 +628,7 @@ Expected result:
 
 ---
 
-## Step 11: Understand what happened
+## Step 12: Understand what happened
 
 During ingestion, the Building Blocks flow is:
 
@@ -638,7 +642,7 @@ This is the key learning outcome of the lab: how to combine storage, embeddings,
 
 ---
 
-## Step 12: Use the FastAPI retrieval and insights service
+## Step 13: Use the FastAPI retrieval and insights service
 
 Once the data is ingested into Milvus, a separate **FastAPI** service is used to:
 - retrieve relevant chunks from Milvus
@@ -678,9 +682,10 @@ You should see that:
 
 ---
 
-## Step 13: lab checkpoint
+## Step 13: Lab checkpoint
 
 Before moving on, confirm all of the following:
+- you have completed the Ansible deployment lab and the retail application is running
 - you have generated product documentation using Bob's Product Documentation Generator mode
 - the `product-data` folder contains markdown files for all products
 - the lab-provided Milvus instance on watsonx.data is reachable
