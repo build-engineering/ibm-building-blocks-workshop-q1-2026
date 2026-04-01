@@ -14,6 +14,9 @@ You'll work through these topics and more during this setup process:
 
 🤖 Get started now with [lab 3.1](lab-3.1.md). 
 
+## EXTRA CREDIT after completing Lab 4 on Agent Ops
+Congrats on completing Once you have completed [lab 3.1](lab-3.1.md) plus [lab 4 on Agent Ops](../lab-4-agent-ops/README.md) then return here to apply everything that you've learned.
+
 ### Lab 3.2 Agentic multi-turn exploratory datset analysis
 Bring together everything you've learned and race against the other teams to be first to build a REST-based chat UI where agents interactively answer questions about your data then reply with charts, graphs and more.
 
