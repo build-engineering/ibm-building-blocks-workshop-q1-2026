@@ -1,5 +1,28 @@
 # Secrets Management
 
+## Overview
+
+This guide walks you through detecting and migrating hardcoded secrets in source code using IBM Bob and HashiCorp Vault. You will learn how to scan code for exposed credentials, encrypt them using the Vault Transit engine, store them securely in Vault KV, and automatically refactor your code to retrieve secrets via the Vault API — eliminating hardcoded credentials entirely.
+
+**Estimated Time:** 30–45 minutes
+
+---
+
+## Table of Contents
+
+- [Demo Video](#demo-video)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Import the Vault Expert Custom Bob Mode](#import-the-vault-expert-custom-bob-mode)
+- [Vault Installation](#vault-installation)
+- [Sample Prompt for IBM Bob](#sample-prompt-for-ibm-bob)
+- [Running the Application](#running-the-application)
+- [Architecture Overview](#architecture-overview)
+- [Security Best Practices](#security-best-practices)
+- [Related Documentation](#related-documentation)
+
+---
+
 ## Demo Video
 
 [![Automated Hardcoded Secret Detection & HashiCorp Vault Migration](https://img.youtube.com/vi/thZ_KW31D_A/0.jpg)](https://www.youtube.com/watch?v=thZ_KW31D_A)
@@ -8,556 +31,375 @@
 
 ---
 
-## Automated Hardcoded Secret Detection and Vault Migration
+## Features
 
-A comprehensive solution for detecting hardcoded secrets in source code, encrypting them with HashiCorp Vault Transit engine, storing them securely in Vault KV, and automatically refactoring code to use Vault API calls.
-
-### Features
-
-- **Automated Secret Detection**: Scans source code for 40+ types of hardcoded secrets
-- **Transit Encryption**: Encrypts sensitive secrets using Vault Transit engine (AES256-GCM96)
-- **Secure Storage**: Stores encrypted secrets in Vault KV v2 with metadata
-- **Code Refactoring**: Automatically replaces hardcoded secrets with Vault API calls
-- **Multi-Language Support**: Generates code examples in Python, Node.js, Go, CLI, and cURL
-- **Production-Ready**: Complete Ansible deployment automation for Vault
-- **Interactive UI**: Python Dash web application with professional IBM Carbon Design
+| Feature | Description |
+|---------|-------------|
+| **Automated Secret Detection** | Scans source code for 40+ types of hardcoded secrets |
+| **Transit Encryption** | Encrypts sensitive secrets using Vault Transit engine (AES256-GCM96) |
+| **Secure Storage** | Stores encrypted secrets in Vault KV v2 with metadata |
+| **Code Refactoring** | Automatically replaces hardcoded secrets with Vault API calls |
+| **Multi-Language Support** | Generates code examples in Python, Node.js, Go, CLI, and cURL |
+| **Production-Ready** | Complete Ansible deployment automation for Vault |
+| **Interactive UI** | Python Dash web application with IBM Carbon Design styling |
 
 ---
 
-## Importing the Vault Expert Custom Mode
+## Prerequisites
 
-Download the custom mode from: [secrets-management.zip](https://github.com/ibm-self-serve-assets/building-blocks/blob/main/build-and-deploy/secrets-management/bob-modes/base-modes/secrets-management.zip)
+Before you begin, ensure you have:
 
-### New Projects
+- ✅ IBM Bob installed — [Sign up for early access](https://ibm.com/bob)
+- ✅ Python 3.9 or later installed
+- ✅ Ansible 2.9 or later installed on the bastion host
+- ✅ OpenShift cluster provisioned and accessible (see [TechZone Setup](techzone-setup.md))
+- ✅ Retail Application deployed (see [Ansible Deployment](ansible-deployment.md))
 
-1. Extract [`secrets-management.zip`](https://github.com/ibm-self-serve-assets/building-blocks/blob/main/build-and-deploy/secrets-management/bob-modes/base-modes/secrets-management.zip)
-2. Copy to `.bob/`:
-   - [`custom_modes.yaml`](.bob/custom_modes.yaml)
-   - [`rules-vault-expert/`](.bob/rules-vault-expert/)
-3. Reload Bob UI → **Modes** → **Custom Modes** → Select mode
+---
 
-### Existing Projects
+## Import the Vault Expert Custom Bob Mode
 
-**Do not overwrite existing files**
+Before using IBM Bob for secrets management, import the Vault Expert custom mode into your project.
 
-1. Append to [`.bob/custom_modes.yaml`](.bob/custom_modes.yaml):
+Download the custom mode zip file from the IBM Building Blocks repository:
+
+**[secrets-management.zip](https://github.com/ibm-self-serve-assets/building-blocks/blob/main/build-and-deploy/secrets-management/bob-modes/base-modes/secrets-management.zip)**
+
+Extract the zip file — it contains the `custom_modes.yaml` and the `rules-vault-expert/` folder needed in the steps below.
+
+### For New Projects
+
+If this is a new project with no existing custom modes:
+
+1. Extract `secrets-management.zip` and copy the following into your project's `.bob/` directory:
+   - `custom_modes.yaml`
+   - `rules-vault-expert/`
+
+   Your `.bob/` directory should look like:
+   ```
+   .bob/
+   ├── custom_modes.yaml
+   └── rules-vault-expert/
+       └── [mode rules files]
+   ```
+
+2. Reload the Bob UI → **Modes** → **Custom Modes** → select **Vault Expert**
+
+### For Existing Projects
+
+If your project already has a `custom_modes.yaml`, do not overwrite it.
+
+1. Open your existing `.bob/custom_modes.yaml` and **append** the Vault Expert mode entry:
+
    ```yaml
+   # Existing custom modes (do not remove)
+   - slug: existing-mode
+     name: Existing Mode
+     # ... existing configuration ...
+
+   # Append below
    - slug: vault-expert
      name: Vault Expert
+     # ... vault-expert configuration from extracted zip ...
    ```
 
-2. Add directory:
+2. Add the rules directory from the zip without modifying existing rule folders:
+
    ```
-   .bob/rules/rules-vault-expert/
+   .bob/
+   ├── custom_modes.yaml              (updated — new mode appended)
+   └── rules/
+       ├── existing-mode/
+       │   └── [existing rules]
+       └── rules-vault-expert/        (new — copied from zip)
+           └── [vault expert rules]
    ```
+
+3. Verify the configuration:
+   - All existing modes still work correctly
+   - The Vault Expert mode appears in IBM Bob
+   - No YAML syntax errors
 
 ---
 
 ## Vault Installation
 
-We do not need to install Vault manually as this is handled as part of Ansible automation while deploying the Retail App. See [`ansible-deployment.md`](ansible-deployment.md) for details.
+You do not need to install Vault manually. It is provisioned automatically as part of the Ansible deployment when deploying the Retail Application. See [ansible-deployment.md](ansible-deployment.md) for details.
 
-**Vault keys are stored in [`vault-keys.json`](/tmp/vault-keys.json) under `/tmp`**
+Once deployed, the Vault unseal keys and root token are saved to:
+
+```
+/tmp/vault-keys.json
+```
+
+> **Important**: This file contains your root token and unseal keys. Copy its contents to a secure location immediately. It is stored in `/tmp`, which does not persist across system reboots.
 
 ---
 
-## Sample Prompt for Bob
+## Sample Prompt for IBM Bob
 
-On successful import of the custom mode, use the following prompt in Bob to generate the sample application:
+Use the following prompt with the **Vault Expert** custom mode to generate the complete secrets management application. This will produce all files with full implementations — no placeholders or TODOs.
 
-```
-# Complete Prompt for Generating Automated Hardcoded Secret Detection and Vault Migration System
-
-Use this prompt with any AI coding assistant to generate the complete application.
-
----
-
-## Master Prompt
+> **How to use**: Open IBM Bob, switch to the **Vault Expert** mode, and paste the prompt below.
 
 ```
-Create a complete, production-ready "Automated Hardcoded Secret Detection and Vault Migration" system with the following specifications:
-
-## PROJECT OVERVIEW
-Build a comprehensive solution that:
-1. Deploys HashiCorp Vault using Ansible automation
-2. Provides a Python Dash web application for detecting hardcoded secrets
-3. Encrypts sensitive secrets using Vault Transit engine (AES256-GCM96)
-4. Stores secrets securely in Vault KV v2
-5. Automatically refactors code to use Vault API calls
-6. Generates migration reports and Vault policies
-
-## PART 1: ANSIBLE VAULT DEPLOYMENT
-
-### Directory Structure
-```
-ansible/
-├── inventory/
-│   └── hosts.ini
-├── roles/
-│   └── vault/
-│       ├── defaults/
-│       │   └── main.yml
-│       ├── tasks/
-│       │   ├── main.yml
-│       │   ├── prerequisites.yml
-│       │   ├── install.yml
-│       │   ├── configure.yml
-│       │   ├── service.yml
-│       │   ├── firewall.yml
-│       │   └── initialize.yml
-│       ├── templates/
-│       │   ├── vault.hcl.j2
-│       │   ├── vault.service.j2
-│       │   └── vault.env.j2
-│       └── handlers/
-│           └── main.yml
-└── site.yml
-```
-
-### Requirements
-1. **Inventory Configuration** (inventory/hosts.ini):
-   - Support for multiple Vault servers
-   - SSH connection parameters
-   - Group variables
-
-2. **Default Variables** (defaults/main.yml):
-   - vault_version: "1.15.4"
-   - vault_address: "0.0.0.0"
-   - vault_port: 8200
-   - vault_cluster_port: 8201
-   - vault_storage_backend: "file"
-   - vault_tls_disable: true (for dev)
-   - vault_init_secret_shares: 5
-   - vault_init_secret_threshold: 3
-
-3. **Tasks**:
-   - **prerequisites.yml**: Install unzip, curl, jq; create vault user/group; create directories
-   - **install.yml**: Download Vault binary, unzip, set capabilities, verify installation
-   - **configure.yml**: Deploy vault.hcl configuration, set environment variables
-   - **service.yml**: Deploy systemd service, enable and start Vault
-   - **firewall.yml**: Configure UFW (Debian) or firewalld (RedHat) for ports 8200, 8201
-   - **initialize.yml**: Initialize Vault, save keys, unseal, enable Transit and KV v2 engines, create encryption key
-
-4. **Templates**:
-   - **vault.hcl.j2**: Storage, listener, API/cluster addresses, UI, telemetry
-   - **vault.service.j2**: Systemd service unit with security hardening
-   - **vault.env.j2**: Environment variables for Vault
-
-5. **Handlers**:
-   - reload systemd
-   - restart vault
-
-## PART 2: PYTHON DASH SECRET SCANNER APPLICATION
-
-### Directory Structure
-```
-secret_scanner_app/
-├── app.py                    # Main Dash application
-├── vault_client.py           # Vault API wrapper
-├── secret_patterns.py        # Secret detection patterns
-├── code_refactor.py          # Code refactoring engine
-├── requirements.txt          # Python dependencies
-├── .env.example              # Environment template
-├── start.sh                  # Startup script
-└── TROUBLESHOOTING.md        # Issue resolution guide
-```
-
-### Requirements
-
-#### 1. vault_client.py - Vault API Wrapper
-Create a VaultClient class with these methods:
-
-**Connection Methods:**
-- `__init__()`: Initialize with VAULT_ADDR and VAULT_TOKEN from environment
-- `is_connected() -> bool`: Check connection status
-- `get_health() -> Dict`: Get Vault health information
-
-**KV v2 Operations:**
-- `kv_list_secrets(path, mount_point="secret") -> Dict`: List secrets
-- `kv_read_secret(path, mount_point="secret", version=None) -> Dict`: Read secret
-- `kv_write_secret(path, secret, mount_point="secret") -> Dict`: Write secret
-- `kv_delete_secret(path, mount_point="secret") -> Dict`: Delete secret
-
-**Transit Encryption:**
-- `transit_encrypt(plaintext, key_name="secret-scanner-key") -> Dict`: Encrypt data
-- `transit_decrypt(ciphertext, key_name="secret-scanner-key") -> Dict`: Decrypt data
-- `transit_create_key(key_name, key_type="aes256-gcm96") -> Dict`: Create encryption key
-- `transit_list_keys() -> Dict`: List encryption keys
-
-**Engine Management:**
-- `enable_secrets_engine(engine_type, path, description, options) -> Dict`: Enable engine
-- `list_secrets_engines() -> Dict`: List all engines
-- `ensure_kv_enabled(mount_point="secret") -> Dict`: Ensure KV v2 is enabled
-- `ensure_transit_enabled(mount_point="transit") -> Dict`: Ensure Transit is enabled
-
-**Error Handling:**
-- Return dictionaries with {"error": "message"} on failure
-- Handle hvac.exceptions.InvalidPath, Forbidden, InvalidRequest
-- Never expose secrets in error messages
-
-#### 2. secret_patterns.py - Secret Detection
-
-**Detect 40+ Secret Types:**
-
-Cloud Providers:
-- AWS: Access Key ID (AKIA...), Secret Access Key, Session Token
-- GCP: API Keys (AIza...), Service Account Keys
-- Azure: Storage Keys, Client Secrets
-
-Version Control:
-- GitHub: Personal Access Tokens (ghp_...), OAuth (gho_...), App Tokens (ghs_...)
-- GitLab: Personal Access Tokens (glpat-...)
-
-Communication:
-- Slack: Tokens (xox...), Webhook URLs
-- Twilio: Account SID (AC...), Auth Token
-
-Payment:
-- Stripe: Secret Keys (sk_live_...), Publishable Keys (pk_live_...)
-
-Email:
-- SendGrid: API Keys (SG....)
-- Mailgun: API Keys (key-...)
-
-Cryptographic:
-- RSA, EC, OpenSSH, PGP Private Keys
-- Generic Private Keys
-
-Database:
-- MySQL, PostgreSQL, MongoDB, Redis connection strings
-- JDBC connection strings
-
-Authentication:
-- JWT Tokens
-- Vault Tokens (hvs..., root tokens)
-- Generic passwords, secrets, API keys, tokens
-
-High-Entropy:
-- Base64-encoded secrets (32+ characters)
-
-**Functions:**
-- `scan_for_secrets(content: str) -> List[Dict]`: Scan code and return findings
-- `should_encrypt_with_transit(secret_type: str) -> bool`: Determine if should encrypt
-- `get_severity_color(severity: str) -> str`: Get color code for severity
-- `get_severity_stats(findings: List) -> Dict`: Calculate severity statistics
-
-**Finding Structure:**
-```python
-{
-    "line": 10,
-    "column": 15,
-    "type": "aws_secret_key",
-    "severity": "critical",  # critical, high, medium, low
-    "description": "AWS Secret Access Key",
-    "value": "actual-secret-value",
-    "preview": "wJal...EKEY",
-    "line_content": "aws_secret = 'wJalrXUt...'"
-}
-```
-
-**Sensitive Types for Transit Encryption:**
-- generic_password, database_url, mysql_connection, postgresql_connection
-- mongodb_connection, redis_connection, jdbc_connection
-- aws_secret_key, azure_client_secret, azure_storage_key
-- vault_token, vault_root_token, generic_secret, jwt_token
-- stripe_secret_key, twilio_auth_token, sendgrid_api_key
-- rsa_private_key, ec_private_key, openssh_private_key, pgp_private_key
-
-#### 3. code_refactor.py - Code Refactoring Engine
-
-**Functions:**
-
-- `generate_vault_retrieval_code(language, vault_path, secret_key="value") -> str`:
-  Generate code snippets for: python, nodejs, go, cli, curl
-
-- `refactor_code_with_vault(original_code, findings, base_path="scanner") -> Tuple[str, List[str]]`:
-  - Replace hardcoded secrets with TODO comments
-  - Add Vault client initialization
-  - Add get_secret() helper function
-  - Return refactored code and list of Vault paths
-
-- `generate_migration_report(findings, vault_paths, encrypted_count) -> str`:
-  Generate markdown report with:
-  - Summary statistics
-  - Breakdown by type and severity
-  - Vault storage locations
-  - Next steps and recommendations
-
-- `generate_code_examples(vault_path) -> Dict[str, str]`:
-  Return code examples for all supported languages
-
-- `create_vault_policy_for_paths(vault_paths, policy_name="secret-scanner") -> str`:
-  Generate HCL policy for accessing stored secrets
-
-#### 4. app.py - Main Dash Application
-
-**UI Structure:**
-
-**Header:**
-- Title: "Automated Hardcoded Secret Detection and Vault Migration"
-- Connection status indicator (green=connected, yellow=not connected)
-
-**Tabs:**
-
-1. **Secret Scanner Tab:**
-   - Large textarea for code input
-   - "Scan for Secrets" button
-   - Results table with columns: #, Line, Type, Severity, Preview, Action
-   - Severity badges with color coding
-   - Individual "Store in Vault" buttons
-   - "Store ALL in Vault" button
-   - "Generate Refactored Code" button
-   - Storage results table showing Vault paths and encryption status
-   - Refactored code display with copy button
-
-2. **Code Examples Tab:**
-   - Language selector (Python, Node.js, Go, CLI, cURL)
-   - Code example display for selected language
-
-3. **Migration Report Tab:**
-   - Markdown-formatted migration report
-   - Statistics and recommendations
-
-4. **Vault Policy Tab:**
-   - Generated HCL policy
-   - Copy button
-
-**Callbacks:**
-
-1. `check_vault_connection()`: Display connection status
-2. `scan_code()`: Scan code and display findings
-3. `store_all_secrets()`: Store all secrets in Vault with Transit encryption
-4. `generate_refactored_code()`: Generate and display refactored code
-5. `show_code_example()`: Display code example for selected language
-6. `show_migration_report()`: Display migration report
-7. `show_vault_policy()`: Display generated policy
-
-**Styling:**
-- Use dash-bootstrap-components with BOOTSTRAP theme
-- IBM Carbon Design System colors for tables
-- Bootstrap icons for UI elements
-- Professional, clean interface
-
-#### 5. requirements.txt
-```
-dash==2.17.1
-dash-bootstrap-components==1.6.0
-hvac==2.3.0
-python-dotenv==1.0.1
-requests==2.31.0
-pandas==2.2.1
-black==24.3.0
-```
-
-#### 6. .env.example
-```
-VAULT_ADDR=http://127.0.0.1:8200
-VAULT_TOKEN=your-vault-root-token-here
-DASH_PORT=8050
-DASH_DEBUG=True
-```
-
-#### 7. start.sh
-Bash script that:
-- Creates .env from .env.example if not exists
-- Creates Python virtual environment (.venv)
-- Activates virtual environment
-- Installs/upgrades dependencies
-- Checks Vault configuration
-- Starts the application
-
-Make executable with: chmod +x start.sh
-
-## PART 3: DOCUMENTATION
-
-Create comprehensive documentation:
-
-### 1. README.md
-- Project overview
-- Features list
-- Architecture diagram (text-based)
-- Quick start instructions
-- Links to detailed documentation
-
-### 2. QUICK_START.md
-- 5-minute setup guide
-- Step-by-step instructions
-- Example code to scan
-- Expected results
-- Troubleshooting quick tips
-
-### 3. docs/INSTALLATION.md
-- System requirements
-- Prerequisites installation
-- Ansible deployment steps
-- Application setup steps
-- Verification checklist
-- Detailed troubleshooting
-
-### 4. docs/USER_GUIDE.md
-- Complete feature walkthrough
-- Tab-by-tab usage instructions
-- All 40+ secret types explained
-- Severity levels explained
-- Transit encryption details
-- Best practices
-- Common workflows
-- Integration examples
-
-### 5. docs/SECURITY.md
-- Vault security best practices
-- Authentication methods
-- Access control policies
-- TLS configuration
-- Audit logging
-- Seal management
-- Application security
-- Secret management lifecycle
-- Network security
-- Operational security
-- Compliance requirements
-- Security checklist
-
-### 6. docs/API_REFERENCE.md
-- Complete API documentation for all classes and functions
-- Parameter descriptions
-- Return value structures
-- Code examples for each function
-- Integration examples
-- Error handling patterns
-
-### 7. secret_scanner_app/TROUBLESHOOTING.md
-- Common issues and solutions
-- Dependency installation problems
-- Virtual environment issues
-- Vault connection problems
-- Port conflicts
-- Import errors
-- Diagnostic script
-
-### 8. .gitignore
-Exclude:
-- Python cache (__pycache__, *.pyc)
-- Virtual environments (.venv, venv)
-- Environment files (.env)
-- IDE files (.vscode, .idea)
-- Logs (*.log)
-- Vault keys (vault_keys.json)
-- Temporary files
-
-## CRITICAL REQUIREMENTS
-
-1. **No Placeholders**: All code must be complete and functional
-2. **No TODOs**: Every function must be fully implemented
-3. **Error Handling**: Comprehensive try-except blocks everywhere
-4. **Security**: Never log or expose secret values
-5. **Production Ready**: Code must be deployment-ready
-6. **Documentation**: Every function must have docstrings
-7. **Type Hints**: Use Python type hints throughout
-8. **Consistent Style**: Follow PEP 8 for Python, best practices for Ansible
-
-## TESTING CHECKLIST
-
-Before considering complete, verify:
-- [ ] Ansible playbook deploys Vault successfully
-- [ ] Vault initializes and unseals automatically
-- [ ] Transit and KV v2 engines are enabled
-- [ ] Application starts without errors
-- [ ] Can scan code and detect secrets
-- [ ] Can store secrets in Vault
-- [ ] Transit encryption works for sensitive secrets
-- [ ] Code refactoring generates valid code
-- [ ] All tabs display correctly
-- [ ] Code examples work in all languages
-- [ ] Migration report is comprehensive
-- [ ] Vault policy is valid HCL
-- [ ] Documentation is complete and accurate
-
-## DELIVERABLES
-
-Provide complete, working code for:
-1. All Ansible files (playbook, roles, templates, handlers)
-2. All Python application files (app.py, vault_client.py, etc.)
-3. All documentation files (README, guides, API reference)
-4. Configuration files (requirements.txt, .env.example, .gitignore)
-5. Utility scripts (start.sh)
-
-Generate production-ready code with no placeholders, no TODOs, and comprehensive error handling throughout.
-```
-
----
-
-## Usage Instructions
-
-1. Copy the entire prompt above (between the triple backticks)
-2. Paste it into your AI coding assistant (Claude, ChatGPT, etc.)
-3. The AI will generate all files with complete, production-ready code
-4. Review and test the generated code
-5. Deploy using the provided instructions
-
-## Expected Output
-
-The AI should generate approximately:
-- 15+ Ansible files (playbook, tasks, templates, handlers)
-- 5 Python application files (1,500+ lines total)
-- 7 documentation files (2,500+ lines total)
-- 5 configuration/utility files
-- Complete project structure ready for deployment
-
-## Customization
-
-You can modify the prompt to:
-- Add more secret detection patterns
-- Support additional programming languages
-- Add more Vault features (PKI, Database secrets, etc.)
-- Customize UI styling
-- Add additional documentation sections
-- Include testing frameworks
-
-## Notes
-
-- The prompt is designed to be comprehensive and self-contained
-- All requirements are explicitly stated
-- No assumptions are made about prior knowledge
-- The AI should generate complete, working code
-- All edge cases and error handling are specified
+Create a complete "Automated Hardcoded Secret Detection and Vault Migration"
+system. Generate ALL files with full implementations - no placeholders, no TODOs.
+
+PROJECT STRUCTURE
+-----------------
+
+vault-secret-scanner/
+├── README.md, QUICK_START.md, .gitignore
+├── ansible/
+│   ├── site.yml, inventory/hosts.ini
+│   └── roles/vault/
+│       ├── defaults/main.yml, handlers/main.yml
+│       ├── tasks/ (main, prerequisites, install, configure, service, firewall, initialize)
+│       └── templates/ (vault.hcl.j2, vault.service.j2, vault.env.j2)
+├── secret_scanner_app/
+│   ├── app.py, vault_client.py, secret_patterns.py, code_refactor.py
+│   ├── requirements.txt, .env.example, start.sh, TROUBLESHOOTING.md
+└── docs/ (INSTALLATION.md, USER_GUIDE.md, SECURITY.md, API_REFERENCE.md)
+
+PART 1: ROOT FILES
+------------------
+
+README.md: Title, features (detection, encryption, storage, refactoring),
+architecture diagram, quick start (3 steps), requirements (Python 3.9+,
+Ansible 2.9+, Vault 1.12+), docs links
+
+QUICK_START.md: Prerequisites, deploy Vault (Ansible commands), start app
+(env setup), scan code (example), view results
+
+.gitignore: __pycache__/, *.pyc, .venv/, .env, *.log, vault_keys.json,
+.vscode/, *.retry
+
+PART 2: ANSIBLE DEPLOYMENT
+--------------------------
+
+ansible/inventory/hosts.ini:
+[vault_servers]
+# vault1 ansible_host=IP ansible_user=ubuntu
+[vault_servers:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+ansible/site.yml: Deploy to vault_servers, become: yes, call vault role,
+display completion
+
+ansible/roles/vault/defaults/main.yml:
+vault_version: "1.15.4"
+vault_bin_path: "/usr/local/bin"
+vault_config_dir: "/etc/vault.d"
+vault_data_dir: "/opt/vault/data"
+vault_user: "vault"
+vault_port: 8200
+vault_cluster_port: 8201
+vault_tls_disable: true
+vault_storage_backend: "file"
+vault_ui_enabled: true
+vault_init_secret_shares: 5
+vault_init_secret_threshold: 3
+
+ansible/roles/vault/tasks/main.yml: Include prerequisites → install →
+configure → service → firewall → initialize
+
+tasks/prerequisites.yml: Install unzip/curl/jq, create vault user/group,
+create dirs (/etc/vault.d, /opt/vault/data), set ownership vault:vault 0750
+
+tasks/install.yml: Download Vault zip, unzip to /usr/local/bin, set
+cap_ipc_lock, verify version
+
+tasks/configure.yml: Deploy vault.hcl and vault.env templates, set
+ownership 0640
+
+tasks/service.yml: Deploy systemd service, reload daemon, enable/start
+vault, wait for health
+
+tasks/firewall.yml: UFW (Debian) or firewalld (RedHat) allow 8200/8201
+
+tasks/initialize.yml: Check init status, initialize if needed, save keys
+to vault_keys.json (0600), unseal, enable Transit and KV v2, create key
+"secret-scanner-key" (aes256-gcm96)
+
+templates/vault.hcl.j2:
+storage "file" { path = "{{ vault_data_dir }}" }
+listener "tcp" { address = "{{ vault_address }}:{{ vault_port }}", tls_disable = true }
+api_addr = "{{ vault_api_addr }}"
+ui = true
+
+templates/vault.service.j2: Systemd unit with User=vault, ProtectSystem=full,
+CAP_IPC_LOCK, ExecStart=vault server -config=/etc/vault.d/vault.hcl,
+Restart=on-failure
+
+templates/vault.env.j2: VAULT_ADDR=http://127.0.0.1:8200
+
+handlers/main.yml: reload systemd, restart vault
+
+PART 3: PYTHON APPLICATION
+---------------------------
+
+requirements.txt:
+dash==2.14.2
+dash-bootstrap-components==1.5.0
+hvac==2.0.0
+python-dotenv==1.0.0
+
+.env.example:
+VAULT_ADDR=http://localhost:8200
+VAULT_TOKEN=your_root_token_here
+
+vault_client.py: VaultClient class with methods:
+- __init__(): Init hvac client with env vars
+- is_connected(): Check auth
+- store_secret(path, data): Store in KV v2 at secret/data/{path}
+- encrypt_secret(plaintext, key_name): Transit encrypt, return ciphertext
+- get_secret(path): Retrieve from KV v2
+- decrypt_secret(ciphertext, key_name): Transit decrypt
+- list_secrets(path), delete_secret(path)
+
+Module instance: vault_client = VaultClient()
+
+secret_patterns.py: SECRET_PATTERNS dict with regex for AWS keys, API keys
+(stripe, github, slack, etc.), DB URLs (postgres, mysql, mongodb), private
+keys (RSA, SSH), JWT, OAuth, passwords, encryption keys
+
+Functions:
+- scan_for_secrets(code): Return findings with type, line, column, context,
+  severity, masked_value
+- get_severity(type): Return critical/high/medium/low
+- get_severity_color(severity): Bootstrap color class
+- should_encrypt_with_transit(type): True for high-value secrets
+- mask_secret(secret): Show first/last 4 chars
+- get_severity_stats(findings): Count by severity
+
+code_refactor.py:
+- generate_vault_retrieval_code(language, vault_path, secret_key): Generate
+  snippets for Python (hvac), Node.js (node-vault), Go (vault/api), CLI
+  (vault kv get), cURL (with jq)
+- refactor_code_with_vault(code, findings, base_path): Replace secrets with
+  Vault calls, add imports, return refactored code + vault_paths
+- generate_migration_report(findings, vault_paths, encrypted_count): Markdown
+  with summary, breakdowns, locations, next steps, security tips
+- generate_code_examples(vault_path): Dict of all language examples
+- create_vault_policy_for_paths(vault_paths, policy_name): HCL policy with
+  read/list
+
+app.py: Dash app with Bootstrap theme
+
+Layout:
+1. Header with title + Vault status badge
+2. Tabs:
+   - Scanner: Textarea (10 rows), scan button, results table (Type, Severity
+     badge, Line, Column, Masked Secret, Context)
+   - Storage: Store button, encryption toggle, results with paths
+   - Refactoring: Refactor button, language dropdown, refactored code textarea,
+     code examples
+   - Report: Generate button, markdown display
+
+Callbacks:
+1. update_vault_status(): Check connection, update badge
+2. scan_code(n_clicks, code): Scan and display findings
+3. store_secrets(n_clicks, findings, use_encryption): Store with optional Transit
+4. refactor_code(n_clicks, code, findings): Generate refactored code
+5. update_code_examples(language, vault_paths): Show language-specific examples
+6. generate_report(n_clicks, findings, vault_paths, encrypted_count): Create report
+
+Main: app.run_server(debug=True, host='0.0.0.0', port=8050)
+
+start.sh:
+#!/bin/bash
+set -e
+[ -f .env ] && export $(cat .env | grep -v '^#' | xargs)
+[ -z "$VAULT_ADDR" ] && echo "Error: VAULT_ADDR not set" && exit 1
+python app.py
+
+TROUBLESHOOTING.md: Common issues (connection failures, auth errors, storage
+failures, encryption errors, startup issues), debug mode, performance tips, FAQ
+
+PART 4: DOCUMENTATION
+---------------------
+
+docs/INSTALLATION.md (280+ lines): Prerequisites, Ansible deployment
+(inventory, execution, verification), manual Vault install, Python setup
+(venv, requirements, .env), troubleshooting
+
+docs/USER_GUIDE.md (430+ lines): Getting started, scanning (paste code,
+interpret results, severity), storing (auto storage, encryption, verify),
+refactoring (generate, language select, integrate), migration workflow,
+best practices (rotation, access control, audit), advanced features
+
+REQUIREMENTS
+------------
+
+Generate with:
+✅ Complete code (no placeholders/TODOs)
+✅ Error handling + logging
+✅ Type hints for Python
+✅ Security best practices
+✅ Bootstrap UI styling
+✅ Full documentation with examples
 ```
 
 ---
 
 ## Running the Application
 
-1. Update the `.env` file with:
-   - Vault root token
-   - Bastion node host details
+1. **Retrieve your Vault credentials** from the bastion host:
 
-2. Start the application:
+   ```bash
+   cat /tmp/vault-keys.json
+   ```
+
+   Note the `root_token` value — you will need it in the next step.
+
+2. **Update the `.env` file** in the generated application directory with your actual values:
+
+   ```env
+   VAULT_ADDR=http://<bastion-host-ip>:8200
+   VAULT_TOKEN=<root_token_from_vault-keys.json>
+   ```
+
+3. **Start the application:**
+
    ```bash
    python app.py
    ```
+
+4. **Open the application in your browser:**
+
+   ```
+   http://localhost:8050
+   ```
+
+   You should see the dashboard with:
+   - A **Vault status badge** confirming the connection (green = connected)
+   - Four tabs: Scanner, Storage, Refactoring, and Report
 
 ---
 
 ## Architecture Overview
 
-The solution consists of the following components:
+The solution consists of five integrated components:
 
-1. **Secret Scanner**: Detects hardcoded secrets using regex patterns
-2. **Vault Transit Engine**: Encrypts sensitive data before storage
-3. **Vault KV Store**: Securely stores encrypted secrets with metadata
-4. **Code Refactoring Engine**: Replaces hardcoded secrets with Vault API calls
-5. **Web UI**: Interactive dashboard for managing the entire workflow
+| Component | Role |
+|-----------|------|
+| **Secret Scanner** | Detects hardcoded secrets in source code using regex patterns for 40+ secret types |
+| **Vault Transit Engine** | Encrypts sensitive data using AES256-GCM96 before it is stored |
+| **Vault KV Store** | Securely stores encrypted secrets with metadata in Vault KV v2 |
+| **Code Refactoring Engine** | Replaces hardcoded secrets with Vault API calls across multiple languages |
+| **Web UI** | Interactive Dash dashboard for managing the full detection-to-migration workflow |
 
 ---
 
 ## Security Best Practices
 
-- Never commit Vault tokens or keys to version control
-- Rotate Vault tokens regularly
-- Use least-privilege access policies
-- Enable audit logging for all Vault operations
-- Store Vault keys in secure, encrypted storage
-- Use Transit encryption for sensitive data at rest
+- Never commit Vault tokens, unseal keys, or the `vault-keys.json` file to version control
+- Copy `/tmp/vault-keys.json` to secure storage immediately after Vault initialization — `/tmp` is ephemeral
+- Rotate Vault tokens regularly and use short-lived tokens where possible
+- Apply least-privilege access policies — grant only the permissions each application needs
+- Enable Vault audit logging for all operations to support compliance and incident response
+- Use the Transit engine to encrypt all high-value secrets before storing them in KV
 
 ---
 
@@ -566,3 +408,7 @@ The solution consists of the following components:
 - [Ansible Deployment](ansible-deployment.md)
 - [Automated Resilience](automated-resilience.md)
 - [Observability with Instana](observability-instana.md)
+
+---
+
+[← Back to Ansible Deployment](ansible-deployment.md) | [Back to Main](../README.md)
