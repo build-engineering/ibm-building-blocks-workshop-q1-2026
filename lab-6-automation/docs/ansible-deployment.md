@@ -182,7 +182,7 @@ export DOCKER_PASSWORD="mypassword123"
 ```
 
 > **Where to find these values:**
-> - `OC_TOKEN` and `OC_URL`: Collected during the [TechZone Setup](techzone-setup.md) post-provisioning steps
+> - `OC_TOKEN` and `OC_URL`: Collected during the [TechZone Setup](techzone-setup.md) post-provisioning steps or login into the OCP Console and retrive these credentials.
 > - `DOCKER_USERNAME` / `DOCKER_PASSWORD`: Your Docker Hub credentials from the previous section
 
 ### Step 2: Verify Environment Variables
