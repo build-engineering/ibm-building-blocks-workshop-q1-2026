@@ -1,4 +1,4 @@
-# Lab 3: Use the Agents Custom Mode to improve your Data Analytics Website
+# Lab 3: Use the Agents Skill to improve your Data Analytics Website
 Use the Agent custom mode from the Agents Building Block to integrate your Data Analytics Website into watsonx orchestrate.
 
 ## Labs in this series
