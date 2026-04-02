@@ -12,7 +12,7 @@ By integrating IBM Concert with your OpenShift deployment, you can achieve:
 - **Reduced Downtime**: Faster recovery from failures
 - **Operational Efficiency**: Less manual intervention required
 
-### 📺 Video Tutorial
+### Video Tutorial
 
 Watch the complete walkthrough of implementing automated resilience with IBM Concert:
 
@@ -173,42 +173,7 @@ After provisioning, generate API credentials for programmatic access:
 
 ## Step 2: Generate Instana API Token
 
-Before connecting IBM Concert with Instana, you need to generate an API token in Instana for authentication.
-
-### Create API Token
-
-1. **Navigate to API Tokens**
-   
-   From the Instana navigation menu, click **Settings** → **Security & Access** → **API Tokens**.
-
-2. **Create New API Token**
-   
-   Click **New API Token**.
-
-3. **Configure Token**
-   
-   - **Name**: Enter a unique name for your API token, such as `Concert`
-   - **Permissions**: Choose **all permissions** to ensure full integration capabilities
-   
-   > **Note**: Selecting all permissions ensures Concert can access all necessary Instana data for comprehensive monitoring and analysis.
-
-4. **Generate Token**
-   
-   Click **Create**.
-
-5. **Save Token Securely**
-   
-   After the API token is generated, copy it to a secure location. You will need it when creating the connection in Concert.
-   
-   **Example:**
-   ```
-   Token Name: Concert
-   API Token: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890...
-   Created: [timestamp]
-   Permissions: All
-   ```
-   
-   > **Important**: Store this token securely. It will not be displayed again after you leave this page.
+The Instana API token was already generated as part of the Observability setup — see [observability-instana.md Step 3](observability-instana.md#step-3-generate-an-instana-api-key) for the full instructions. Use that same token here when configuring the Concert connection in Step 3.
 
 ---
 
@@ -240,7 +205,7 @@ In the Concert UI, establish a connection with Instana to enable data integratio
    
    On the **Create IBM Instana Observability connection** screen:
    
-   - **Name**: Enter a descriptive name (e.g., `Instana Production`)
+   - **Name**: Enter a descriptive name (e.g., `Instana Workshop`)
    - **Description**: Enter a description for internal reference (e.g., `Connection to Instana for retail application monitoring`)
 
 6. **Configure Endpoint**
@@ -266,7 +231,7 @@ In the Concert UI, establish a connection with Instana to enable data integratio
 
 7. **Enter API Token**
    
-   Paste the Instana API token that you generated in Step 2.
+   Paste the Instana API token that you generated in observability workshop.
 
 8. **Validate Connection**
    
@@ -328,7 +293,7 @@ Create an environment in Concert to organize and manage your OpenShift resources
 7. **Select Resources** (if prompted)
    
    Review and select the resources imported from the ingestion job:
-   - Namespaces (e.g., `retail-app`)
+   - Namespaces (e.g., `retail-dev`)
    - Deployments
    - Services
    - Pods
@@ -360,6 +325,34 @@ Resources: [number of connected resources]
 Ingestion Jobs: 1
 Last Updated: [timestamp]
 ```
+
+---
+
+## Step 5: Create Data Ingestion Job
+
+An ingestion job connects Concert to your Instana instance, allowing Concert to continuously pull observability data from your environment.
+
+1. Navigate to **Administration** → **Integrations**
+
+2. Click **Create ingestion job**
+
+3. In the **Name** field, enter a name for internal reference, for example:
+   ```
+   Retail App Instana Ingestion
+   ```
+
+4. In the **Description** field, provide details about this connection for internal reference, for example:
+   ```
+   Ingests observability data from Instana for the Retail Application environment
+   ```
+
+5. Under **Connection type**, select **Instana**
+
+6. Under **Connection**, select the Instana connection created in the previous step
+
+7. Click **Create**
+
+Once created, Concert will begin pulling metrics, events, and trace data from your Instana instance into the Retail App Development environment.
 
 ---
 
@@ -406,10 +399,10 @@ Simulate a pod failure to test auto-restart policy:
 
 ```bash
 # Delete a frontend pod
-oc delete pod -l app=retail-frontend -n retail-app --force
+oc delete pod -l app=retail-frontend -n retail-dev --force
 
 # Watch Concert automatically restart it
-oc get pods -n retail-app -w
+oc get pods -n retail-dev -w
 
 # Check Concert action log
 # Navigate to Concert UI → Action History
@@ -423,10 +416,10 @@ Generate load to trigger auto-scaling:
 ```bash
 # Run load test
 cd ~/retailapp/jmeter
-./run_spike.sh retail-backend-retail-app.apps.cluster-xyz.techzone.ibm.com
+./run_spike.sh retail-backend-retail-dev.apps.cluster-xyz.techzone.ibm.com
 
 # Watch Concert scale the deployment
-oc get hpa -n retail-app -w
+oc get hpa -n retail-dev -w
 
 # Monitor in Concert dashboard
 # Navigate to Metrics → CPU Usage
@@ -439,7 +432,7 @@ Test certificate renewal automation:
 
 ```bash
 # Check current certificate expiration
-oc get secret tls-certificate -n retail-app -o jsonpath='{.data.tls\.crt}' | \
+oc get secret tls-certificate -n retail-dev -o jsonpath='{.data.tls\.crt}' | \
   base64 -d | openssl x509 -noout -enddate
 
 # Simulate near-expiration (if in test environment)
@@ -494,6 +487,13 @@ Use Trivy to scan container images for vulnerabilities and generate a report tha
 
 ### Install Trivy (if not already installed)
 
+```bash
+# Install Trivy on the bastion host
+curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+
+# Verify installation
+trivy --version
+```
 
 ### Generate Vulnerability Scan Report
 
@@ -501,7 +501,7 @@ Use Trivy to scan container images for vulnerabilities and generate a report tha
    
    SSH to your bastion host if not already connected:
    ```bash
-   ssh root@bastion.cluster-xyz.techzone.ibm.com
+   ssh itzuser@bastion.cluster-xyz.techzone.ibm.com
    ```
 
 2. **Run Trivy Scan**
@@ -547,7 +547,7 @@ Transfer the generated report file from the bastion host to your local laptop:
 
 ```bash
 # From your laptop terminal
-scp root@bastion.cluster-xyz.techzone.ibm.com:/root/retail-backend.cdx.json ~/Downloads/
+scp itzuser@bastion.cluster-xyz.techzone.ibm.com:/root/retail-backend.cdx.json ~/Downloads/
 
 # Verify file was copied
 ls -lh ~/Downloads/retail-backend.cdx.json
@@ -557,7 +557,7 @@ ls -lh ~/Downloads/retail-backend.cdx.json
 
 ```bash
 # From your laptop terminal
-sftp root@bastion.cluster-xyz.techzone.ibm.com
+sftp itzuser@bastion.cluster-xyz.techzone.ibm.com
 
 # In SFTP session
 get retail-backend.cdx.json
@@ -576,22 +576,6 @@ cat retail-backend.cdx.json
 # Copy the output and paste into a local file on your laptop
 # Save as retail-backend.cdx.json
 ```
-
-### Scan Additional Images (Optional)
-
-Repeat the process for other application components:
-
-```bash
-# Scan frontend image
-trivy image --format cyclonedx --output retail-frontend.cdx.json retail-frontend:1.0.0-dev
-
-# Scan database image (if custom)
-trivy image --format cyclonedx --output retail-db.cdx.json retail-db:1.0.0-dev
-
-# Copy all reports to laptop
-scp root@bastion.cluster-xyz.techzone.ibm.com:/root/retail-*.cdx.json ~/Downloads/
-```
-
 ---
 
 ## Step 9: Upload Vulnerability Scan to Concert
@@ -711,185 +695,6 @@ If you scanned multiple images, upload each report:
 
 ---
 
-## Troubleshooting
-
-### Connection Issues
-
-#### Instana Connection Failed
-
-**Symptoms:**
-- Connection validation fails
-- "Unable to reach Instana endpoint" error
-
-**Solutions:**
-
-```bash
-# Verify Instana endpoint is accessible
-curl -I https://your-tenant.instana.io
-
-# Check API token validity
-# In Instana UI: Settings → API Tokens → Verify token status
-
-# Test connection from Concert
-# In Concert UI: Administration → Integrations → Connections
-# Click "Test connection" on Instana connection
-
-# Check network connectivity
-# Ensure Concert can reach Instana endpoint
-# Verify firewall rules and network policies
-```
-
-#### Ingestion Job Failures
-
-**Symptoms:**
-- Ingestion job status shows "Failed"
-- No components imported from Instana
-
-**Solutions:**
-
-```bash
-# Check ingestion job logs
-# In Concert UI: Administration → Integrations → Ingestion Jobs
-# Click on job name → View logs
-
-# Verify Instana connection is active
-# Check connection status in Connections tab
-
-# Ensure environment is properly configured
-# Verify environment exists and is active
-
-# Re-run ingestion job
-# Click "Run now" to retry
-```
-
-### Policy Issues
-
-#### Policies Not Triggering
-
-**Symptoms:**
-- Conditions met but no automated actions
-- No notifications received
-
-**Solutions:**
-
-```bash
-# Check policy status
-# In Concert UI: Automation → Policies
-# Verify policy is "Enabled"
-
-# Review policy conditions
-# Ensure thresholds are correctly configured
-# Check that metrics are being collected
-
-# Verify Concert agent is running
-oc get pods -n ibm-concert
-oc logs deployment/concert-agent -n ibm-concert
-
-# Check agent permissions
-oc auth can-i --list --as=system:serviceaccount:ibm-concert:concert-agent
-
-# Review policy execution logs
-# In Concert UI: Automation → Action History
-# Filter by policy name and time range
-```
-
-#### High False Positive Rate
-
-**Symptoms:**
-- Too many unnecessary automated actions
-- Frequent notifications for non-issues
-
-**Solutions:**
-
-1. **Adjust Policy Thresholds**
-   
-   ```yaml
-   # Increase threshold values
-   trigger:
-     metric: cpu_usage
-     value: 85  # Increase from 70 to 85
-     duration: 10m  # Increase from 5m to 10m
-   ```
-
-2. **Add Cooldown Periods**
-   
-   ```yaml
-   action:
-     type: scale_deployment
-     cooldown: 15m  # Prevent rapid successive scaling
-   ```
-
-3. **Implement Graduated Responses**
-   
-   ```yaml
-   policies:
-     - name: cpu-warning
-       trigger:
-         value: 70
-       action:
-         type: notify  # Only notify at 70%
-     
-     - name: cpu-critical
-       trigger:
-         value: 85
-       action:
-         type: scale_deployment  # Scale at 85%
-   ```
-
-### Certificate Management Issues
-
-#### Certificate Renewal Failed
-
-**Symptoms:**
-- Certificate expiration warnings
-- Renewal action failed in Action History
-
-**Solutions:**
-
-```bash
-# Check certificate provider status
-# Verify Let's Encrypt or other provider is accessible
-
-# Review renewal logs
-# In Concert UI: Action History → Filter "certificate_renewal"
-
-# Manually renew certificate
-oc create secret tls tls-certificate \
-  --cert=path/to/cert.crt \
-  --key=path/to/cert.key \
-  -n retail-app --dry-run=client -o yaml | oc apply -f -
-
-# Restart affected pods
-oc rollout restart deployment/retail-frontend -n retail-app
-
-# Update Concert policy
-# Adjust renewal timing or validation method
-```
-
-### Vulnerability Management Issues
-
-#### Vulnerabilities Not Detected
-
-**Symptoms:**
-- No vulnerabilities showing in Concert
-- Scan results empty
-
-**Solutions:**
-
-```bash
-# Verify Instana is scanning for vulnerabilities
-# In Instana UI: Check security scanning is enabled
-
-# Trigger manual vulnerability scan
-# In Concert UI: Security → Vulnerabilities → Scan now
-
-# Check ingestion job is importing security data
-# Verify ingestion job includes security findings
-
-# Review Concert agent logs
-oc logs deployment/concert-agent -n ibm-concert | grep "vulnerability"
-```
-
 ## Step 9: Create Insights Dashboard with IBM Bob
 
 Use IBM Bob with the Automated Resilience Builder custom mode to create a comprehensive Python Dash application that visualizes Concert data and provides actionable insights.
@@ -917,29 +722,34 @@ Before creating the dashboard, import the Automated Resilience Builder custom mo
 
 #### Import Mode into IBM Bob
 
-Follow the detailed instructions provided in the repository README to import the custom mode:
-
 1. **Download Mode Files**
    
    Clone or download the repository:
    ```bash
-   git clone https://github.com/ibm-self-serve-assets/building-blocks.git
-   cd building-blocks/optimize/automated-resilience-and-compliance/bob-modes/base-modes
+   wget https://github.com/ibm-self-serve-assets/building-blocks/blob/main/optimize/automated-resilience-and-compliance/bob-modes/base-modes/application-resilience.zip
    ```
 
-2. **Follow Import Instructions**
+2. **Copy Mode Files to Your Project**
    
-   The repository provides specific guidance for:
-   - **New Projects**: Setting up the mode from scratch
-   - **Existing Projects**: Integrating with existing custom modes
-   - **Configuration**: Required settings and customization options
-   - **Verification**: Steps to confirm successful import
+   Unzip the downloaded archive and copy the mode files into your project's `.bob/` directory:
 
-3. **Copy Mode Files to Your Project**
-   
-   Follow the repository instructions to copy the mode files to your project's `.bob/` directory structure.
+   **For New Projects:**
+   ```bash
+   # Copy custom_modes.yaml and the rules folder directly into .bob/
+   cp application-resilience/custom_modes.yaml .bob/custom_modes.yaml
+   cp -r application-resilience/rules .bob/rules
+   ```
 
-4. **Verify Mode Installation**
+   **For Existing Projects:**
+   ```bash
+   # Append to your existing custom_modes.yaml
+   cat application-resilience/custom_modes.yaml >> .bob/custom_modes.yaml
+
+   # Add the rules subfolder alongside your existing rules
+   cp -r application-resilience/rules .bob/rules
+   ```
+
+3. **Verify Mode Installation**
    
    After importing, verify that:
    - The Automated Resilience Builder mode appears in Bob's mode selector
@@ -1135,36 +945,17 @@ resilience-dashboard/
 
 1. **Update Configuration**
    
-   Edit `config.py` with your Concert credentials:
+   Create `.env` with your Concert credentials:
    
-   ```python
+   ```env
    # Concert Configuration
    CONCERT_API_URL = "https://concert.cloud.ibm.com"
    CONCERT_API_KEY = "your-api-key-here"
    CONCERT_TENANT_ID = "your-tenant-id"
    
-   # Instana Configuration
-   INSTANA_API_URL = "https://your-tenant.instana.io"
-   INSTANA_API_TOKEN = "your-instana-token"
-   
    # Application Settings
    APP_TITLE = "Retail Application Resilience Dashboard"
    REFRESH_INTERVAL = 60  # seconds
-   ```
-
-2. **Install Dependencies**
-   
-   Install required Python packages:
-   ```bash
-   cd resilience-dashboard
-   pip install -r requirements.txt
-   ```
-
-3. **Verify API Connectivity**
-   
-   Test connections to Concert and Instana:
-   ```bash
-   python -c "from data.concert_api import test_connection; test_connection()"
    ```
 
 ### Run the Dashboard
@@ -1173,7 +964,7 @@ resilience-dashboard/
    
    Launch the Dash application:
    ```bash
-   python app.py
+   ./setup.sh
    ```
    
    **Expected Output:**
@@ -1399,6 +1190,184 @@ def get_vulnerability_data():
 
 ---
 
+## Troubleshooting
+
+### Connection Issues
+
+#### Instana Connection Failed
+
+**Symptoms:**
+- Connection validation fails
+- "Unable to reach Instana endpoint" error
+
+**Solutions:**
+
+```bash
+# Verify Instana endpoint is accessible
+curl -I https://your-tenant.instana.io
+
+# Check API token validity
+# In Instana UI: Settings → API Tokens → Verify token status
+
+# Test connection from Concert
+# In Concert UI: Administration → Integrations → Connections
+# Click "Test connection" on Instana connection
+
+# Check network connectivity
+# Ensure Concert can reach Instana endpoint
+# Verify firewall rules and network policies
+```
+
+#### Ingestion Job Failures
+
+**Symptoms:**
+- Ingestion job status shows "Failed"
+- No components imported from Instana
+
+**Solutions:**
+
+```bash
+# Check ingestion job logs
+# In Concert UI: Administration → Integrations → Ingestion Jobs
+# Click on job name → View logs
+
+# Verify Instana connection is active
+# Check connection status in Connections tab
+
+# Ensure environment is properly configured
+# Verify environment exists and is active
+
+# Re-run ingestion job
+# Click "Run now" to retry
+```
+
+### Policy Issues
+
+#### Policies Not Triggering
+
+**Symptoms:**
+- Conditions met but no automated actions
+- No notifications received
+
+**Solutions:**
+
+```bash
+# Check policy status
+# In Concert UI: Automation → Policies
+# Verify policy is "Enabled"
+
+# Review policy conditions
+# Ensure thresholds are correctly configured
+# Check that metrics are being collected
+
+# Verify Concert agent is running
+oc get pods -n ibm-concert
+oc logs deployment/concert-agent -n ibm-concert
+
+# Check agent permissions
+oc auth can-i --list --as=system:serviceaccount:ibm-concert:concert-agent
+
+# Review policy execution logs
+# In Concert UI: Automation → Action History
+# Filter by policy name and time range
+```
+
+#### High False Positive Rate
+
+**Symptoms:**
+- Too many unnecessary automated actions
+- Frequent notifications for non-issues
+
+**Solutions:**
+
+1. **Adjust Policy Thresholds**
+   
+   ```yaml
+   # Increase threshold values
+   trigger:
+     metric: cpu_usage
+     value: 85  # Increase from 70 to 85
+     duration: 10m  # Increase from 5m to 10m
+   ```
+
+2. **Add Cooldown Periods**
+   
+   ```yaml
+   action:
+     type: scale_deployment
+     cooldown: 15m  # Prevent rapid successive scaling
+   ```
+
+3. **Implement Graduated Responses**
+   
+   ```yaml
+   policies:
+     - name: cpu-warning
+       trigger:
+         value: 70
+       action:
+         type: notify  # Only notify at 70%
+     
+     - name: cpu-critical
+       trigger:
+         value: 85
+       action:
+         type: scale_deployment  # Scale at 85%
+   ```
+
+### Certificate Management Issues
+
+#### Certificate Renewal Failed
+
+**Symptoms:**
+- Certificate expiration warnings
+- Renewal action failed in Action History
+
+**Solutions:**
+
+```bash
+# Check certificate provider status
+# Verify Let's Encrypt or other provider is accessible
+
+# Review renewal logs
+# In Concert UI: Action History → Filter "certificate_renewal"
+
+# Manually renew certificate
+oc create secret tls tls-certificate \
+  --cert=path/to/cert.crt \
+  --key=path/to/cert.key \
+  -n retail-dev --dry-run=client -o yaml | oc apply -f -
+
+# Restart affected pods
+oc rollout restart deployment/retail-frontend -n retail-dev
+
+# Update Concert policy
+# Adjust renewal timing or validation method
+```
+
+### Vulnerability Management Issues
+
+#### Vulnerabilities Not Detected
+
+**Symptoms:**
+- No vulnerabilities showing in Concert
+- Scan results empty
+
+**Solutions:**
+
+```bash
+# Verify Instana is scanning for vulnerabilities
+# In Instana UI: Check security scanning is enabled
+
+# Trigger manual vulnerability scan
+# In Concert UI: Security → Vulnerabilities → Scan now
+
+# Check ingestion job is importing security data
+# Verify ingestion job includes security findings
+
+# Review Concert agent logs
+oc logs deployment/concert-agent -n ibm-concert | grep "vulnerability"
+```
 
 ---
 
@@ -1654,8 +1623,3 @@ Contribute back to the community:
 ---
 
 [← Back to Observability with Instana](observability-instana.md) | [Back to Main](../README.md)
-
----
-
-*Last Updated: March 2026*  
-*Maintained by: IBM Build Academy Team*
