@@ -159,9 +159,7 @@ Yay! Let's build your website.
 
 ⚠️ **NOTE:** In the prompt of the next step, ensure the folder path of your website template matches your own prior to submitting! Updated references to `lab-2-dataset-powered-website/acme-analytics` if needed. 
 
-⚠️ **NOTE:** Do not enhance the prompt in the next step.  Enahcing prompts works well for simple prompts.  However highly detailed prompts like the following can often be made worse through enhancement!
-
-2. Read through this prompt thoroughly then submit it to Bob.  
+1. Read through this prompt thoroughly then submit it to Bob.  
 ```
 I need to build a **dataset analytics website** using datasets provided by the Pandas Dataset MCP server's tools.  Use the website template located at "lab-2-dataset-powered-website/acme-analytics" as your starting point.  
 

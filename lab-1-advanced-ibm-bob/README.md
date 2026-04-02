@@ -25,7 +25,6 @@ These Advanced IBM Bob labs are designed to complete individually.  However ask 
 ### Lab 1.2 Peek under the hood during Bob's application development
 
 In lab 1,2 you'll have some fun building a creative web application while learning about these topics:
-- Automated prompt enhancement
 - Checkpoints
 - Bob Coins vs Tokens
 - Prompt caching

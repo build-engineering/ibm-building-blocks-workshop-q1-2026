@@ -13,6 +13,7 @@ You'll work through these topics and more during this setup process:
 - Connect agent to new **Q&A** screen in your Data Analytics website
 
 And here's what you'll build by the end of this lab.  Your website with have a Q&A capability where the website queries an agent in Orchestrate that uses the Pandas Dataset MCP server to generate HTML replies that contain natural language and chartjs answers to user queries.
+
 <img src="images/lab-3.1-final-website.png" width="600">
 
 ## 1. watsonx Orchestrate's MCP servers 
@@ -377,7 +378,7 @@ Deploy the Q&A agent from Draft to Live access.
 ### 11.2 Test live agent
 Open Orchestrate and select **Chat** from the left-side menu then select your agent from the drop-down menu.
 
-<img src="images/agent-deployed-to-live.png" width="500">
+<img src="images/agent-deployed-to-live.png" width="300">
 
 Enter this text into the Orchestrate chat to ensure the live agent is functioning properly:
 ```
@@ -477,4 +478,6 @@ Each of the Building Block Skills is a community-driven effort. We need everyone
 - Automation: [Sunil Gajula](https://ibm.enterprise.slack.com/team/WSYFC8E48) and [Yasser Sherriff](https://ibm.enterprise.slack.com/team/W52CC6YJJ)
 
 ## 14 Ready for your next challenge?
-When you're ready for the next team-oriented challenge, proceed to the next lab.
+Congratulations on completing the Agent Builder labs.  The next lab will focus on evaluating and monitoring Agents. 
+
+Proceed to the [lab 4 which will introduce IBM's new pro-code solution for Agent Ops](../lab-4-agent-ops/README.md).
