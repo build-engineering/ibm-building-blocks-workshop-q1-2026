@@ -211,7 +211,7 @@ Copy the following values to a notepad — you will need all three:
 
 | Field | Example Value |
 |-------|--------------|
-| **Bastion SSH Connection** | `ssh root@bastion.cluster-xyz.techzone.ibm.com` |
+| **Bastion SSH Connection** | `ssh itzuser@bastion.cluster-xyz.techzone.ibm.com` |
 | **Bastion Password** | `P@ssw0rd123` |
 | **API URL** | `https://api.cluster-xyz.techzone.ibm.com:6443` |
 
@@ -229,7 +229,7 @@ The bastion host is a secure, intermediate server provided by TechZone. It acts 
 2. **SSH into the bastion host** using the connection string you copied:
 
    ```bash
-   ssh root@bastion.cluster-xyz.techzone.ibm.com
+   ssh itzuser@bastion.cluster-xyz.techzone.ibm.com
    ```
 
    When prompted, enter the **Bastion Password** you copied.
@@ -237,7 +237,7 @@ The bastion host is a secure, intermediate server provided by TechZone. It acts 
 3. **Verify successful login** — you should see a prompt like:
 
    ```
-   [root@bastion ~]#
+   [itzuser@bastion ~]#
    ```
 
 ---
@@ -357,7 +357,7 @@ ibmc-block-silver (default)   ibm.io/ibmc-block              Delete          Imm
 
 **Steps:**
 1. Verify the bastion hostname is copied correctly (no extra spaces)
-2. Confirm you are using `root` as the username
+2. Confirm you are using `itzuser` as the username
 3. Check that your laptop is not behind a firewall blocking port 22
 4. Try from a different network (e.g., mobile hotspot) to rule out local firewall issues
 5. Re-check the bastion password — copy-paste rather than typing manually
