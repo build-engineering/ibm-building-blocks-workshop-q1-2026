@@ -226,7 +226,7 @@ echo "OC_URL: $OC_URL"
    
    ```yaml
    # Example configuration
-   storage_class: "ocs-storagecluster-ceph-rbd"
+   storage_class: "ocs-external-storagecluster-ceph-rbd"
    ```
 
 4. **Review Other Configuration**
