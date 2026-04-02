@@ -344,10 +344,20 @@ Alternative startup command:
 uvicorn app.server:app --host 0.0.0.0 --port 8080
 ```
 
+**Note:** If port `8080` is already in use, you can change it to another port (e.g., `8081`, `8082`):
+
+```bash
+uvicorn app.server:app --host 0.0.0.0 --port 8081
+```
+
+If you change the port, remember to update:
+1. The Bob MCP server configuration in Step 9 (change `http://localhost:8080/mcp` to your new port)
+2. Any CURL commands you use later (change `http://localhost:8080/mcp` to your new port)
+
 Expected result:
 - the ingestion server starts successfully
 - bootstrap checks run for COS, watsonx embeddings, and Milvus
-- the server is available on `http://localhost:8080`
+- the server is available on `http://localhost:8080` (or your chosen port)
 
 You can validate it with:
 
@@ -355,6 +365,8 @@ You can validate it with:
 curl http://localhost:8080/health
 curl http://localhost:8080/
 ```
+
+If you changed the port, replace `8080` with your port number in the above commands.
 
 ## Step 8: Workshop - Generate Product Data Using Bob
 
@@ -388,13 +400,13 @@ unzip data-generator.zip
 
 ```bash
 cd data-generator
-cp -r .bob ~/data-for-ai/
+cp -r .bob ../../../../
 ```
 
 3. Return to your main working directory and open it in Bob IDE:
 
 ```bash
-cd ~/data-for-ai
+cd ../../../../
 code .
 ```
 
@@ -517,6 +529,8 @@ Add the following configuration:
 }
 ```
 
+**Important:** If you changed the port in Step 7 due to a port conflict, update the URL in the configuration above. For example, if you used port `8081`, change `http://localhost:8080/mcp` to `http://localhost:8081/mcp`.
+
 Save the configuration and restart Bob if required.
 
 ### Verify Bob connectivity
@@ -525,6 +539,52 @@ After configuration:
 - open Bob
 - confirm `rag-ingestion-local-mcp` appears in the connected servers list
 - confirm the status is **Connected**
+
+---
+
+## Step 10: Inspect available tools in Bob
+
+Try one of the following prompts in Bob:
+
+```text
+Can you show me the available ingestion tools?
+```
+
+```text
+Show me the current ingestion configuration.
+```
+
+```text
+Get the ingestion server information.
+```
+
+At this stage, students should understand that Bob is not storing the data itself. Bob is acting as the MCP client and calling the ingestion server tools.
+
+---
+
+## Step 11: Ingest retail content from COS into Milvus
+
+Use Bob and ask it to call the ingestion server.
+
+Example prompt:
+
+```text
+Please use the rag-ingestion-local-mcp server to ingest retail product content from IBM Cloud Object Storage into the Milvus collection named product_insights.
+
+Use the configured COS bucket and default settings.
+After ingestion, show me:
+1. the destination collection name
+2. total files seen
+3. total files processed
+4. total chunks created
+```
+
+Expected result:
+- files are discovered in COS
+- documents are downloaded
+- text is chunked
+- embeddings are generated using watsonx.ai
+- vectors are stored in Milvus
 
 ### Alternative: Manual ingestion using CURL
 
@@ -579,52 +639,6 @@ This command directly calls the MCP server's ingestion tool and is useful for:
 - Automated scripts and CI/CD pipelines
 - Testing the ingestion process independently
 - Troubleshooting when Bob connectivity issues occur
-
----
-
-## Step 10: Inspect available tools in Bob
-
-Try one of the following prompts in Bob:
-
-```text
-Can you show me the available ingestion tools?
-```
-
-```text
-Show me the current ingestion configuration.
-```
-
-```text
-Get the ingestion server information.
-```
-
-At this stage, students should understand that Bob is not storing the data itself. Bob is acting as the MCP client and calling the ingestion server tools.
-
----
-
-## Step 11: Ingest retail content from COS into Milvus
-
-Use Bob and ask it to call the ingestion server.
-
-Example prompt:
-
-```text
-Please use the rag-ingestion-local-mcp server to ingest retail product content from IBM Cloud Object Storage into the Milvus collection named product_insights.
-
-Use the configured COS bucket and default settings.
-After ingestion, show me:
-1. the destination collection name
-2. total files seen
-3. total files processed
-4. total chunks created
-```
-
-Expected result:
-- files are discovered in COS
-- documents are downloaded
-- text is chunked
-- embeddings are generated using watsonx.ai
-- vectors are stored in Milvus
 
 ---
 
