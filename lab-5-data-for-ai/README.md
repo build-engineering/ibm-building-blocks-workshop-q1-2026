@@ -543,6 +543,7 @@ After configuration:
 ---
 
 ## Step 10: Inspect available tools in Bob
+NOTE : If you are still in the _Product Documentation Generator_ Mode, change it to _Advanced mode_
 
 Try one of the following prompts in Bob:
 
