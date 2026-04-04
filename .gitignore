@@ -11,7 +11,7 @@ Gemfile.lock
 */venv
 
 # Workshop
-
+**/.bob
 
 # Lab 2 exclusions
 /lab-2-dataset-powered-website/acme-analytics
