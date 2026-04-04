@@ -570,7 +570,7 @@ Use Bob and ask it to call the ingestion server.
 Example prompt:
 
 ```text
-Please use the rag-ingestion-local-mcp server to ingest retail product content from IBM Cloud Object Storage into the Milvus collection named product_insights.
+Please use the rag-ingestion-local-mcp server to ingest retail product content from IBM Cloud Object Storage.
 
 Use the configured COS bucket and default settings.
 After ingestion, show me:

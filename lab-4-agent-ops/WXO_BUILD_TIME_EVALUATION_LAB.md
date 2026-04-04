@@ -427,6 +427,38 @@ orchestrate evaluations evaluate \
 
 This will take 2-5 minutes. The LLM simulates a user following each scenario's story and interacts with the agent.
 
+<details>
+<summary><strong>Troubleshooting Error:</strong> 'meta-llama/llama-3-405b-instruct' was not found</summary>
+If you encounter this error then:
+    
+1. create the following `config.yaml` at `lab-4-agent-ops/assets/config.yaml`:
+- `auth_config:url`: url of your watsonx Orchestrate local edition server.
+- `auth_config:token` API key for your watsonx Orchestrate local edition server.  This can be found at `~/.cache/orchestrate/credentials.yaml`
+
+```yaml
+auth_config:
+  url: http://localhost:4321
+  tenant_name: local
+  token: <token>
+provider_config:
+  provider: "gateway"
+  model_id: "meta-llama/llama-3-3-70b-instruct"
+```
+
+2. Re-run the following command which includes a new `--config` parameter:
+
+```bash
+orchestrate evaluations evaluate \
+  --test-paths ./lab_eval_subset \
+  --output-dir ./lab_eval_results \
+  --config ../config.yaml
+```
+
+</details>
+
+
+
+
 ### Step 2: Examine the Results
 
 Once complete, look at the output directory:
