@@ -1,0 +1,262 @@
+@use '@carbon/react/scss/theme';
+@use '@carbon/react/scss/spacing';
+
+.datachat-page {
+  padding: spacing.$spacing-07 spacing.$spacing-05;
+  max-width: 1584px;
+  margin: 0 auto;
+
+  @media (min-width: 672px) {
+    padding: spacing.$spacing-09 spacing.$spacing-07;
+  }
+}
+
+.datachat-header {
+  margin-bottom: spacing.$spacing-07;
+
+  .datachat-heading {
+    font-size: 2rem;
+    font-weight: 400;
+    color: theme.$text-primary;
+    margin: 0;
+    line-height: 1.25;
+
+    @media (min-width: 672px) {
+      font-size: 2.5rem;
+    }
+  }
+}
+
+.datachat-controls {
+  margin-bottom: spacing.$spacing-07;
+  align-items: flex-end;
+
+  .cds--dropdown {
+    width: 100%;
+  }
+
+  .submit-button {
+    width: 100%;
+    height: 48px;
+    text-transform: lowercase;
+    
+    @media (min-width: 672px) {
+      margin-top: spacing.$spacing-05;
+    }
+  }
+}
+
+.datachat-content {
+  margin-top: spacing.$spacing-09;
+}
+
+.datachat-response-area {
+  min-height: 400px;
+  background-color: theme.$layer-01;
+  border: 1px solid theme.$border-subtle-01;
+  border-radius: 4px;
+  padding: spacing.$spacing-05;
+}
+
+// Loading state
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: spacing.$spacing-09;
+  text-align: center;
+
+  .loading-text {
+    margin-top: spacing.$spacing-05;
+    color: theme.$text-secondary;
+    font-size: 0.875rem;
+    max-width: 500px;
+  }
+}
+
+// Error state
+.error-container {
+  padding: spacing.$spacing-05;
+  background-color: theme.$support-error;
+  color: theme.$text-on-color;
+  border-radius: 4px;
+  margin-bottom: spacing.$spacing-05;
+
+  h3 {
+    margin: 0 0 spacing.$spacing-03 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+}
+
+// Response container
+.response-container {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-05;
+}
+
+// Step History Section
+.step-history-section {
+  .cds--accordion__item {
+    border-top: 1px solid theme.$border-subtle-01;
+  }
+
+  .step-history-content {
+    padding: spacing.$spacing-05;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .step-item {
+    margin-bottom: spacing.$spacing-05;
+    padding: spacing.$spacing-04;
+    background-color: theme.$layer-02;
+    border-radius: 4px;
+    border-left: 3px solid theme.$border-interactive;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: spacing.$spacing-03;
+    
+    strong {
+      color: theme.$text-primary;
+      font-size: 0.875rem;
+    }
+  }
+
+  .step-timestamp {
+    color: theme.$text-secondary;
+    font-size: 0.75rem;
+  }
+
+  .step-details {
+    pre {
+      margin: 0;
+      padding: spacing.$spacing-03;
+      background-color: theme.$layer-01;
+      border-radius: 2px;
+      font-size: 0.75rem;
+      overflow-x: auto;
+      color: theme.$text-primary;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+  }
+}
+
+// JSON Response Section
+.json-response-section {
+  .cds--accordion__item {
+    border-top: 1px solid theme.$border-subtle-01;
+  }
+
+  .json-content {
+    padding: spacing.$spacing-05;
+    max-height: 500px;
+    overflow: auto;
+    background-color: theme.$layer-02;
+
+    pre {
+      margin: 0;
+      font-size: 0.75rem;
+      color: theme.$text-primary;
+      font-family: 'IBM Plex Mono', monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  }
+}
+
+// HTML Result Section
+.html-result-section {
+  margin-top: spacing.$spacing-05;
+
+  h3 {
+    margin: 0 0 spacing.$spacing-05 0;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: theme.$text-primary;
+  }
+
+  .iframe-container {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    background-color: theme.$layer-02;
+    border: 1px solid theme.$border-subtle-01;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .results-iframe {
+    width: 100%;
+    min-height: 600px;
+    border: none;
+    display: block;
+  }
+}
+
+// Accordion customization
+.cds--accordion__item {
+  border-bottom: 1px solid theme.$border-subtle-01;
+}
+
+.cds--accordion__heading {
+  &:hover {
+    background-color: theme.$layer-hover-01;
+  }
+}
+
+.cds--accordion__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: theme.$text-primary;
+}
+
+// Responsive adjustments
+@media (max-width: 671px) {
+  .datachat-response-area {
+    padding: spacing.$spacing-04;
+  }
+
+  .html-result-section {
+    .iframe-container,
+    .results-iframe {
+      min-height: 400px;
+    }
+  }
+
+  .step-history-content,
+  .json-content {
+    max-height: 300px;
+  }
+}
+
+// Loading animation
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-container {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+// Made with Bob

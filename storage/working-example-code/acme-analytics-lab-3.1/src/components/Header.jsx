@@ -47,17 +47,23 @@ function Header() {
           <span className="logo-text">{currentDataset?.companyName || 'Analytics'}</span>
         </div>
         <nav className="header-nav">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
           >
             about
           </Link>
-          <Link 
-            to="/dashboards" 
+          <Link
+            to="/dashboards"
             className={`nav-link ${location.pathname === '/dashboards' ? 'active' : ''}`}
           >
             dashboards
+          </Link>
+          <Link
+            to="/datachat"
+            className={`nav-link ${location.pathname === '/datachat' ? 'active' : ''}`}
+          >
+            Q&A with data
           </Link>
         </nav>
         <div className="header-dataset-selector">
