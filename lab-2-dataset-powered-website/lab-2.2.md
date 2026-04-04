@@ -157,7 +157,7 @@ Yay! Let's build your website.
 
 1. Select the **Data Website Builder** mode in the Chat window 
 
-⚠️ **NOTE:** In the prompt of the next step, ensure the folder path of your website template matches your own prior to submitting! Updated references to `lab-2-dataset-powered-website/acme-analytics` if needed. 
+⚠️ **NOTE:** In the prompt of the next step, ensure the folder path of your website template matches your own prior to submitting! Update references to `lab-2-dataset-powered-website/acme-analytics` if needed. 
 
 1. Read through this prompt thoroughly then submit it to Bob.  
 ```

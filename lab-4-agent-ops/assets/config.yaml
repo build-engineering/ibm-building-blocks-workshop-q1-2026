@@ -1,0 +1,7 @@
+auth_config:
+  url: http://localhost:4321
+  tenant_name: local
+  token: <token>
+provider_config:
+  provider: "gateway"
+  model_id: "meta-llama/llama-3-3-70b-instruct"

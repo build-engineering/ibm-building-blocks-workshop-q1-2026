@@ -19,9 +19,18 @@ If you're doing this lab in a workshop with others, please take time to help tho
 You'll spend the next several minutes configuring Bob to use Advanced Mode.  Rather than tell you to do that without explaining why, we'll explore the other mode's available to Bob, the tools they contain plus their sub-tools and hidden tools. 
 
 ### 1.1 Open the entire workshop folder as your main Workspace in IBM Bob
-To ensure consistency when working through this workshop, we highly recommend that you open the entire workshop folder as your main Workspace in IBM Bob.  If you do so, the Files panel in Bob will look like below. 
+To ensure consistency when working through this workshop, you must open the workshop folder as your main Workspace in IBM Bob.  Do this by dragging-and-dropping the workshop folder onto   the IBM Bob icon, or use `File > Open Folder` then select the workshop folder.
 
-**Note:** The Files panel is accessed by clicking the Files icon in the top-left of IBM Bob's windows.  
+**Note:** Bob's file Explorer panel is accessed by clicking the file Explorer icon in the top-left of IBM Bob's windows.  
+
+Once properly configured, the File Explorer panel in Bob will look like below. 
+
+1. The top folder visible in Bob's file panel should be the workshop folder.
+2. The 1st sub-folder will be `.bob`
+3. The 2nd sub-folder will be `images`
+
+#### Why is this required?
+When IBM Bob opens, it looks for the `.bob` folder at the root of your Workspace.  If one is not present, Bob will create a `.bob` folder.  During this workshop, you will be addind/removing folders and files from this `.bob` folder.
 
 <img src="images/workshop-as-workspace.png" width="400">
 
